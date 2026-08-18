@@ -1,23 +1,15 @@
-// MediBridge AI central configuration
-// PUTER_AI_START
+// MediBridge AI client configuration.
+// Provider/model/API key are intentionally NOT exposed to the browser.
 window.MEDIBRIDGE_AI_CONFIG = Object.freeze({
   enabled: true,
-  provider: "puter",
+  provider: "backend",
+  endpoint: "/.netlify/functions/ai-chat",
+  maxConversationMessages: 12,
+  maxMessageCharacters: 6000,
 
-  // Puter model IDs use provider/model form.
-  defaultModel: "openai/gpt-5.6-luna",
-  fallbackModels: [
-    "openai/gpt-5.6-terra",
-    "openai/gpt-5.6-sol"
-  ],
-
-  stream: true,
-  allowWebSearch: true,
-
-  // Record-grounded modes remain on the existing secure MediBridge backend.
+  // Existing consent-aware modes remain on the current secure Supabase AI backend.
   secureBackendModes: [
     "patient_summary",
     "doctor_patient_review"
   ]
 });
-// PUTER_AI_END

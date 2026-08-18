@@ -1,6 +1,5 @@
-// MediBridge AI provider adapter.
-// UI code talks to this service, never directly to Puter.
-// PUTER_AI_START
+// MediBridge AI service abstraction.
+// UI code calls this service, never NVIDIA directly.
 (function () {
   function config() {
     return window.MEDIBRIDGE_AI_CONFIG || {
@@ -21,76 +20,84 @@
     return (config().secureBackendModes || []).includes(mode);
   }
 
-  async function chatWithAI({
-    messages,
-    model,
-    stream,
-    tools,
-    webSearch = false,
-    onToken,
-    shouldStop
-  }) {
+  function trimConversation(messages) {
+    const cfg = config();
+    const maxMessages = Math.max(4, Number(cfg.maxConversationMessages || 12));
+    const maxChars = Math.max(1000, Number(cfg.maxMessageCharacters || 6000));
+
+    return (Array.isArray(messages) ? messages : [])
+      .filter(m => m && ["user", "assistant"].includes(m.role))
+      .slice(-maxMessages)
+      .map(m => ({
+        role: m.role,
+        content: String(m.content || "").slice(-maxChars)
+      }));
+  }
+
+  async function chatWithAI({ messages, assistantType = "patient" }) {
     const cfg = config();
 
     if (!cfg.enabled) {
       throw new Error("MediBridge AI is currently disabled.");
     }
 
-    if (cfg.provider !== "puter") {
-      throw new Error("The configured MediBridge AI provider is not available.");
+    if (cfg.provider !== "backend") {
+      throw new Error("The configured MediBridge AI provider is unavailable.");
     }
 
-    if (!window.MediBridgePuterAI) {
-      throw new Error("MediBridge AI provider module did not load.");
-    }
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 65000);
 
-    const request = {
-      messages,
-      model: model || cfg.defaultModel,
-      fallbackModels: cfg.fallbackModels || [],
-      stream: stream ?? cfg.stream,
-      tools: tools || [],
-      onToken,
-      shouldStop
-    };
+    try {
+      const response = await fetch(cfg.endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          messages: trimConversation(messages),
+          assistantType
+        }),
+        signal: controller.signal
+      });
 
-    if (webSearch) {
-      if (!cfg.allowWebSearch) {
-        throw new Error("Current-information search is disabled.");
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (_) {
+        data = null;
       }
-      return window.MediBridgePuterAI.searchWithAI(request);
+
+      if (!response.ok) {
+        const error = new Error(data?.error || "MediBridge AI is temporarily unavailable.");
+        error.status = response.status;
+        throw error;
+      }
+
+      const text = String(data?.text || "").trim();
+      if (!text) {
+        throw new Error("MediBridge AI returned an empty response.");
+      }
+
+      return {
+        text,
+        model: data?.model || null,
+        provider: "backend"
+      };
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        throw new Error("MediBridge AI request timed out. Please try again.");
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeout);
     }
-
-    return window.MediBridgePuterAI.sendAIMessage(request);
-  }
-
-  async function analyzeImage(options) {
-    const cfg = config();
-    if (!cfg.enabled || cfg.provider !== "puter" || !window.MediBridgePuterAI) {
-      throw new Error("MediBridge AI image assistance is unavailable.");
-    }
-
-    return window.MediBridgePuterAI.analyzeImage({
-      ...options,
-      model: options?.model || cfg.defaultModel
-    });
-  }
-
-  async function textToSpeech(text, options) {
-    const cfg = config();
-    if (!cfg.enabled || cfg.provider !== "puter" || !window.MediBridgePuterAI) {
-      throw new Error("MediBridge AI read-aloud is unavailable.");
-    }
-    return window.MediBridgePuterAI.textToSpeech(text, options);
   }
 
   window.MediBridgeAI = {
     isEnabled,
     providerName,
     isSecureBackendMode,
-    chatWithAI,
-    analyzeImage,
-    textToSpeech
+    chatWithAI
   };
 })();
-// PUTER_AI_END
