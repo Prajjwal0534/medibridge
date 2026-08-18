@@ -1,5 +1,5 @@
 // MediBridge AI service abstraction.
-// UI code calls this service, never NVIDIA directly.
+// UI code calls this service; provider secrets and provider API calls stay server-side.
 (function () {
   function config() {
     return window.MEDIBRIDGE_AI_CONFIG || {
