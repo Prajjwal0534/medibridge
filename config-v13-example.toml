@@ -1,4 +1,0 @@
-# Add/merge this into supabase/config.toml if deploying with the CLI.
-# The function expects an authenticated Supabase user.
-[functions.medibridge-ai]
-verify_jwt = true
