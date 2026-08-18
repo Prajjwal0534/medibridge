@@ -1,5 +1,5 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MediBridge Connected</title><link rel="stylesheet" href="style-v29.css?v=29"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://meet.jit.si/external_api.js"></script></head><body>
-<header class="top"><b class="brand">✚ MediBridge <small style="font-size:10px;color:#6b7c91">v29</small></b><div class="row"><span id="sessionLabel" class="muted">Not signed in</span><button id="loginBtn" class="btn secondary" onclick="showPage('auth')">Login</button><button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Logout</button></div></header>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MediBridge Connected</title><link rel="stylesheet" href="style-v30.css?v=30"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://meet.jit.si/external_api.js"></script></head><body>
+<header class="top"><b class="brand">✚ MediBridge <small style="font-size:10px;color:#6b7c91">v30</small></b><div class="row"><span id="sessionLabel" class="muted">Not signed in</span><button id="loginBtn" class="btn secondary" onclick="showPage('auth')">Login</button><button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Logout</button></div></header>
 <nav class="nav"><button onclick="showPage('home')">Home</button><button onclick="showPage('dashboard')">Dashboard</button><button id="aiNavBtn" class="hidden" onclick="showPage('ai')">AI Assistant</button><button onclick="showPage('profile')">Profile</button><button id="bookNavBtn" class="hidden" onclick="showPage('book')">Book Appointment</button><button id="appointmentsNavBtn" class="hidden" onclick="showPage('appointments')">My Appointments</button><button id="emergencyNavBtn" onclick="showPage('emergency')">Emergency</button><button id="hospitalOpsNavBtn" class="hidden" onclick="showPage('hospitalops')">Hospital Ops</button><button id="recordsNavBtn" class="hidden" onclick="showPage('records')">Medical Record</button><button id="timelineNavBtn" class="hidden" onclick="showPage('timeline')">Care Timeline</button><button id="carePlansNavBtn" class="hidden" onclick="showPage('careplans')">Care Plans</button><button id="followupsNavBtn" class="hidden" onclick="showPage('followups')">Follow-ups</button><button id="reportsNavBtn" class="hidden" onclick="showPage('reports')">Reports</button><button id="pharmacyNavBtn" class="hidden" onclick="showPage('pharmacy')">Pharmacy</button><button id="diagnosticsNavBtn" class="hidden" onclick="showPage('diagnostics')">Diagnostics</button><button id="consentNavBtn" class="hidden" onclick="showPage('consent')">Consent & Access</button><button id="referralsNavBtn" class="hidden" onclick="showPage('referrals')">Referrals</button><button id="notificationsNavBtn" class="hidden notification-nav-btn" onclick="showPage('notifications')">Notifications <span id="notificationCountBadge" class="notification-count hidden">0</span></button><button id="availabilityNavBtn" class="hidden" onclick="showPage('availability')">Availability</button><button id="adminNavBtn" class="hidden" onclick="showPage('admin')">Admin</button><button id="knowledgeNavBtn" class="hidden" onclick="showPage('knowledge')">Clinical Knowledge</button></nav>
 <main class="wrap">
 <section id="page-home" class="page active"><div class="hero"><div><small>CONNECTED HEALTHCARE NETWORK</small><h1>Healthcare that connects.</h1><p>Patients, doctors and hospitals on one platform, with consent-led records and AI as a support layer.</p><div class="row"><button class="btn" onclick="showPage('auth')">Create account</button><button class="btn secondary" onclick="showPage('dashboard')">Open dashboard</button></div></div><div class="card ai"><b>✦ AI SUPPORT</b><h2>Care stays human.</h2><p>AI can organize information and help prepare questions. Clinical decisions remain with qualified professionals.</p></div></div></section>
@@ -913,16 +913,71 @@
   <div id="knowledgeContent" class="hidden">
     <div class="row between">
       <div>
-        <small>CLINICAL KNOWLEDGE BASE</small>
-        <h1>Approved medical sources</h1>
-        <p class="page-subtitle">Add trusted reference passages that Doctor AI may retrieve and cite.</p>
+        <small>CLINICAL KNOWLEDGE LIBRARY</small>
+        <h1>Medical books & approved sources</h1>
+        <p class="page-subtitle">Upload medical textbook PDFs with only the book name and edition. MediBridge keeps the files private and prepares them for later indexing.</p>
       </div>
-      <button class="btn secondary" onclick="loadClinicalKnowledgePage()">Refresh</button>
+      <span class="badge">v30</span>
+    </div>
+
+    <div class="card clinical-book-upload-card">
+      <div class="row between">
+        <div>
+          <small>MEDICAL BOOK</small>
+          <h2>Upload textbook PDF</h2>
+          <p class="muted">Required: book name, edition and PDF. No author/publisher/specialty entry is required.</p>
+        </div>
+        <span class="badge">Private storage</span>
+      </div>
+
+      <div class="formgrid">
+        <label>Book name *
+          <input id="medicalBookName" placeholder="e.g. Harrison's Principles of Internal Medicine">
+        </label>
+
+        <label>Edition *
+          <input id="medicalBookEdition" placeholder="e.g. 22nd">
+        </label>
+
+        <label class="span2">PDF *
+          <input id="medicalBookFile" type="file" accept="application/pdf,.pdf">
+        </label>
+
+        <div class="span2">
+          <div id="medicalBookUploadProgressWrap" class="upload-progress-wrap hidden">
+            <div class="row between">
+              <span id="medicalBookUploadStatus">Preparing upload…</span>
+              <b id="medicalBookUploadPercent">0%</b>
+            </div>
+            <div class="upload-progress-track">
+              <div id="medicalBookUploadBar" class="upload-progress-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="medicalBookUploadBtn" class="btn" type="button" onclick="uploadMedicalBook()">Upload book</button>
+        </div>
+      </div>
+
+      <p id="medicalBookMessage" class="msg"></p>
+      <p class="muted small-note">Uploading a PDF stores it in the private MediBridge library. It is not sent to Puter and is not automatically used by AI until the separate indexing/processing step is completed.</p>
     </div>
 
     <div class="card">
-      <h2>Add source passage</h2>
-      <div class="formgrid">
+      <div class="row between">
+        <div>
+          <h2>Medical book library</h2>
+          <p class="muted">Your uploaded PDFs and their indexing status.</p>
+        </div>
+        <button class="btn secondary" onclick="loadMedicalBookLibrary()">Refresh</button>
+      </div>
+      <div id="medicalBookLibraryList"></div>
+    </div>
+
+    <details class="card">
+      <summary><b>Advanced: add a single approved passage manually</b></summary>
+      <div class="formgrid" style="margin-top:14px">
         <label>Source title
           <input id="kbTitle" placeholder="e.g. WHO guideline — Hypertension">
         </label>
@@ -936,24 +991,21 @@
           <input id="kbTopic" placeholder="e.g. hypertension">
         </label>
         <label class="span2">Approved passage
-          <textarea id="kbContent" rows="8" placeholder="Paste a short licensed/approved passage or your own summary. Do not upload copyrighted textbooks without permission."></textarea>
+          <textarea id="kbContent" rows="8" placeholder="Paste a short licensed/approved passage or your own summary."></textarea>
         </label>
         <div class="actions">
-          <button class="btn" type="button" onclick="addClinicalKnowledge()">Add to knowledge base</button>
+          <button class="btn" type="button" onclick="addClinicalKnowledge()">Add passage</button>
         </div>
       </div>
       <p id="knowledgeMessage" class="msg"></p>
-    </div>
+    </details>
 
     <div class="card">
-      <h2>Current knowledge passages</h2>
+      <h2>Indexed knowledge passages</h2>
       <div id="clinicalKnowledgeList"></div>
     </div>
   </div>
 </section>
-
-
-
 
 <section id="page-followups" class="page">
   <div class="row between">
@@ -962,7 +1014,7 @@
       <h1>Follow-ups</h1>
       <p class="page-subtitle">Follow-up dates recorded by your doctors, with quick access back to the related consultation.</p>
     </div>
-    <span class="badge">v29</span>
+    <span class="badge">v30</span>
   </div>
 
   <div class="card">
@@ -984,7 +1036,7 @@
       <h1>Reports hub</h1>
       <p class="page-subtitle">Upload and organize laboratory reports, imaging reports and other investigation documents in one place.</p>
     </div>
-    <span class="badge">v29</span>
+    <span class="badge">v30</span>
   </div>
 
   <div id="reportsPatientUploadCard" class="card hidden">
@@ -1147,7 +1199,7 @@
         <h1 id="aiPageTitle">AI Assistant</h1>
         <p class="page-subtitle" id="aiPageSubtitle">A support layer for understanding health information and preparing better questions.</p>
       </div>
-      <span class="badge">v29</span>
+      <span class="badge">v30</span>
     </div>
 
     <div class="card ai-safety-card">
@@ -1488,7 +1540,7 @@
       <h1 id="diagnosticsPageTitle">Diagnostics</h1>
       <p id="diagnosticsPageSubtitle" class="page-subtitle">Find verified diagnostic centres, request tests and track the diagnostic journey.</p>
     </div>
-    <span class="badge">v29</span>
+    <span class="badge">v30</span>
   </div>
 
   <div id="patientDiagnosticsView" class="hidden">
@@ -1585,7 +1637,7 @@
       <h1 id="pharmacyPageTitle">Pharmacy</h1>
       <p id="pharmacyPageSubtitle" class="page-subtitle">Send a doctor-recorded prescription to a participating pharmacy and track fulfilment.</p>
     </div>
-    <span class="badge">v29</span>
+    <span class="badge">v30</span>
   </div>
 
   <div id="patientPharmacyView" class="hidden">
@@ -1718,11 +1770,12 @@
 <script src="supabase-config.js"></script>
 <!-- PUTER_AI_START: remove these four lines to detach the Puter provider -->
 <script src="https://js.puter.com/v2/"></script>
-<script src="ai-config.js?v=29"></script>
-<script src="puter-ai.js?v=29"></script>
-<script src="medibridge-ai-service.js?v=29"></script>
+<script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script>
+<script src="ai-config.js?v=30"></script>
+<script src="puter-ai.js?v=30"></script>
+<script src="medibridge-ai-service.js?v=30"></script>
 <!-- PUTER_AI_END -->
-<script src="app-v29.js?v=29"></script>
+<script src="app-v30.js?v=30"></script>
 <div id="reportAppointmentModal" class="modal hidden">
   <div class="modal-backdrop" onclick="closeReportAppointmentModal()"></div>
   <div class="modal-card report-link-modal-card">

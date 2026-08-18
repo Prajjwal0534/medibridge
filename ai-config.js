@@ -5,10 +5,10 @@ window.MEDIBRIDGE_AI_CONFIG = Object.freeze({
   provider: "puter",
 
   // Puter model IDs use provider/model form.
-  defaultModel: "openai/gpt-5.6-sol",
+  defaultModel: "openai/gpt-5.6-luna",
   fallbackModels: [
     "openai/gpt-5.6-terra",
-    "openai/gpt-5.6-luna"
+    "openai/gpt-5.6-sol"
   ],
 
   stream: true,
