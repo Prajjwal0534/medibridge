@@ -1,5 +1,5 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MediBridge Connected</title><link rel="stylesheet" href="style-v26.css?v=26"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://meet.jit.si/external_api.js"></script></head><body>
-<header class="top"><b class="brand">✚ MediBridge <small style="font-size:10px;color:#6b7c91">v26</small></b><div class="row"><span id="sessionLabel" class="muted">Not signed in</span><button id="loginBtn" class="btn secondary" onclick="showPage('auth')">Login</button><button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Logout</button></div></header>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MediBridge Connected</title><link rel="stylesheet" href="style-v27.css?v=27"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://meet.jit.si/external_api.js"></script></head><body>
+<header class="top"><b class="brand">✚ MediBridge <small style="font-size:10px;color:#6b7c91">v27</small></b><div class="row"><span id="sessionLabel" class="muted">Not signed in</span><button id="loginBtn" class="btn secondary" onclick="showPage('auth')">Login</button><button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Logout</button></div></header>
 <nav class="nav"><button onclick="showPage('home')">Home</button><button onclick="showPage('dashboard')">Dashboard</button><button id="aiNavBtn" class="hidden" onclick="showPage('ai')">AI Assistant</button><button onclick="showPage('profile')">Profile</button><button id="bookNavBtn" class="hidden" onclick="showPage('book')">Book Appointment</button><button id="appointmentsNavBtn" class="hidden" onclick="showPage('appointments')">My Appointments</button><button id="emergencyNavBtn" onclick="showPage('emergency')">Emergency</button><button id="hospitalOpsNavBtn" class="hidden" onclick="showPage('hospitalops')">Hospital Ops</button><button id="recordsNavBtn" class="hidden" onclick="showPage('records')">Medical Record</button><button id="timelineNavBtn" class="hidden" onclick="showPage('timeline')">Care Timeline</button><button id="followupsNavBtn" class="hidden" onclick="showPage('followups')">Follow-ups</button><button id="reportsNavBtn" class="hidden" onclick="showPage('reports')">Reports</button><button id="pharmacyNavBtn" class="hidden" onclick="showPage('pharmacy')">Pharmacy</button><button id="diagnosticsNavBtn" class="hidden" onclick="showPage('diagnostics')">Diagnostics</button><button id="consentNavBtn" class="hidden" onclick="showPage('consent')">Consent & Access</button><button id="referralsNavBtn" class="hidden" onclick="showPage('referrals')">Referrals</button><button id="notificationsNavBtn" class="hidden notification-nav-btn" onclick="showPage('notifications')">Notifications <span id="notificationCountBadge" class="notification-count hidden">0</span></button><button id="availabilityNavBtn" class="hidden" onclick="showPage('availability')">Availability</button><button id="adminNavBtn" class="hidden" onclick="showPage('admin')">Admin</button><button id="knowledgeNavBtn" class="hidden" onclick="showPage('knowledge')">Clinical Knowledge</button></nav>
 <main class="wrap">
 <section id="page-home" class="page active"><div class="hero"><div><small>CONNECTED HEALTHCARE NETWORK</small><h1>Healthcare that connects.</h1><p>Patients, doctors and hospitals on one platform, with consent-led records and AI as a support layer.</p><div class="row"><button class="btn" onclick="showPage('auth')">Create account</button><button class="btn secondary" onclick="showPage('dashboard')">Open dashboard</button></div></div><div class="card ai"><b>✦ AI SUPPORT</b><h2>Care stays human.</h2><p>AI can organize information and help prepare questions. Clinical decisions remain with qualified professionals.</p></div></div></section>
@@ -281,6 +281,25 @@
   </div>
 
   <div id="doctorCriticalSnapshot" class="doctor-overview-grid"></div>
+
+  <div id="doctorAccessRequestCard" class="card doctor-access-request-card">
+    <div class="row between">
+      <div><small>PATIENT PERMISSION</small><h2>Request additional record access</h2><p class="muted">Ask the patient to share specific record types. Nothing is shared until the patient approves.</p></div>
+      <span id="doctorAccessRequestStatus" class="badge">Not requested</span>
+    </div>
+    <div class="consent-grid doctor-request-scopes">
+      <label class="consent-item"><input type="checkbox" class="doctor-access-scope" value="consultations" checked> Consultations</label>
+      <label class="consent-item"><input type="checkbox" class="doctor-access-scope" value="prescriptions" checked> Prescriptions</label>
+      <label class="consent-item"><input type="checkbox" class="doctor-access-scope" value="appointment_files"> Uploaded reports/files</label>
+      <label class="consent-item"><input type="checkbox" class="doctor-access-scope" value="referrals"> Referrals</label>
+      <label class="consent-item"><input type="checkbox" class="doctor-access-scope" value="health_profile"> Structured health profile</label>
+      <label class="consent-item"><input type="checkbox" class="doctor-access-scope" value="vitals"> Vitals</label>
+      <label class="consent-item"><input type="checkbox" class="doctor-access-scope" value="emergency_summary"> Emergency summary</label>
+    </div>
+    <label>Reason for request<textarea id="doctorAccessRequestReason" rows="2" placeholder="Example: Review medicines and allergy history before this consultation."></textarea></label>
+    <div class="row"><button class="btn" onclick="submitDoctorAccessRequest()">Send access request</button><button id="cancelDoctorAccessRequestBtn" class="btn secondary hidden" onclick="cancelDoctorAccessRequest()">Cancel pending request</button></div>
+    <p id="doctorAccessRequestMessage" class="msg"></p>
+  </div>
 
   <div class="doctor-overview-section">
     <div class="row between">
@@ -840,7 +859,7 @@
       <h1>Follow-ups</h1>
       <p class="page-subtitle">Follow-up dates recorded by your doctors, with quick access back to the related consultation.</p>
     </div>
-    <span class="badge">v26</span>
+    <span class="badge">v27</span>
   </div>
 
   <div class="card">
@@ -862,7 +881,7 @@
       <h1>Reports hub</h1>
       <p class="page-subtitle">Upload and organize laboratory reports, imaging reports and other investigation documents in one place.</p>
     </div>
-    <span class="badge">v26</span>
+    <span class="badge">v27</span>
   </div>
 
   <div id="reportsPatientUploadCard" class="card hidden">
@@ -1025,7 +1044,7 @@
         <h1 id="aiPageTitle">AI Assistant</h1>
         <p class="page-subtitle" id="aiPageSubtitle">A support layer for understanding and reviewing MediBridge data.</p>
       </div>
-      <span class="badge">v26</span>
+      <span class="badge">v27</span>
     </div>
 
     <div class="card ai-safety-card">
@@ -1111,6 +1130,11 @@
         <p class="page-subtitle">Control which verified doctors can access specific parts of your MediBridge record.</p>
       </div>
       <button class="btn secondary" onclick="loadConsentPage()">Refresh</button>
+    </div>
+
+    <div class="card patient-access-requests-card">
+      <div class="row between"><div><small>DOCTOR REQUESTS</small><h2>Pending access requests</h2><p class="muted">A doctor can ask, but only you can approve what is shared and for how long.</p></div><button class="btn secondary" onclick="loadPendingAccessRequests()">Refresh</button></div>
+      <div id="pendingAccessRequests"></div>
     </div>
 
     <div class="card">
@@ -1341,7 +1365,7 @@
       <h1 id="diagnosticsPageTitle">Diagnostics</h1>
       <p id="diagnosticsPageSubtitle" class="page-subtitle">Find verified diagnostic centres, request tests and track the diagnostic journey.</p>
     </div>
-    <span class="badge">v26</span>
+    <span class="badge">v27</span>
   </div>
 
   <div id="patientDiagnosticsView" class="hidden">
@@ -1438,7 +1462,7 @@
       <h1 id="pharmacyPageTitle">Pharmacy</h1>
       <p id="pharmacyPageSubtitle" class="page-subtitle">Send a doctor-recorded prescription to a participating pharmacy and track fulfilment.</p>
     </div>
-    <span class="badge">v26</span>
+    <span class="badge">v27</span>
   </div>
 
   <div id="patientPharmacyView" class="hidden">
@@ -1567,7 +1591,7 @@
   </div>
 </section>
 
-</main><div id="toast" class="toast hidden"></div><script src="supabase-config.js"></script><script src="app-v26.js?v=26"></script>
+</main><div id="toast" class="toast hidden"></div><script src="supabase-config.js"></script><script src="app-v27.js?v=27"></script>
 <div id="reportAppointmentModal" class="modal hidden">
   <div class="modal-backdrop" onclick="closeReportAppointmentModal()"></div>
   <div class="modal-card report-link-modal-card">
