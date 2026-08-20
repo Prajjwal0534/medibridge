@@ -5,7 +5,22 @@ let careTimelineCache=[];
 let selectedCarePlan=null;
 let carePlanCreateContext=null;
 let notificationPollTimer=null;
-function showPage(n){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+n)?.classList.add('active');if(n==='dashboard')refreshDashboard();if(n==='profile')loadOnboarding();if(n==='admin')loadAdminPage();if(n==='availability')loadAvailabilityPage();if(n==='book')loadBookingPage();if(n==='appointments')loadAppointmentsPage();if(n==='knowledge')loadClinicalKnowledgePage();if(n==='ai')loadAiPage();if(n==='consultation-explain')loadConsultationExplainPage();if(n==='reports')loadReportsHub();if(n==='pharmacy')loadPharmacyPage();if(n==='diagnostics')loadDiagnosticsPage();if(n==='followups')loadPatientFollowups();if(n==='records')loadMedicalRecordPage();if(n==='timeline')loadCareTimeline();if(n==='careplans')loadCarePlans();if(n==='consent')loadConsentPage();if(n==='referrals')loadReferralsPage();if(n==='notifications')loadNotificationsPage();if(n==='emergency')loadEmergencyPage();if(n==='hospitalops')loadHospitalOpsPage();window.scrollTo({top:0,behavior:'smooth'})}
+function showPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+n)?.classList.add('active');
+  document.body.dataset.page=n;
+  document.querySelectorAll('.nav button').forEach(button=>{
+    const action=button.getAttribute('onclick')||'';
+    button.classList.toggle('active-nav',action.includes(`showPage('${n}')`));
+  });
+  const menu=document.querySelector('.nav');
+  const toggle=document.getElementById('mobileMenuBtn');
+  menu?.classList.remove('mobile-open');
+  toggle?.setAttribute('aria-expanded','false');
+  toggle?.setAttribute('aria-label','Open all navigation');
+  if(n==='dashboard')refreshDashboard();if(n==='profile')loadOnboarding();if(n==='admin')loadAdminPage();if(n==='availability')loadAvailabilityPage();if(n==='book')loadBookingPage();if(n==='appointments')loadAppointmentsPage();if(n==='knowledge')loadClinicalKnowledgePage();if(n==='ai')loadAiPage();if(n==='consultation-explain')loadConsultationExplainPage();if(n==='reports')loadReportsHub();if(n==='pharmacy')loadPharmacyPage();if(n==='diagnostics')loadDiagnosticsPage();if(n==='followups')loadPatientFollowups();if(n==='records')loadMedicalRecordPage();if(n==='timeline')loadCareTimeline();if(n==='careplans')loadCarePlans();if(n==='consent')loadConsentPage();if(n==='referrals')loadReferralsPage();if(n==='notifications')loadNotificationsPage();if(n==='emergency')loadEmergencyPage();if(n==='hospitalops')loadHospitalOpsPage();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 function setAuthMode(m){authMode=m;document.getElementById('signupFields').classList.toggle('hidden',m!=='signup');document.getElementById('tabLogin').classList.toggle('active',m==='login');document.getElementById('tabSignup').classList.toggle('active',m==='signup');document.getElementById('authSubmit').textContent=m==='login'?'Login':'Create account'}
 function msg(id,t,type=''){let e=document.getElementById(id);e.textContent=t;e.className='msg '+type}
 function toast(t,x=''){let e=document.getElementById('toast');e.innerHTML='<b>'+t+'</b><br><small>'+x+'</small>';e.classList.remove('hidden');clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.add('hidden'),4000)}
@@ -37,6 +52,7 @@ async function handleSession(s){
 async function loadProfile(){let {data,error}=await supabaseClient.from('profiles').select('*').eq('id',currentUser.id).single();if(!error){currentProfile=data;queueMicrotask(()=>updateUI())}return data}
 function updateUI(){
   let l=document.getElementById('sessionLabel'),
+      roleBadge=document.getElementById('headerRoleBadge'),
       a=document.getElementById('adminNavBtn'),
       av=document.getElementById('availabilityNavBtn'),
       b=document.getElementById('bookNavBtn'),
@@ -61,6 +77,11 @@ function updateUI(){
     document.getElementById('loginBtn').classList.add('hidden');
 
     const role=currentProfile?.role;
+    document.body.dataset.role=role||'account';
+    if(roleBadge){
+      roleBadge.textContent=(role||'Account').replace(/^./,c=>c.toUpperCase())+' mode';
+      roleBadge.classList.remove('hidden');
+    }
 
     a.classList.toggle('hidden',!(role==='admin'&&currentProfile?.verification_status==='verified'));
     knowledge.classList.toggle('hidden',!(role==='admin'&&currentProfile?.verification_status==='verified'));
@@ -80,6 +101,8 @@ function updateUI(){
     notifications.classList.remove('hidden');
     ai.classList.toggle('hidden',!(role==='patient'||(role==='doctor'&&currentProfile?.verification_status==='verified')));
   }else{
+    delete document.body.dataset.role;
+    roleBadge?.classList.add('hidden');
     l.textContent='Not signed in';
     document.getElementById('logoutBtn').classList.add('hidden');
     if(reports)reports.classList.add('hidden');
@@ -275,7 +298,7 @@ async function openNotification(id,entityType,entityId){
   await loadNotificationsPage();
 }
 
-async function refreshDashboard(){let g=document.getElementById('dashGate'),c=document.getElementById('dashContent');if(!currentUser){g.classList.remove('hidden');c.classList.add('hidden');return}await loadProfile();g.classList.add('hidden');c.classList.remove('hidden');let r=currentProfile?.role||'patient';document.getElementById('dashTitle').textContent='Welcome, '+(currentProfile?.full_name||currentUser.email);document.getElementById('verifyBadge').textContent=currentProfile?.verification_status||'pending';let cards={patient:[['Appointments','Manage care'],['Health record','Connected history'],['Referrals','Track specialist care']],doctor:[['Patient queue','Clinical work'],['Reports','Review results'],['Referrals','Collaborate']],hospital:[['OPD','Patient flow'],['Emergency','Facility status'],['Referrals','Incoming care']],pharmacy:[['Prescription requests','Fulfil patient prescriptions'],['Profile','Manage pharmacy details'],['Status','Track request progress']],lab:[['Diagnostic requests','Manage patient test requests'],['Test catalogue','Manage available tests'],['Profile','Manage diagnostic centre details']],admin:[['Doctor verification','Review pending doctors'],['Hospital verification','Coming next'],['Platform safety','Admin controls']]};document.getElementById('dashCards').innerHTML=(cards[r]||cards.patient).map(x=>'<div class="card"><b>'+x[0]+'</b><p>'+x[1]+'</p></div>').join('');const followupDash=document.getElementById('patientFollowupDashboardCard');
+async function refreshDashboard(){let g=document.getElementById('dashGate'),c=document.getElementById('dashContent');if(!currentUser){g.classList.remove('hidden');c.classList.add('hidden');return}await loadProfile();g.classList.add('hidden');c.classList.remove('hidden');let r=currentProfile?.role||'patient';const fullName=currentProfile?.full_name||currentUser.email;const firstName=fullName.split(/\s+/)[0];const hour=new Date().getHours();const greeting=hour<12?'Good morning':hour<17?'Good afternoon':'Good evening';document.getElementById('dashTitle').textContent=greeting+', '+firstName;const subtitle=document.getElementById('dashSubtitle');if(subtitle)subtitle.textContent=r==='patient'?'Here is your healthcare overview and next steps.':r==='doctor'?'Your clinical workspace, patient activity and care tools.':r==='hospital'?'Your facility operations and incoming care activity.':'Your MediBridge workspace and current activity.';document.getElementById('verifyBadge').textContent=currentProfile?.verification_status||'pending';let cards={patient:[['▣','Appointments','Manage upcoming and previous care','appointments'],['▤','Health records','View your connected health history','records'],['↗','Referrals','Track specialist care pathways','referrals']],doctor:[['▣','Patient queue','Appointments and clinical work','appointments'],['▤','Reports','Review shared diagnostic results','reports'],['↗','Referrals','Coordinate specialist care','referrals']],hospital:[['▦','Hospital operations','Manage patient flow and requests','hospitalops'],['✚','Emergency status','Update facility readiness','emergency'],['●','Notifications','Review facility and care updates','notifications']],pharmacy:[['▧','Prescription requests','Fulfil patient prescriptions','pharmacy'],['○','Profile','Manage pharmacy details','profile'],['●','Notifications','Track request progress','notifications']],lab:[['⌁','Diagnostic requests','Manage patient test requests','diagnostics'],['▦','Test catalogue','Manage available tests','diagnostics'],['○','Profile','Manage diagnostic centre details','profile']],admin:[['✓','Provider verification','Review pending applications','admin'],['▦','Platform overview','Manage operations','admin'],['⌾','Platform safety','Review administrative controls','admin']]};document.getElementById('dashCards').innerHTML=(cards[r]||cards.patient).map(x=>`<button class="card dashboard-action-card" onclick="showPage('${x[3]}')"><span class="dashboard-card-icon">${x[0]}</span><span><b>${x[1]}</b><small>${x[2]}</small></span><span class="dashboard-card-arrow">→</span></button>`).join('');const followupDash=document.getElementById('patientFollowupDashboardCard');
   if(r==='patient'){
     followupDash.classList.remove('hidden');
     loadPatientFollowups();
