@@ -1404,9 +1404,78 @@ input,select,textarea{min-height:44px}
 .ai-chat-text p:last-child{margin-bottom:0}
 .ai-thinking-dots{color:#718397;font-style:italic}
 .ai-chat-message.streaming{min-width:160px}
+.ai-toolbar{gap:16px;align-items:flex-start}
+.ai-status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-height:30px;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  background:#eef3f7;
+  color:#5f7284;
+}
+.ai-status-pill.ready{background:#e8f7ef;color:#137548}
+.ai-status-pill.configuration_required,.ai-status-pill.unavailable{background:#fff3dc;color:#8a5a00}
+.ai-status-pill::before{content:'•';font-size:18px;line-height:0}
+.ai-capability-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 18px;
+  color:#536779;
+  font-size:12px;
+  background:#f8fbfd;
+}
+.ai-quick-prompts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:14px 0;
+}
+.ai-quick-prompt{
+  border:1px solid #ccdbe8;
+  border-radius:999px;
+  background:#fff;
+  color:#245c84;
+  padding:8px 12px;
+  font:inherit;
+  font-size:13px;
+  cursor:pointer;
+}
+.ai-quick-prompt:hover,.ai-quick-prompt:focus-visible{background:#edf6fd;border-color:#7ba7c8}
+.ai-urgent-banner{
+  margin:14px 0;
+  padding:14px;
+  border:1px solid #e3a4a4;
+  border-left:5px solid #b52626;
+  border-radius:12px;
+  background:#fff3f3;
+  color:#771e1e;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+}
+.ai-urgent-banner p{margin:4px 0 0}
+.ai-message-actions{display:flex;gap:6px;margin-top:8px}
+.ai-message-action{
+  border:0;
+  background:transparent;
+  color:#63788a;
+  padding:2px 0;
+  font-size:11px;
+  cursor:pointer;
+}
+.ai-message-action:hover,.ai-message-action:focus-visible{color:#075ca8;text-decoration:underline}
+.ai-stream-cursor::after{content:'▍';display:inline-block;color:#075ca8;animation:aiBlink .85s steps(1) infinite}
+@keyframes aiBlink{50%{opacity:0}}
 @media(max-width:700px){
   .ai-chat-message{max-width:94%}
   .ai-chat-thread{min-height:230px;max-height:460px;padding:10px}
+  .ai-toolbar,.ai-urgent-banner{align-items:stretch;flex-direction:column}
+  .ai-toolbar>.row{width:100%;justify-content:flex-start}
 }
 
 /* v30 clinical book library */

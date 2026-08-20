@@ -6041,6 +6041,8 @@ let currentAiMode='patient_explain';
 let mediBridgeAiChats={};
 let mediBridgeAiGenerationStopped=false;
 let mediBridgeAiRequestInFlight=false;
+let mediBridgeAiAbortController=null;
+let currentAiQuickPrompts=[];
 
 
 function aiConversationKey(){
@@ -6066,7 +6068,7 @@ function renderAiChatThread(){
     box.innerHTML=`
       <div class="ai-chat-empty">
         <b>MediBridge AI</b>
-        <p>Ask a ${currentProfile?.role==='doctor'?'clinical-reference':'health-information'} question. This temporary external AI provider chat stays in this browser session and is not written to Supabase.</p>
+        <p>Ask a ${currentProfile?.role==='doctor'?'clinical-reference':'health-information'} question. General chat stays in this browser session and is not written to the MediBridge record.</p>
       </div>`;
     return;
   }
@@ -6076,6 +6078,7 @@ function renderAiChatThread(){
     return `<div class="ai-chat-message ${user?'user':'assistant'}" data-ai-message-index="${index}">
       <div class="ai-chat-role">${user?'You':'MediBridge AI'}</div>
       <div class="ai-chat-text">${user?escapeAdmin(m.content):renderAiMarkdown(m.content)}</div>
+      ${user?'':`<div class="ai-message-actions"><button class="ai-message-action" type="button" onclick="copyMediBridgeAiMessage(${index})">Copy answer</button></div>`}
     </div>`;
   }).join('');
 
@@ -6095,7 +6098,62 @@ function appendStreamingAiBubble(){
     <div class="ai-chat-text"><span class="ai-thinking-dots">Thinking…</span></div>`;
   box.appendChild(wrapper);
   box.scrollTop=box.scrollHeight;
-  return wrapper.querySelector('.ai-chat-text');
+  return {
+    wrapper,
+    text:wrapper.querySelector('.ai-chat-text')
+  };
+}
+
+const MEDIBRIDGE_AI_QUICK_PROMPTS={
+  patient_explain:[
+    'Explain high blood pressure in simple words.',
+    'Help me understand common terms on a blood test report.',
+    'What information should I prepare before a doctor appointment?'
+  ],
+  patient_questions:[
+    'Help me prepare questions about recurring headaches.',
+    'What should I ask before starting a newly prescribed medicine?',
+    'Help me prepare for a follow-up appointment.'
+  ],
+  patient_summary:[
+    'Summarize my MediBridge record in clear language.'
+  ],
+  doctor_reference:[
+    'Create a concise differential framework for an undifferentiated presentation.',
+    'List the safety checks to verify before finalizing this clinical plan.',
+    'Summarize what should be confirmed in current local guidelines for this question.'
+  ],
+  doctor_patient_review:[
+    'Review the consented record and identify unanswered clinical questions.'
+  ]
+};
+
+function renderAiQuickPrompts(){
+  const box=document.getElementById('aiQuickPrompts');
+  if(!box)return;
+
+  currentAiQuickPrompts=MEDIBRIDGE_AI_QUICK_PROMPTS[currentAiMode]||[];
+  box.innerHTML=currentAiQuickPrompts.map((prompt,index)=>
+    `<button class="ai-quick-prompt" type="button" onclick="useMediBridgeAiQuickPrompt(${index})">${escapeAdmin(prompt)}</button>`
+  ).join('');
+}
+
+function useMediBridgeAiQuickPrompt(index){
+  const prompt=currentAiQuickPrompts[index];
+  const input=document.getElementById('aiPrompt');
+  if(!prompt||!input)return;
+  input.value=prompt;
+  input.focus();
+}
+
+function updateAiUrgencyBanner(meta){
+  const banner=document.getElementById('aiUrgencyBanner');
+  if(!banner)return;
+  banner.classList.toggle('hidden',!meta?.urgent);
+}
+
+function clearAiUrgencyBanner(){
+  updateAiUrgencyBanner({urgent:false});
 }
 
 function setAiMode(mode,btn){
@@ -6116,13 +6174,16 @@ function setAiMode(mode,btn){
   };
 
   prompt.placeholder=placeholders[mode]||'Ask MediBridge AI...';
+  renderAiQuickPrompts();
+  clearAiUrgencyBanner();
   renderAiChatThread();
   msg('aiMessage','');
 }
 
-function updateAiProviderStatus(){
+async function updateAiProviderStatus(){
   const label=document.getElementById('aiProviderLabel');
   const status=document.getElementById('aiProviderStatus');
+  const stateBadge=document.getElementById('aiProviderStateBadge');
   if(!label||!status)return;
 
   const service=window.MediBridgeAI;
@@ -6132,13 +6193,41 @@ function updateAiProviderStatus(){
 
   if(!enabled){
     status.textContent='AI is disabled. The rest of MediBridge remains available.';
+    if(stateBadge){
+      stateBadge.textContent='Disabled';
+      stateBadge.className='ai-status-pill unavailable';
+    }
     return;
   }
 
-  if(service.providerName()==='backend'){
-    status.textContent='Secure Groq-backed MediBridge AI is enabled. The Groq API key stays on the Netlify backend.';
+  status.textContent='Checking the secure AI gateway...';
+  if(stateBadge){
+    stateBadge.textContent='Checking';
+    stateBadge.className='ai-status-pill checking';
+  }
+
+  const gateway=await service?.getStatus?.();
+  const gatewayStatus=gateway?.status||'unavailable';
+
+  if(gatewayStatus==='ready'){
+    label.textContent='MediBridge AI Core';
+    status.textContent=`Connected through the secure gateway · ${gateway.provider||'configured provider'} · ${gateway.model||'configured model'}.`;
+    if(stateBadge){
+      stateBadge.textContent='Ready';
+      stateBadge.className='ai-status-pill ready';
+    }
+  }else if(gatewayStatus==='configuration_required'){
+    status.textContent='The AI gateway is installed but its private environment variables still need to be configured.';
+    if(stateBadge){
+      stateBadge.textContent='Setup needed';
+      stateBadge.className='ai-status-pill configuration_required';
+    }
   }else{
-    status.textContent='AI provider configured.';
+    status.textContent='The AI gateway could not be reached. Other MediBridge features remain available.';
+    if(stateBadge){
+      stateBadge.textContent='Unavailable';
+      stateBadge.className='ai-status-pill unavailable';
+    }
   }
 }
 
@@ -6176,7 +6265,7 @@ async function loadAiPage(){
     await loadAiConsentedPatients();
   }
 
-  updateAiProviderStatus();
+  await updateAiProviderStatus();
   renderAiChatThread();
 
   const prompt=document.getElementById('aiPrompt');
@@ -6274,7 +6363,9 @@ async function askMediBridgeAI(){
   mediBridgeAiGenerationStopped=false;
   btn.disabled=true;
   btn.textContent='Sending…';
-  stopBtn.classList.add('hidden');
+  stopBtn.classList.toggle('hidden',secureBackendMode);
+  mediBridgeAiAbortController=secureBackendMode?null:new AbortController();
+  clearAiUrgencyBanner();
 
   try{
     if(secureBackendMode){
@@ -6334,16 +6425,27 @@ async function askMediBridgeAI(){
     input.value='';
     renderAiChatThread();
 
-    const streamingText=appendStreamingAiBubble();
+    const streamingBubble=appendStreamingAiBubble();
     msg('aiMessage','Generating a secure response...');
 
     const result=await window.MediBridgeAI.chatWithAI({
       messages:conversation,
-      assistantType: currentProfile?.role==='doctor' ? 'doctor' : 'patient'
+      assistantType: currentProfile?.role==='doctor' ? 'doctor' : 'patient',
+      mode:currentAiMode,
+      signal:mediBridgeAiAbortController?.signal,
+      onMeta:meta=>updateAiUrgencyBanner(meta),
+      onToken:(_delta,fullText)=>{
+        if(!streamingBubble?.text)return;
+        streamingBubble.text.classList.add('ai-stream-cursor');
+        streamingBubble.text.innerHTML=renderAiMarkdown(fullText);
+        const box=document.getElementById('aiChatThread');
+        if(box)box.scrollTop=box.scrollHeight;
+      }
     });
 
-    if(streamingText){
-      streamingText.innerHTML=renderAiMarkdown(result?.text||'');
+    if(streamingBubble?.text){
+      streamingBubble.text.classList.remove('ai-stream-cursor');
+      streamingBubble.text.innerHTML=renderAiMarkdown(result?.text||'');
       const box=document.getElementById('aiChatThread');
       if(box)box.scrollTop=box.scrollHeight;
     }
@@ -6367,9 +6469,21 @@ async function askMediBridgeAI(){
     conversation.push({role:'assistant',content:text});
     renderAiChatThread();
 
-    msg('aiMessage','Response generated. Verify important medical information before use.','success');
+    updateAiUrgencyBanner(result);
+    msg(
+      'aiMessage',
+      result?.urgent
+        ? 'Emergency guidance shown. Do not delay professional help.'
+        : 'Response generated. Verify important medical information before use.',
+      result?.urgent?'error':'success'
+    );
   }catch(err){
     renderAiChatThread();
+
+    if(err?.name==='AbortError'){
+      msg('aiMessage','Generation stopped.','');
+      return;
+    }
 
     const raw=String(err?.message||'AI request failed.');
     let friendly='MediBridge AI could not complete the request. Please try again.';
@@ -6388,6 +6502,7 @@ async function askMediBridgeAI(){
   }finally{
     mediBridgeAiRequestInFlight=false;
     mediBridgeAiGenerationStopped=false;
+    mediBridgeAiAbortController=null;
     btn.disabled=false;
     btn.textContent='Send';
     stopBtn.classList.add('hidden');
@@ -6397,10 +6512,15 @@ async function askMediBridgeAI(){
 function stopMediBridgeAiGeneration(){
   if(!mediBridgeAiRequestInFlight)return;
   mediBridgeAiGenerationStopped=true;
-  msg('aiMessage','Stopping after the current streamed chunk...');
+  mediBridgeAiAbortController?.abort();
+  msg('aiMessage','Stopping generation...');
 }
 
 function newMediBridgeAiChat(){
+  if(mediBridgeAiRequestInFlight){
+    mediBridgeAiGenerationStopped=true;
+    mediBridgeAiAbortController?.abort();
+  }
   mediBridgeAiChats[aiConversationKey()]=[];
 
   const input=document.getElementById('aiPrompt');
@@ -6413,8 +6533,60 @@ function newMediBridgeAiChat(){
   }
 
   document.getElementById('aiAnswerCard')?.classList.add('hidden');
+  clearAiUrgencyBanner();
   renderAiChatThread();
   msg('aiMessage','New chat started.','success');
+}
+
+async function copyMediBridgeAiMessage(index){
+  const message=getAiConversation()[index];
+  if(!message||message.role!=='assistant')return;
+
+  try{
+    await navigator.clipboard.writeText(message.content);
+    msg('aiMessage','Answer copied.','success');
+  }catch(_){
+    msg('aiMessage','Could not copy the answer on this device.','error');
+  }
+}
+
+async function copyLastMediBridgeAiAnswer(){
+  const conversation=getAiConversation();
+  for(let index=conversation.length-1;index>=0;index--){
+    if(conversation[index].role==='assistant'){
+      await copyMediBridgeAiMessage(index);
+      return;
+    }
+  }
+  msg('aiMessage','No AI answer to copy yet.','error');
+}
+
+function exportMediBridgeAiChat(){
+  const conversation=getAiConversation();
+  if(!conversation.length){
+    msg('aiMessage','No chat to export yet.','error');
+    return;
+  }
+
+  const title=`MediBridge AI · ${currentAiMode.replaceAll('_',' ')}`;
+  const content=[
+    title,
+    `Exported: ${new Date().toLocaleString('en-IN')}`,
+    '',
+    ...conversation.map(message=>
+      `${message.role==='user'?'YOU':'MEDIBRIDGE AI'}\n${message.content}\n`
+    ),
+    'Important: This AI-generated information may be incomplete or incorrect and does not replace professional medical care.'
+  ].join('\n');
+
+  const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('a');
+  link.href=url;
+  link.download=`medibridge-ai-${currentAiMode}-${new Date().toISOString().slice(0,10)}.txt`;
+  link.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  msg('aiMessage','Chat exported to this device.','success');
 }
 
 function clearAiAnswer(){
