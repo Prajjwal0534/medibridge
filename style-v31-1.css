@@ -2042,3 +2042,81 @@ body::before{display:none}
   .preview-actions button{padding:10px}
   #page-ai .ai-capability-row{grid-template-columns:1fr}
 }
+
+/* v33.1 phone compatibility and original MediBridge colour return */
+:root{
+  --primary:#087f8c;
+  --primary-dark:#075d6a;
+  --primary-soft:#e9f7f8;
+  --navy:#12324a;
+  --ink:#183247;
+  --muted:#647b8d;
+  --canvas:#f5f9fb;
+  --surface:#fff;
+  --surface-soft:#f8fbfc;
+  --border:#dce8ed;
+  --danger:#d64545;
+  --danger-soft:#fff1f1;
+}
+body{background:var(--canvas);color:var(--ink)}
+.brand{color:var(--navy);gap:6px}
+.brand small,.header-role-badge,.badge{background:var(--primary-soft);color:var(--primary-dark)!important}
+.home-preview-card{border-color:#cfe7e9;background:linear-gradient(145deg,#fff,#effafa)}
+.home-preview-card::after{background:#dff3f4}
+.mobile-menu-backdrop{display:none;position:fixed;inset:68px 0 0;z-index:54;border:0;background:rgba(18,50,74,.42);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+body.menu-open{overflow:hidden}
+body.menu-open .mobile-menu-backdrop{display:block}
+.header-notification-btn{
+  position:relative;
+  min-height:40px;
+  padding:8px 11px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#fff;
+  color:var(--navy);
+  font:700 12px/1 Inter,ui-sans-serif,sans-serif;
+  box-shadow:none;
+  cursor:pointer;
+}
+.header-notification-btn:hover,.header-notification-btn.active-nav{background:var(--primary-soft);color:var(--primary-dark)}
+.header-notification-icon{width:20px;height:20px;flex:0 0 auto}
+.header-notification-btn .notification-count{position:absolute;right:-5px;top:-6px;border:2px solid #fff}
+
+@media(max-width:760px){
+  .top{display:flex;min-height:64px;padding:0 11px;z-index:70}
+  .header-account{flex-wrap:nowrap;gap:6px}
+  .header-notification-btn{width:40px;height:40px;min-height:40px;padding:9px;justify-content:center;border-radius:11px}
+  .notification-label{display:none}
+  .mobile-menu-btn{position:relative;z-index:auto;width:40px;height:40px;border:1px solid var(--border);background:#fff}
+  .mobile-menu-backdrop{inset:64px 0 0}
+  .nav.mobile-open{
+    top:64px;
+    right:0;
+    bottom:0;
+    left:auto;
+    width:min(340px,88vw);
+    max-height:none;
+    padding:14px;
+    border:0;
+    border-left:1px solid var(--border);
+    border-radius:0;
+    grid-template-columns:1fr;
+    align-content:start;
+    background:#fff;
+    box-shadow:-18px 0 44px rgba(18,50,74,.16);
+    overflow-y:auto;
+  }
+  .nav.mobile-open::before{display:none}
+  .nav.mobile-open button:not(.hidden){min-height:48px;padding:11px 13px;border-radius:11px;background:#fff!important;color:var(--ink)}
+  .nav.mobile-open button.active-nav{background:var(--primary-soft)!important;color:var(--primary-dark)}
+  .nav:not(.mobile-open) button.active-nav{background:var(--primary-soft)!important;color:var(--primary-dark)!important}
+  .nav:not(.mobile-open) #emergencyNavBtn.active-nav{background:var(--danger-soft)!important;color:#b83232!important}
+}
+
+@media(max-width:390px){
+  .brand{font-size:18px}
+  .brand small{display:none}
+  .header-account{gap:5px}
+  .header-notification-btn,.mobile-menu-btn{width:38px;height:38px;min-height:38px}
+  .top #logoutBtn,.top #loginBtn{padding:8px 9px;font-size:11px;min-height:38px}
+}

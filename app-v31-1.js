@@ -5,6 +5,17 @@ let careTimelineCache=[];
 let selectedCarePlan=null;
 let carePlanCreateContext=null;
 let notificationPollTimer=null;
+function toggleMobileMenu(force){
+  const menu=document.querySelector('.nav');
+  const toggle=document.getElementById('mobileMenuBtn');
+  if(!menu||!toggle)return;
+  const open=typeof force==='boolean'?force:!menu.classList.contains('mobile-open');
+  menu.classList.toggle('mobile-open',open);
+  document.body.classList.toggle('menu-open',open);
+  toggle.setAttribute('aria-expanded',String(open));
+  toggle.setAttribute('aria-label',open?'Close navigation':'Open all navigation');
+}
+document.addEventListener('keydown',event=>{if(event.key==='Escape')toggleMobileMenu(false)});
 function showPage(n){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+n)?.classList.add('active');
@@ -13,11 +24,8 @@ function showPage(n){
     const action=button.getAttribute('onclick')||'';
     button.classList.toggle('active-nav',action.includes(`showPage('${n}')`));
   });
-  const menu=document.querySelector('.nav');
-  const toggle=document.getElementById('mobileMenuBtn');
-  menu?.classList.remove('mobile-open');
-  toggle?.setAttribute('aria-expanded','false');
-  toggle?.setAttribute('aria-label','Open all navigation');
+  document.getElementById('notificationsNavBtn')?.classList.toggle('active-nav',n==='notifications');
+  toggleMobileMenu(false);
   if(n==='dashboard')refreshDashboard();if(n==='profile')loadOnboarding();if(n==='admin')loadAdminPage();if(n==='availability')loadAvailabilityPage();if(n==='book')loadBookingPage();if(n==='appointments')loadAppointmentsPage();if(n==='knowledge')loadClinicalKnowledgePage();if(n==='ai')loadAiPage();if(n==='consultation-explain')loadConsultationExplainPage();if(n==='reports')loadReportsHub();if(n==='pharmacy')loadPharmacyPage();if(n==='diagnostics')loadDiagnosticsPage();if(n==='followups')loadPatientFollowups();if(n==='records')loadMedicalRecordPage();if(n==='timeline')loadCareTimeline();if(n==='careplans')loadCarePlans();if(n==='consent')loadConsentPage();if(n==='referrals')loadReferralsPage();if(n==='notifications')loadNotificationsPage();if(n==='emergency')loadEmergencyPage();if(n==='hospitalops')loadHospitalOpsPage();
   window.scrollTo({top:0,behavior:'smooth'});
 }
