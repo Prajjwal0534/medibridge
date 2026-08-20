@@ -1,1 +1,1 @@
- MediBridge server-side AI core.
+ MediBridge server-side AI core
