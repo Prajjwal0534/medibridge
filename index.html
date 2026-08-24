@@ -1,5 +1,5 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MediBridge Connected</title><link rel="stylesheet" href="style-v33-3.css?v=33"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://meet.jit.si/external_api.js"></script></head><body>
-<header class="top"><b class="brand">✚ MediBridge <small style="font-size:10px;color:#6b7c91">v33.3</small></b><div class="row"><span id="sessionLabel" class="muted">Not signed in</span><button id="loginBtn" class="btn secondary" onclick="showPage('auth')">Login</button><button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Logout</button></div></header>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MediBridge Connected</title><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><link rel="stylesheet" href="style-v35.css?v=35"></head><body>
+<header class="top"><b class="brand">✚ MediBridge <small style="font-size:10px;color:#6b7c91">v35</small></b><div class="row"><span id="sessionLabel" class="muted">Not signed in</span><button id="loginBtn" class="btn secondary" onclick="showPage('auth')">Login</button><button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Logout</button></div></header>
 <nav class="nav"><button onclick="showPage('home')">Home</button><button onclick="showPage('dashboard')">Dashboard</button><button id="aiNavBtn" class="hidden" onclick="showPage('ai')">AI Assistant</button><button onclick="showPage('profile')">Profile</button><button id="familyNavBtn" class="hidden" onclick="showPage('family')">Family Profiles</button><button id="bookNavBtn" class="hidden" onclick="showPage('book')">Book Appointment</button><button id="appointmentsNavBtn" class="hidden" onclick="showPage('appointments')">My Appointments</button><button id="emergencyNavBtn" onclick="showPage('emergency')">Emergency</button><button id="hospitalOpsNavBtn" class="hidden" onclick="showPage('hospitalops')">Hospital Ops</button><button id="recordsNavBtn" class="hidden" onclick="showPage('records')">Medical Record</button><button id="timelineNavBtn" class="hidden" onclick="showPage('timeline')">Care Timeline</button><button id="carePlansNavBtn" class="hidden" onclick="showPage('careplans')">Care Plans</button><button id="followupsNavBtn" class="hidden" onclick="showPage('followups')">Follow-ups</button><button id="reportsNavBtn" class="hidden" onclick="showPage('reports')">Reports</button><button id="pharmacyNavBtn" class="hidden" onclick="showPage('pharmacy')">Pharmacy</button><button id="diagnosticsNavBtn" class="hidden" onclick="showPage('diagnostics')">Diagnostics</button><button id="consentNavBtn" class="hidden" onclick="showPage('consent')">Consent & Access</button><button id="referralsNavBtn" class="hidden" onclick="showPage('referrals')">Referrals</button><button id="notificationsNavBtn" class="hidden notification-nav-btn" onclick="showPage('notifications')">Notifications <span id="notificationCountBadge" class="notification-count hidden">0</span></button><button id="availabilityNavBtn" class="hidden" onclick="showPage('availability')">Availability</button><button id="adminNavBtn" class="hidden" onclick="showPage('admin')">Admin</button><button id="knowledgeNavBtn" class="hidden" onclick="showPage('knowledge')">Clinical Knowledge</button></nav>
 <div id="patientSubjectBar" class="patient-subject-bar hidden" aria-live="polite">
   <div class="patient-subject-bar-inner">
@@ -72,7 +72,7 @@
         <h1>Family Health Profiles</h1>
         <p class="page-subtitle">Manage your own healthcare and family members from one MediBridge account. Every person keeps a separate medical record.</p>
       </div>
-      <span class="badge">v33.3</span>
+      <span class="badge">v35</span>
     </div>
 
     <div class="card family-safety-note">
@@ -1868,11 +1868,7 @@
 </section>
 
 </main><div id="toast" class="toast hidden"></div>
-<script src="supabase-config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script>
-<script src="ai-config.js?v=32"></script>
-<script src="medibridge-ai-service.js?v=32"></script>
-<script src="app-v33-3.js?v=33"></script>
+
 <div id="reportAppointmentModal" class="modal hidden">
   <div class="modal-backdrop" onclick="closeReportAppointmentModal()"></div>
   <div class="modal-card report-link-modal-card">
@@ -1910,4 +1906,9 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="ai-config.js?v=32"></script>
+<script src="medibridge-ai-service.js?v=32"></script>
+<script src="app-v35.js?v=35"></script>
 </body></html>
