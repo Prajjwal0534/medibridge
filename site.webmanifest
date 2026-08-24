@@ -1,0 +1,10 @@
+{
+  "name": "MediBridge",
+  "short_name": "MediBridge",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f8fc",
+  "theme_color": "#ffffff",
+  "description": "Connected healthcare for patients and families in India."
+}

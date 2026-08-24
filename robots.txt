@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /.netlify/
+Sitemap: https://celebrated-gecko-efd469.netlify.app/sitemap.xml
