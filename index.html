@@ -1,10 +1,22 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MediBridge Connected</title><link rel="stylesheet" href="style-v32.css?v=32"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://meet.jit.si/external_api.js"></script></head><body>
-<header class="top"><b class="brand">✚ MediBridge <small style="font-size:10px;color:#6b7c91">v32</small></b><div class="row"><span id="sessionLabel" class="muted">Not signed in</span><button id="loginBtn" class="btn secondary" onclick="showPage('auth')">Login</button><button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Logout</button></div></header>
-<nav class="nav"><button onclick="showPage('home')">Home</button><button onclick="showPage('dashboard')">Dashboard</button><button id="aiNavBtn" class="hidden" onclick="showPage('ai')">AI Assistant</button><button onclick="showPage('profile')">Profile</button><button id="bookNavBtn" class="hidden" onclick="showPage('book')">Book Appointment</button><button id="appointmentsNavBtn" class="hidden" onclick="showPage('appointments')">My Appointments</button><button id="emergencyNavBtn" onclick="showPage('emergency')">Emergency</button><button id="hospitalOpsNavBtn" class="hidden" onclick="showPage('hospitalops')">Hospital Ops</button><button id="recordsNavBtn" class="hidden" onclick="showPage('records')">Medical Record</button><button id="timelineNavBtn" class="hidden" onclick="showPage('timeline')">Care Timeline</button><button id="carePlansNavBtn" class="hidden" onclick="showPage('careplans')">Care Plans</button><button id="followupsNavBtn" class="hidden" onclick="showPage('followups')">Follow-ups</button><button id="reportsNavBtn" class="hidden" onclick="showPage('reports')">Reports</button><button id="pharmacyNavBtn" class="hidden" onclick="showPage('pharmacy')">Pharmacy</button><button id="diagnosticsNavBtn" class="hidden" onclick="showPage('diagnostics')">Diagnostics</button><button id="consentNavBtn" class="hidden" onclick="showPage('consent')">Consent & Access</button><button id="referralsNavBtn" class="hidden" onclick="showPage('referrals')">Referrals</button><button id="notificationsNavBtn" class="hidden notification-nav-btn" onclick="showPage('notifications')">Notifications <span id="notificationCountBadge" class="notification-count hidden">0</span></button><button id="availabilityNavBtn" class="hidden" onclick="showPage('availability')">Availability</button><button id="adminNavBtn" class="hidden" onclick="showPage('admin')">Admin</button><button id="knowledgeNavBtn" class="hidden" onclick="showPage('knowledge')">Clinical Knowledge</button></nav>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MediBridge Connected</title><link rel="stylesheet" href="style-v33-2.css?v=33"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://meet.jit.si/external_api.js"></script></head><body>
+<header class="top"><b class="brand">✚ MediBridge <small style="font-size:10px;color:#6b7c91">v33.2</small></b><div class="row"><span id="sessionLabel" class="muted">Not signed in</span><button id="loginBtn" class="btn secondary" onclick="showPage('auth')">Login</button><button id="logoutBtn" class="btn secondary hidden" onclick="logout()">Logout</button></div></header>
+<nav class="nav"><button onclick="showPage('home')">Home</button><button onclick="showPage('dashboard')">Dashboard</button><button id="aiNavBtn" class="hidden" onclick="showPage('ai')">AI Assistant</button><button onclick="showPage('profile')">Profile</button><button id="familyNavBtn" class="hidden" onclick="showPage('family')">Family Profiles</button><button id="bookNavBtn" class="hidden" onclick="showPage('book')">Book Appointment</button><button id="appointmentsNavBtn" class="hidden" onclick="showPage('appointments')">My Appointments</button><button id="emergencyNavBtn" onclick="showPage('emergency')">Emergency</button><button id="hospitalOpsNavBtn" class="hidden" onclick="showPage('hospitalops')">Hospital Ops</button><button id="recordsNavBtn" class="hidden" onclick="showPage('records')">Medical Record</button><button id="timelineNavBtn" class="hidden" onclick="showPage('timeline')">Care Timeline</button><button id="carePlansNavBtn" class="hidden" onclick="showPage('careplans')">Care Plans</button><button id="followupsNavBtn" class="hidden" onclick="showPage('followups')">Follow-ups</button><button id="reportsNavBtn" class="hidden" onclick="showPage('reports')">Reports</button><button id="pharmacyNavBtn" class="hidden" onclick="showPage('pharmacy')">Pharmacy</button><button id="diagnosticsNavBtn" class="hidden" onclick="showPage('diagnostics')">Diagnostics</button><button id="consentNavBtn" class="hidden" onclick="showPage('consent')">Consent & Access</button><button id="referralsNavBtn" class="hidden" onclick="showPage('referrals')">Referrals</button><button id="notificationsNavBtn" class="hidden notification-nav-btn" onclick="showPage('notifications')">Notifications <span id="notificationCountBadge" class="notification-count hidden">0</span></button><button id="availabilityNavBtn" class="hidden" onclick="showPage('availability')">Availability</button><button id="adminNavBtn" class="hidden" onclick="showPage('admin')">Admin</button><button id="knowledgeNavBtn" class="hidden" onclick="showPage('knowledge')">Clinical Knowledge</button></nav>
+<div id="patientSubjectBar" class="patient-subject-bar hidden" aria-live="polite">
+  <div class="patient-subject-bar-inner">
+    <div class="patient-subject-context">
+      <small>MANAGING HEALTHCARE FOR</small>
+      <select id="patientSubjectSwitcher" aria-label="Choose family health profile" onchange="switchPatientSubject(this.value)"></select>
+    </div>
+    <div class="row">
+      <span id="patientSubjectRelationship" class="subject-relationship-badge"></span>
+      <button class="btn secondary compact" type="button" onclick="showPage('family')">+ Family profile</button>
+    </div>
+  </div>
+</div>
 <main class="wrap">
 <section id="page-home" class="page active"><div class="hero"><div><small>CONNECTED HEALTHCARE NETWORK</small><h1>Healthcare that connects.</h1><p>Patients, doctors and hospitals on one platform, with consent-led records and AI as a support layer.</p><div class="row"><button class="btn" onclick="showPage('auth')">Create account</button><button class="btn secondary" onclick="showPage('dashboard')">Open dashboard</button></div></div><div class="card ai"><b>✦ AI SUPPORT</b><h2>Care stays human.</h2><p>AI can organize information and help prepare questions. Clinical decisions remain with qualified professionals.</p></div></div></section>
 
-<section id="page-auth" class="page"><div class="auth"><div class="card"><div class="tabs"><button id="tabLogin" class="active" onclick="setAuthMode('login')">Login</button><button id="tabSignup" onclick="setAuthMode('signup')">Create account</button></div><form onsubmit="submitAuth(event)"><div id="signupFields" class="hidden"><label>Full name<input id="fullName" autocomplete="name"></label><label>Join as<select id="signupRole"><option value="patient">Patient / Citizen</option><option value="doctor">Doctor</option><option value="hospital">Hospital / Clinic</option><option value="pharmacy">Pharmacy / Medical Store</option><option value="lab">Diagnostic Centre / Lab</option></select></label></div><label>Email<input id="email" type="email" autocomplete="email" required></label><label>Password<input id="password" type="password" minlength="6" autocomplete="current-password" required></label><button id="authSubmit" class="btn" style="width:100%">Login</button></form><div class="auth-secondary-action"><button id="forgotPasswordBtn" type="button" class="link-button" onclick="requestPasswordReset()">Forgot password?</button></div><p id="authMessage" class="msg" aria-live="polite"></p></div><div class="card"><h3>Backend connected</h3><p>✓ Supabase Auth</p><p>✓ Profiles</p><p>✓ Role-specific onboarding</p><p>✓ Private doctor certificate storage</p></div></div></section>
+<section id="page-auth" class="page"><div class="auth"><div class="card"><div class="tabs"><button id="tabLogin" class="active" onclick="setAuthMode('login')">Login</button><button id="tabSignup" onclick="setAuthMode('signup')">Create account</button></div><form onsubmit="submitAuth(event)"><div id="signupFields" class="hidden"><label>Full name<input id="fullName" autocomplete="name"></label><label>Join as<select id="signupRole"><option value="patient">Patient / Citizen</option><option value="doctor">Doctor</option><option value="hospital">Hospital / Clinic</option><option value="pharmacy">Pharmacy / Medical Store</option><option value="lab">Diagnostic Centre / Lab</option></select></label></div><label>Email<input id="email" type="email" autocomplete="email" required></label><label>Password<input id="password" type="password" minlength="8" autocomplete="current-password" required></label><button id="authSubmit" class="btn" style="width:100%">Login</button></form><div class="auth-secondary-action"><button id="forgotPasswordBtn" type="button" class="link-button" onclick="requestPasswordReset()">Forgot password?</button></div><p id="authMessage" class="msg" aria-live="polite"></p></div><div class="card"><h3>Backend connected</h3><p>✓ Supabase Auth</p><p>✓ Profiles</p><p>✓ Role-specific onboarding</p><p>✓ Private doctor certificate storage</p></div></div></section>
 
 <section id="page-password-reset" class="page">
   <div class="auth">
@@ -51,8 +63,65 @@
 </div>
 </div></section>
 
-<section id="page-profile" class="page"><div id="profileGate" class="card"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Login</button></div><div id="profileContent" class="hidden"><h1 id="profileTitle">Profile</h1><form class="card formgrid" onsubmit="saveBase(event)"><label>Full name<input id="pFullName" required></label><label>Phone (optional)<input id="pPhone"></label><div class="actions"><button class="btn">Save basic profile</button></div></form>
-<form id="patientForm" class="card formgrid hidden" onsubmit="savePatient(event)"><h2>Patient information</h2><label>Date of birth<input id="patientDob" type="date"></label><label>Gender<input id="patientGender"></label><label>Blood group<input id="patientBlood"></label><label>Emergency contact name<input id="patientEmergencyName"></label><label>Emergency contact phone<input id="patientEmergencyPhone"></label><div class="actions"><button class="btn">Save patient profile</button></div></form>
+<section id="page-family" class="page">
+  <div id="familyGate" class="card"><h2>Patient access required</h2><p class="muted">Sign in with a patient account to manage family health profiles.</p></div>
+  <div id="familyContent" class="hidden">
+    <div class="row between family-page-heading">
+      <div>
+        <small>ONE LOGIN · MULTIPLE HEALTH PROFILES</small>
+        <h1>Family Health Profiles</h1>
+        <p class="page-subtitle">Manage your own healthcare and family members from one MediBridge account. Every person keeps a separate medical record.</p>
+      </div>
+      <span class="badge">v33.2</span>
+    </div>
+
+    <div class="card family-safety-note">
+      <b>Records stay separate.</b>
+      <p class="muted">Appointments, reports, prescriptions, diagnostics, pharmacy requests, follow-ups, care plans and consent are linked to the selected person. Always check the name in the blue profile bar before taking an action.</p>
+    </div>
+
+    <div class="family-layout">
+      <div>
+        <div class="row between">
+          <div><h2>Your profiles</h2><p class="muted">Tap a person to manage their healthcare.</p></div>
+          <button class="btn secondary" type="button" onclick="loadFamilyProfiles()">Refresh</button>
+        </div>
+        <div id="familyProfilesList" class="family-profile-list"></div>
+      </div>
+
+      <form id="familyCreateForm" class="card formgrid family-create-card" onsubmit="createFamilyProfile(event)">
+        <div class="span2">
+          <small>ADD FAMILY MEMBER</small>
+          <h2>Create health profile</h2>
+          <p class="muted">No new email, password or OTP is needed.</p><p class="muted small-note">Create profiles only for people whose healthcare you are authorised to manage. Adult consent/guardian verification will be strengthened before production use.</p>
+        </div>
+        <label>Full name *<input id="familyMemberName" maxlength="160" required></label>
+        <label>Relationship *
+          <select id="familyMemberRelationship" required>
+            <option value="">Choose relationship</option>
+            <option value="mother">Mother</option><option value="father">Father</option>
+            <option value="sister">Sister</option><option value="brother">Brother</option>
+            <option value="spouse">Spouse</option><option value="daughter">Daughter</option>
+            <option value="son">Son</option><option value="grandmother">Grandmother</option>
+            <option value="grandfather">Grandfather</option><option value="guardian">Guardian / Dependent</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label>Date of birth<input id="familyMemberDob" type="date"></label>
+        <label>Gender<input id="familyMemberGender" maxlength="50" placeholder="Optional"></label>
+        <label>Blood group<input id="familyMemberBlood" maxlength="16" placeholder="Optional"></label>
+        <label>Phone<input id="familyMemberPhone" inputmode="tel" maxlength="40" placeholder="Optional"></label>
+        <label>Emergency contact name<input id="familyEmergencyName" maxlength="160" placeholder="Optional"></label>
+        <label>Emergency contact phone<input id="familyEmergencyPhone" inputmode="tel" maxlength="40" placeholder="Optional"></label>
+        <div class="actions span2"><button id="familyCreateBtn" class="btn">Create family profile</button></div>
+        <p id="familyMessage" class="msg span2" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="page-profile" class="page"><div id="profileGate" class="card"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Login</button></div><div id="profileContent" class="hidden"><h1 id="profileTitle">Profile</h1><form class="card formgrid" onsubmit="saveBase(event)"><div class="span2"><small>ACCOUNT HOLDER</small><p class="muted">Login/contact details for this MediBridge account.</p></div><label>Full name<input id="pFullName" required></label><label>Phone (optional)<input id="pPhone"></label><div class="actions"><button class="btn">Save basic profile</button></div></form>
+<form id="patientForm" class="card formgrid hidden" onsubmit="savePatient(event)"><div class="span2"><small>HEALTHCARE PROFILE</small><h2 id="patientFormTitle">Patient information</h2><p id="patientFormRelationship" class="muted"></p></div><label id="patientSubjectNameLabel">Patient name<input id="patientSubjectName" maxlength="160"></label><label id="patientSubjectPhoneLabel">Phone (optional)<input id="patientSubjectPhone" inputmode="tel" maxlength="40"></label><label>Date of birth<input id="patientDob" type="date"></label><label>Gender<input id="patientGender" maxlength="50"></label><label>Blood group<input id="patientBlood" maxlength="16"></label><label>Emergency contact name<input id="patientEmergencyName" maxlength="160"></label><label>Emergency contact phone<input id="patientEmergencyPhone" inputmode="tel" maxlength="40"></label><div class="actions"><button class="btn">Save patient profile</button></div></form>
 <form id="doctorForm" class="card formgrid hidden" onsubmit="saveDoctor(event)"><h2>Doctor information</h2><label>Specialty<input id="doctorSpecialty" required></label><label>Qualification<input id="doctorQualification" required></label><label>Medical registration number<input id="doctorRegistration" required></label><label>Hospital / Clinic<input id="doctorHospital"></label><label>Clinic city<input id="doctorClinicCity" placeholder="e.g. Pratapgarh"></label><label>Clinic district<input id="doctorClinicDistrict" placeholder="e.g. Pratapgarh"></label><label>Clinic Google Maps link<input id="doctorMapsLink" placeholder="Paste Google Maps link (optional)"></label><div class="span2 location-box">
   <b>Clinic location</b>
   <p class="muted">Optional. Detect the clinic's GPS coordinates automatically while you are at the clinic.</p>
@@ -1316,6 +1385,7 @@
         <small>PRIVACY & CONSENT</small>
         <h1>Consent & record access</h1>
         <p class="page-subtitle">Control which verified doctors can access specific parts of your MediBridge record.</p>
+        <p id="consentSubjectContext" class="family-context-banner"></p>
       </div>
       <button class="btn secondary" onclick="loadConsentPage()">Refresh</button>
     </div>
@@ -1784,7 +1854,7 @@
 <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script>
 <script src="ai-config.js?v=32"></script>
 <script src="medibridge-ai-service.js?v=32"></script>
-<script src="app-v32.js?v=32"></script>
+<script src="app-v33-2.js?v=33"></script>
 <div id="reportAppointmentModal" class="modal hidden">
   <div class="modal-backdrop" onclick="closeReportAppointmentModal()"></div>
   <div class="modal-card report-link-modal-card">
