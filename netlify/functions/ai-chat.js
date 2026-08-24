@@ -4,15 +4,14 @@ const GROQ_MODEL =
   process.env.GROQ_MODEL ||
   "openai/gpt-oss-120b";
 
-// These are public client identifiers, not secrets. Environment variables can
-// override them if the Supabase project is changed later.
-const SUPABASE_URL =
-  process.env.SUPABASE_URL ||
-  "https://fllsbalijfyoniqnqlnj.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
+// Keep Supabase project configuration out of the serverless source so
+// Netlify's secret scanner never finds environment-variable values in repo code.
+// SUPABASE_ANON_KEY is supported because it is already configured in Netlify.
+// SUPABASE_PUBLISHABLE_KEY is also supported for future migration.
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_PUBLIC_KEY =
   process.env.SUPABASE_PUBLISHABLE_KEY ||
-  "sb_publishable_l2mLtoNwPgKer42idC0ZpQ_8eFdBfaO";
+  process.env.SUPABASE_ANON_KEY;
 
 const SYSTEM_PROMPTS = {
   patient: `You are MediBridge AI, a patient-facing healthcare information assistant.
@@ -67,12 +66,17 @@ function getBearerHeader(event) {
 }
 
 async function authorizeAndConsumeRateLimit(authorization) {
+  if (!SUPABASE_URL || !SUPABASE_PUBLIC_KEY) {
+    console.error("Supabase serverless environment configuration is missing.");
+    return { ok: false, status: 503 };
+  }
+
   const response = await fetch(
     `${SUPABASE_URL}/rest/v1/rpc/consume_ai_rate_limit`,
     {
       method: "POST",
       headers: {
-        apikey: SUPABASE_PUBLISHABLE_KEY,
+        apikey: SUPABASE_PUBLIC_KEY,
         Authorization: authorization,
         "Content-Type": "application/json"
       },
