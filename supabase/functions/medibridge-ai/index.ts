@@ -32,6 +32,7 @@ async function queryMany(
   sb,
   table,
   patientId,
+  subjectId,
   orderColumn = "created_at",
   limit = 50
 ) {
@@ -39,6 +40,7 @@ async function queryMany(
     .from(table)
     .select("*")
     .eq("patient_id", patientId)
+    .eq("subject_id", subjectId)
     .order(orderColumn, { ascending: false })
     .limit(limit);
 
@@ -46,7 +48,26 @@ async function queryMany(
   return data ?? [];
 }
 
-async function buildPatientOwnContext(sb, userId) {
+async function resolveOwnedSubject(sb, userId, requestedSubjectId) {
+  // Full family-profile details are exposed to the owning patient only through
+  // this security-definer RPC. Direct table SELECT is intentionally restricted
+  // to non-sensitive identity columns in v33.
+  const { data, error } = await sb.rpc("list_my_patient_subjects");
+  if (error) throw new Error(error.message);
+
+  const subjects = data ?? [];
+  const selected = requestedSubjectId
+    ? subjects.find((row) => row.id === requestedSubjectId)
+    : subjects.find((row) => row.is_self === true);
+
+  if (!selected || selected.owner_user_id !== userId) {
+    throw new Error("Patient family profile is unavailable.");
+  }
+
+  return selected;
+}
+
+async function buildPatientOwnContext(sb, userId, subjectId) {
   const [
     patientProfile,
     allergies,
@@ -58,19 +79,15 @@ async function buildPatientOwnContext(sb, userId) {
     vitals,
     appointments,
   ] = await Promise.all([
-    sb
-      .from("patient_profiles")
-      .select("*")
-      .eq("id", userId)
-      .maybeSingle(),
+    sb.rpc("list_my_patient_subjects"),
 
-    queryMany(sb, "patient_allergies", userId),
-    queryMany(sb, "patient_conditions", userId),
-    queryMany(sb, "patient_medications", userId),
-    queryMany(sb, "patient_surgeries", userId),
-    queryMany(sb, "patient_immunizations", userId),
-    queryMany(sb, "patient_family_history", userId),
-    queryMany(sb, "patient_vitals", userId, "measured_at", 20),
+    queryMany(sb, "patient_allergies", userId, subjectId),
+    queryMany(sb, "patient_conditions", userId, subjectId),
+    queryMany(sb, "patient_medications", userId, subjectId),
+    queryMany(sb, "patient_surgeries", userId, subjectId),
+    queryMany(sb, "patient_immunizations", userId, subjectId),
+    queryMany(sb, "patient_family_history", userId, subjectId),
+    queryMany(sb, "patient_vitals", userId, subjectId, "measured_at", 20),
 
     sb
       .from("appointments")
@@ -78,6 +95,7 @@ async function buildPatientOwnContext(sb, userId) {
         "id,appointment_start,status,doctor_id,reason_for_visit"
       )
       .eq("patient_id", userId)
+      .eq("subject_id", subjectId)
       .eq("status", "completed")
       .order("appointment_start", { ascending: false })
       .limit(20),
@@ -85,6 +103,13 @@ async function buildPatientOwnContext(sb, userId) {
 
   if (patientProfile.error) {
     throw new Error(patientProfile.error.message);
+  }
+
+  const selectedPatientProfile = (patientProfile.data ?? []).find(
+    (row) => row.id === subjectId && row.owner_user_id === userId
+  );
+  if (!selectedPatientProfile) {
+    throw new Error("Patient family profile is unavailable.");
   }
 
   if (appointments.error) {
@@ -126,7 +151,7 @@ async function buildPatientOwnContext(sb, userId) {
   }
 
   return {
-    patient_profile: patientProfile.data,
+    patient_profile: selectedPatientProfile,
     allergies,
     conditions,
     medications,
@@ -144,6 +169,7 @@ async function buildPatientOwnContext(sb, userId) {
 async function buildPatientConsultationContext(
   sb,
   patientId,
+  subjectId,
   appointmentId
 ) {
   const appointmentResult = await sb
@@ -153,6 +179,7 @@ async function buildPatientConsultationContext(
     )
     .eq("id", appointmentId)
     .eq("patient_id", patientId)
+    .eq("subject_id", subjectId)
     .single();
 
   if (appointmentResult.error) {
@@ -206,12 +233,13 @@ async function buildPatientConsultationContext(
   };
 }
 
-async function getActiveConsent(sb, doctorId, patientId) {
+async function getActiveConsent(sb, doctorId, patientId, subjectId) {
   const { data, error } = await sb
     .from("record_consents")
     .select("*")
     .eq("doctor_id", doctorId)
     .eq("patient_id", patientId)
+    .eq("subject_id", subjectId)
     .eq("status", "active")
     .order("granted_at", { ascending: false });
 
@@ -229,12 +257,14 @@ async function getActiveConsent(sb, doctorId, patientId) {
 async function buildDoctorConsentedContext(
   sb,
   doctorId,
-  patientId
+  patientId,
+  subjectId
 ) {
   const consent = await getActiveConsent(
     sb,
     doctorId,
-    patientId
+    patientId,
+    subjectId
   );
 
   if (!consent) {
@@ -242,7 +272,18 @@ async function buildDoctorConsentedContext(
   }
 
   const scopes = new Set(consent.scopes ?? []);
-  const context = {
+  const { data: patientSubject, error: subjectError } = await sb
+    .from("patient_subjects")
+    .select("id,full_name,relationship,date_of_birth,gender,blood_group")
+    .eq("id", subjectId)
+    .eq("owner_user_id", patientId)
+    .maybeSingle();
+
+  if (subjectError) throw new Error(subjectError.message);
+  if (!patientSubject) throw new Error("Patient family profile is unavailable.");
+
+  const context: Record<string, any> = {
+    patient_subject: patientSubject,
     consent_scopes: [...scopes],
   };
 
@@ -255,12 +296,12 @@ async function buildDoctorConsentedContext(
       immunizations,
       familyHistory,
     ] = await Promise.all([
-      queryMany(sb, "patient_allergies", patientId),
-      queryMany(sb, "patient_conditions", patientId),
-      queryMany(sb, "patient_medications", patientId),
-      queryMany(sb, "patient_surgeries", patientId),
-      queryMany(sb, "patient_immunizations", patientId),
-      queryMany(sb, "patient_family_history", patientId),
+      queryMany(sb, "patient_allergies", patientId, subjectId),
+      queryMany(sb, "patient_conditions", patientId, subjectId),
+      queryMany(sb, "patient_medications", patientId, subjectId),
+      queryMany(sb, "patient_surgeries", patientId, subjectId),
+      queryMany(sb, "patient_immunizations", patientId, subjectId),
+      queryMany(sb, "patient_family_history", patientId, subjectId),
     ]);
 
     context.health_profile = {
@@ -278,6 +319,7 @@ async function buildDoctorConsentedContext(
       sb,
       "patient_vitals",
       patientId,
+      subjectId,
       "measured_at",
       20
     );
@@ -295,6 +337,7 @@ async function buildDoctorConsentedContext(
         "id,appointment_start,status,reason_for_visit"
       )
       .eq("patient_id", patientId)
+      .eq("subject_id", subjectId)
       .eq("status", "completed")
       .order("appointment_start", { ascending: false })
       .limit(20);
@@ -350,6 +393,7 @@ async function buildDoctorConsentedContext(
       .from("referrals")
       .select("*")
       .eq("patient_id", patientId)
+      .eq("subject_id", subjectId)
       .order("created_at", { ascending: false })
       .limit(20);
 
@@ -361,19 +405,16 @@ async function buildDoctorConsentedContext(
   }
 
   if (scopes.has("emergency_summary")) {
-    const emergencyResult = await sb
-      .from("patient_profiles")
-      .select(
-        "blood_group,emergency_contact_name,emergency_contact_phone"
-      )
-      .eq("id", patientId)
-      .maybeSingle();
+    const emergencyResult = await sb.rpc(
+      "get_patient_subject_emergency_summary",
+      { target_subject: subjectId }
+    );
 
     if (emergencyResult.error) {
       throw new Error(emergencyResult.error.message);
     }
 
-    context.emergency_summary = emergencyResult.data;
+    context.emergency_summary = emergencyResult.data?.[0] ?? null;
   }
 
   return {
@@ -699,6 +740,14 @@ Deno.serve(async (req) => {
       ? String(body.patient_id)
       : null;
 
+    const requestedSubjectId = body.subject_id
+      ? String(body.subject_id)
+      : null;
+
+    // Patient modes may omit subject_id; in that case resolve to Self once and
+    // use that same ID for context, history and cache writes.
+    let resolvedContextSubjectId = requestedSubjectId;
+
     const appointmentId = body.appointment_id
       ? String(body.appointment_id)
       : null;
@@ -747,6 +796,14 @@ Deno.serve(async (req) => {
         );
       }
 
+      const ownedSubject = await resolveOwnedSubject(
+        sb,
+        user.id,
+        requestedSubjectId
+      );
+      const subjectId = ownedSubject.id;
+      resolvedContextSubjectId = subjectId;
+
       if (
         mode === "patient_consultation_explain" ||
         mode === "patient_consultation_question"
@@ -761,12 +818,14 @@ Deno.serve(async (req) => {
         context = await buildPatientConsultationContext(
           sb,
           user.id,
+          subjectId,
           appointmentId
         );
       } else {
         context = await buildPatientOwnContext(
           sb,
-          user.id
+          user.id,
+          subjectId
         );
       }
 
@@ -786,11 +845,11 @@ Deno.serve(async (req) => {
       }
 
       if (mode === "doctor_patient_review") {
-        if (!patientId) {
+        if (!patientId || !requestedSubjectId) {
           return json(
             {
               error:
-                "Choose a consented patient.",
+                "Choose a consented patient family profile.",
             },
             400
           );
@@ -800,7 +859,8 @@ Deno.serve(async (req) => {
           await buildDoctorConsentedContext(
             sb,
             user.id,
-            patientId
+            patientId,
+            requestedSubjectId
           );
 
         context = consented.context;
@@ -860,6 +920,7 @@ Deno.serve(async (req) => {
         .from("patient_consultation_ai_messages")
         .select("message_role,message_text,created_at")
         .eq("patient_id", user.id)
+        .eq("subject_id", resolvedContextSubjectId)
         .eq("appointment_id", appointmentId)
         .order("created_at", { ascending: false })
         .limit(8);
@@ -889,6 +950,7 @@ Deno.serve(async (req) => {
         .select("answer,record_fingerprint,model_name")
         .eq("appointment_id", appointmentId)
         .eq("patient_id", user.id)
+        .eq("subject_id", resolvedContextSubjectId)
         .maybeSingle();
 
       if (cachedResult.error) {
@@ -1118,12 +1180,14 @@ ${sourceText}`
           {
             appointment_id: appointmentId,
             patient_id: user.id,
+            subject_id: resolvedContextSubjectId,
             message_role: "user",
             message_text: prompt,
           },
           {
             appointment_id: appointmentId,
             patient_id: user.id,
+            subject_id: resolvedContextSubjectId,
             message_role: "assistant",
             message_text: answer,
           },
@@ -1152,6 +1216,7 @@ ${sourceText}`
           {
             appointment_id: appointmentId,
             patient_id: user.id,
+            subject_id: resolvedContextSubjectId,
             consultation_id: consultationId,
             record_fingerprint:
               consultationFingerprint,
