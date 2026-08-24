@@ -1,13 +1,17 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="MediBridge connects patients and families with doctors, hospitals, diagnostics, pharmacies, medical records and emergency-care navigation."><meta name="theme-color" content="#ffffff"><meta name="color-scheme" content="light"><title>MediBridge — Connected healthcare for you and your family</title><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><link rel="stylesheet" href="style-v36.css?v=36"></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="MediBridge connects patients and families with doctors, hospitals, diagnostics, pharmacies, medical records and emergency-care navigation."><meta name="theme-color" content="#ffffff"><meta name="color-scheme" content="light"><title>MediBridge — Connected healthcare for you and your family</title><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><link rel="stylesheet" href="style-v36-1.css?v=361"></head><body>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
 <header class="top app-header">
   <button class="brand brand-button" type="button" onclick="showPage('home')" aria-label="Go to MediBridge home">
     <span class="brand-mark" aria-hidden="true">✚</span>
     <span>MediBridge</span>
-    <small>v36</small>
+    <small>v36.1</small>
   </button>
 
   <div class="header-actions">
+    <button id="headerAiBtn" class="header-action ai-header-action hidden" type="button" onclick="showPage('ai')" aria-label="Open MediBridge AI Assistance">
+      <span aria-hidden="true">✦</span><span class="header-action-label">AI Assistance</span>
+    </button>
+
     <button id="headerEmergencyBtn" class="header-action emergency-header-action" type="button" onclick="showPage('emergency')" aria-label="Find emergency care">
       <span aria-hidden="true">＋</span><span class="header-action-label">Emergency</span>
     </button>
@@ -32,8 +36,8 @@
 <nav id="adaptiveDesktopNav" class="adaptive-nav" aria-label="Primary navigation">
   <div id="desktopPrimaryNav" class="adaptive-nav-primary"></div>
   <div class="adaptive-more-wrap">
-    <button id="desktopMoreBtn" class="adaptive-more-btn" type="button" onclick="toggleDesktopMoreMenu()" aria-expanded="false">
-      More <span aria-hidden="true">⌄</span>
+    <button id="desktopMoreBtn" class="adaptive-more-btn desktop-menu-button" type="button" onclick="toggleDesktopMoreMenu()" aria-expanded="false" aria-label="Open MediBridge menu">
+      <span class="desktop-menu-icon" aria-hidden="true">☰</span><span>Menu</span>
     </button>
     <div id="desktopMoreMenu" class="adaptive-more-menu hidden" role="menu"></div>
   </div>
@@ -2005,5 +2009,5 @@
 <script src="supabase-config.js"></script>
 <script src="ai-config.js?v=32"></script>
 <script src="medibridge-ai-service.js?v=32"></script>
-<script src="app-v36.js?v=36"></script>
+<script src="app-v36-1.js?v=361"></script>
 </body></html>
