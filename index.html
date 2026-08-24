@@ -1,10 +1,10 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="MediBridge connects patients and families with doctors, hospitals, diagnostics, pharmacies, medical records and emergency-care navigation."><meta name="theme-color" content="#ffffff"><meta name="color-scheme" content="light"><title>MediBridge — Connected healthcare for you and your family</title><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><link rel="stylesheet" href="style-v36-1.css?v=361"></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="MediBridge connects patients and families with doctors, hospitals, diagnostics, pharmacies, medical records and emergency-care navigation."><meta name="theme-color" content="#ffffff"><meta name="color-scheme" content="light"><title>MediBridge — Connected healthcare for you and your family</title><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><link rel="stylesheet" href="style-v37.css?v=37"></head><body>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
 <header class="top app-header">
   <button class="brand brand-button" type="button" onclick="showPage('home')" aria-label="Go to MediBridge home">
     <span class="brand-mark" aria-hidden="true">✚</span>
     <span>MediBridge</span>
-    <small>v36.1</small>
+    <small>v37</small>
   </button>
 
   <div class="header-actions">
@@ -114,7 +114,7 @@
   <div class="home-service-grid" aria-label="MediBridge services">
     <button class="service-tile" type="button" onclick="showPage('diagnostics')"><span aria-hidden="true">⌁</span><b>Diagnostics</b><small>Tests, centres and reports</small></button>
     <button class="service-tile" type="button" onclick="showPage('pharmacy')"><span aria-hidden="true">＋</span><b>Pharmacy</b><small>Prescription fulfilment</small></button>
-    <button class="service-tile" type="button" onclick="showPage('ai')"><span aria-hidden="true">✦</span><b>MediBridge AI</b><small>Understand and prepare</small></button>
+    <button class="service-tile mental-service-tile" type="button" onclick="showPage('mental')"><span aria-hidden="true">♡</span><b>Mental Health</b><small>Private support and sessions</small></button><button class="service-tile" type="button" onclick="showPage('ai')"><span aria-hidden="true">✦</span><b>MediBridge AI</b><small>Understand and prepare</small></button>
     <button class="service-tile" type="button" onclick="showPage('consent')"><span aria-hidden="true">✓</span><b>Privacy & consent</b><small>You control record access</small></button>
   </div>
 
@@ -124,7 +124,7 @@
   </div>
 </section>
 
-<section id="page-auth" class="page"><div class="auth"><div class="card"><div class="tabs"><button id="tabLogin" class="active" onclick="setAuthMode('login')">Login</button><button id="tabSignup" onclick="setAuthMode('signup')">Create account</button></div><form onsubmit="submitAuth(event)"><div id="signupFields" class="hidden"><label>Full name<input id="fullName" autocomplete="name"></label><label>Join as<select id="signupRole"><option value="patient">Patient / Citizen</option><option value="doctor">Doctor</option><option value="hospital">Hospital / Clinic</option><option value="pharmacy">Pharmacy / Medical Store</option><option value="lab">Diagnostic Centre / Lab</option></select></label></div><label>Email<input id="email" type="email" autocomplete="email" required></label><label>Password<input id="password" type="password" minlength="8" autocomplete="current-password" required></label><button id="authSubmit" class="btn" style="width:100%">Login</button></form><div class="auth-secondary-action"><button id="forgotPasswordBtn" type="button" class="link-button" onclick="requestPasswordReset()">Forgot password?</button></div><p id="authMessage" class="msg" aria-live="polite"></p></div><div class="card"><h3>Backend connected</h3><p>✓ Supabase Auth</p><p>✓ Profiles</p><p>✓ Role-specific onboarding</p><p>✓ Private doctor certificate storage</p></div></div></section>
+<section id="page-auth" class="page"><div class="auth"><div class="card"><div class="tabs"><button id="tabLogin" class="active" onclick="setAuthMode('login')">Login</button><button id="tabSignup" onclick="setAuthMode('signup')">Create account</button></div><form onsubmit="submitAuth(event)"><div id="signupFields" class="hidden"><label>Full name<input id="fullName" autocomplete="name"></label><label>Join as<select id="signupRole"><option value="patient">Patient / Citizen</option><option value="doctor">Doctor</option><option value="hospital">Hospital / Clinic</option><option value="pharmacy">Pharmacy / Medical Store</option><option value="lab">Diagnostic Centre / Lab</option><option value="mental_health">Mental Health Professional</option></select></label></div><label>Email<input id="email" type="email" autocomplete="email" required></label><label>Password<input id="password" type="password" minlength="8" autocomplete="current-password" required></label><button id="authSubmit" class="btn" style="width:100%">Login</button></form><div class="auth-secondary-action"><button id="forgotPasswordBtn" type="button" class="link-button" onclick="requestPasswordReset()">Forgot password?</button></div><p id="authMessage" class="msg" aria-live="polite"></p></div><div class="card"><h3>Backend connected</h3><p>✓ Supabase Auth</p><p>✓ Profiles</p><p>✓ Role-specific onboarding</p><p>✓ Private doctor certificate storage</p></div></div></section>
 
 <section id="page-password-reset" class="page">
   <div class="auth">
@@ -240,6 +240,26 @@
   <input id="doctorLatitude" type="hidden">
   <input id="doctorLongitude" type="hidden">
 </div><label>Experience years<input id="doctorExperience" type="number" min="0" max="70"></label><label class="span2">Medical license / registration certificate (optional)<input id="doctorCertificate" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"><small>Private storage. PDF/JPG/PNG, max 10 MB.</small></label><p id="certificateStatus" class="msg span2"></p><div class="actions"><button class="btn">Save doctor profile</button></div></form>
+<form id="mentalHealthProviderForm" class="card formgrid hidden" onsubmit="saveMentalHealthProviderProfile(event)">
+  <div class="span2"><small>MENTAL HEALTH PROFESSIONAL</small><h2>Professional profile</h2><p class="muted">Your professional category and qualifications are shown only after MediBridge verification.</p></div>
+  <label>Professional category *<select id="mentalProfessionalType" required><option value="">Choose category</option><option value="psychiatrist">Psychiatrist</option><option value="clinical_psychologist">Clinical Psychologist</option><option value="counselling_psychologist">Counselling Psychologist</option><option value="counsellor">Counsellor</option><option value="therapist">Therapist</option></select></label>
+  <label>Qualification *<input id="mentalQualification" required maxlength="240"></label>
+  <label>Registration number<input id="mentalRegistration" maxlength="160" placeholder="If applicable"></label>
+  <label>Registration body<input id="mentalRegistrationBody" maxlength="180" placeholder="If applicable"></label>
+  <label>Experience years<input id="mentalExperience" type="number" min="0" max="70"></label>
+  <label>Clinic / practice name<input id="mentalClinicName" maxlength="180"></label>
+  <label>City<input id="mentalCity" maxlength="120"></label><label>District<input id="mentalDistrict" maxlength="120"></label>
+  <label>State<input id="mentalState" value="Uttar Pradesh" maxlength="120"></label>
+  <label>Languages<input id="mentalLanguages" placeholder="Hindi, English"></label>
+  <label class="span2">Focus areas<input id="mentalFocusAreas" placeholder="Anxiety, stress, relationships, sleep"></label>
+  <label>Online fee ₹<input id="mentalFeeOnline" type="number" min="0" step="1"></label>
+  <label>In-person fee ₹<input id="mentalFeeInPerson" type="number" min="0" step="1"></label>
+  <label>Accepting new clients?<select id="mentalAccepting"><option value="true">Yes</option><option value="false">No</option></select></label>
+  <label>Google Maps link<input id="mentalMapsLink" placeholder="Optional"></label>
+  <label class="span2">Short professional introduction<textarea id="mentalBio" rows="4" maxlength="1200" placeholder="Explain your approach in plain language."></textarea></label>
+  <label class="span2">Qualification / registration document<input id="mentalVerificationFile" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"><small>Private. PDF/JPG/PNG, max 10 MB.</small></label>
+  <p id="mentalVerificationStatus" class="msg span2"></p><div class="actions span2"><button class="btn">Save professional profile</button></div>
+</form>
 <form id="hospitalForm" class="card formgrid hidden" onsubmit="saveHospital(event)"><h2>Hospital / Clinic information</h2><label>Facility name<input id="hospitalName" required></label><label>Address<input id="hospitalAddress"></label><label>City<input id="hospitalCity"></label><label>State<input id="hospitalState" value="Uttar Pradesh"></label><label>Emergency available<select id="hospitalEmergency"><option value="false">No</option><option value="true">Yes</option></select></label><label>District<input id="hospitalDistrict" placeholder="e.g. Lucknow"></label><label>Google Maps location link<input id="hospitalMapsLink" placeholder="Paste Google Maps link"></label><div class="span2 location-box">
   <b>Hospital location</b>
   <p class="muted">MediBridge will get the hospital's GPS coordinates automatically. Use this while you are at the hospital/clinic.</p>
@@ -1392,6 +1412,23 @@
   </div>
 </section>
 
+<section id="page-mental" class="page">
+  <div id="mentalGate" class="card"><h2>Mental healthcare</h2><p class="muted">Sign in to book private support or manage professional sessions.</p><button class="btn" onclick="showPage('auth')">Sign in</button></div>
+  <div id="mentalContent" class="hidden">
+    <div id="mentalPatientView" class="hidden">
+      <div class="mental-hero"><div><span class="eyebrow">MENTAL HEALTH</span><h1>Support that feels private, simple and human.</h1><p class="home-lead">Find the right professional without needing to know every clinical title first. Mental-health records stay separate from your general medical record.</p></div><div class="mental-privacy-card"><b>Private by default</b><p>Mental-health summaries are not automatically shared through normal medical-record consent.</p><button class="btn secondary" type="button" onclick="scrollMentalPrivacy()">Manage privacy</button></div></div>
+      <div class="mental-crisis-card"><div><b>Need urgent help right now?</b><p>If you may harm yourself or someone else, feel unable to stay safe, or have a severe emergency, do not wait for an online session.</p></div><button class="btn danger-action" type="button" onclick="showPage('emergency')">Open emergency care</button></div>
+      <div class="card"><small>START WITH WHAT YOU FEEL</small><h2>How can we help today?</h2><div class="mental-concern-grid"><button type="button" onclick="setMentalConcern('talk_to_someone')">I want to talk to someone</button><button type="button" onclick="setMentalConcern('anxiety_stress')">Anxiety or stress</button><button type="button" onclick="setMentalConcern('low_mood')">Low mood</button><button type="button" onclick="setMentalConcern('sleep')">Sleep problems</button><button type="button" onclick="setMentalConcern('relationship_family')">Relationship or family</button><button type="button" onclick="setMentalConcern('addiction')">Addiction support</button><button type="button" onclick="setMentalConcern('child_adolescent')">Child / adolescent support</button><button type="button" onclick="setMentalConcern('medication_review')">Medication review</button></div></div>
+      <div class="card mental-search-card"><div class="row between"><div><small>FIND SUPPORT</small><h2>Professionals</h2></div><button class="btn secondary" type="button" onclick="loadMentalHealthProviders(true)">Refresh</button></div><div class="formgrid"><label>Professional type<select id="mentalProviderTypeFilter"><option value="">Any appropriate professional</option><option value="psychiatrist">Psychiatrist</option><option value="clinical_psychologist">Clinical Psychologist</option><option value="counselling_psychologist">Counselling Psychologist</option><option value="counsellor">Counsellor</option><option value="therapist">Therapist</option></select></label><label>Session type<select id="mentalModeFilter"><option value="">Online or in person</option><option value="online">Online</option><option value="in_person">In person</option></select></label><label>Language<input id="mentalLanguageFilter" placeholder="e.g. Hindi"></label><label>City / district<input id="mentalPlaceFilter" placeholder="e.g. Pratapgarh"></label></div><div class="actions"><button class="btn" type="button" onclick="loadMentalHealthProviders(true)">Find support</button><button class="btn secondary" type="button" onclick="resetMentalFilters()">Reset</button></div><p id="mentalProviderMessage" class="msg" aria-live="polite"></p></div>
+      <div id="mentalProviderResults"></div>
+      <div id="mentalBookingCard" class="card hidden"><div class="row between"><div><small>REQUEST SESSION</small><h2 id="mentalBookingProviderName">Professional</h2></div><button class="btn secondary" type="button" onclick="closeMentalBooking()">Close</button></div><form class="formgrid" onsubmit="requestMentalHealthAppointment(event)"><input id="mentalBookingProviderId" type="hidden"><label>Date *<input id="mentalBookingDate" type="date" required></label><label>Time *<input id="mentalBookingTime" type="time" required></label><label>Session type *<select id="mentalBookingMode" required><option value="online">Online</option><option value="in_person">In person</option></select></label><label>Support needed *<select id="mentalBookingConcern" required><option value="talk_to_someone">I want to talk to someone</option><option value="anxiety_stress">Anxiety or stress</option><option value="low_mood">Low mood</option><option value="sleep">Sleep problems</option><option value="relationship_family">Relationship / family</option><option value="addiction">Addiction support</option><option value="child_adolescent">Child / adolescent support</option><option value="medication_review">Medication review</option><option value="other">Other</option></select></label><label class="span2">Anything you want the professional to know?<textarea id="mentalBookingNote" rows="3" maxlength="1200" placeholder="Optional. Keep it brief; you can discuss details privately in the session."></textarea></label><div class="actions span2"><button class="btn">Send session request</button></div></form><p id="mentalBookingMessage" class="msg" aria-live="polite"></p></div>
+      <div class="card"><div class="row between"><div><small>YOUR CARE</small><h2>Sessions</h2></div><button class="btn secondary" type="button" onclick="loadMentalHealthAppointments()">Refresh</button></div><div id="mentalPatientAppointments"></div></div>
+      <div id="mentalPrivacySection" class="card mental-privacy-section"><small>MENTAL HEALTH PRIVACY</small><h2>Share previous session summaries only when you choose</h2><p class="muted">General MediBridge consent does not unlock mental-health summaries. Grant a verified mental-health professional separate, time-limited access.</p><div class="formgrid"><label>Professional<select id="mentalConsentProvider"><option value="">Choose professional</option></select></label><label>Access duration<select id="mentalConsentDuration"><option value="24">24 hours</option><option value="168" selected>7 days</option><option value="720">30 days</option><option value="0">Until revoked</option></select></label></div><div class="actions"><button class="btn" type="button" onclick="grantMentalHealthConsent()">Share session summaries</button></div><div id="mentalConsentList"></div><p id="mentalConsentMessage" class="msg" aria-live="polite"></p></div>
+    </div>
+    <div id="mentalProviderView" class="hidden"><div class="row between"><div><span class="eyebrow">MENTAL HEALTH PROFESSIONAL</span><h1>Session workspace</h1><p class="page-subtitle">Requests, patient-visible summaries and private professional notes stay separated.</p></div><span id="mentalProviderVerificationBadge" class="badge">pending</span></div><div id="mentalProviderVerificationNotice" class="card"></div><div class="card"><div class="row between"><div><small>SESSION REQUESTS</small><h2>Your mental-health sessions</h2></div><button class="btn secondary" onclick="loadMentalProviderAppointments()">Refresh</button></div><div id="mentalProviderAppointments"></div></div><div id="mentalProviderRecordEditor" class="card hidden"><div class="row between"><div><small>SESSION RECORD</small><h2 id="mentalProviderRecordTitle">Session</h2></div><button class="btn secondary" onclick="closeMentalRecordEditor()">Close</button></div><input id="mentalRecordAppointmentId" type="hidden"><label>Patient-visible summary<textarea id="mentalPatientSummary" rows="5" maxlength="5000"></textarea></label><label>Care plan / next steps<textarea id="mentalCarePlan" rows="4" maxlength="5000"></textarea></label><label>Follow-up date<input id="mentalFollowupDate" type="date"></label><div id="mentalPrivateNoteBox" class="mental-private-note-box"><b>Private professional note</b><p class="muted small-note">Stored separately. Not visible to the patient and not part of general MediBridge records.</p><textarea id="mentalPrivateNote" rows="6" maxlength="10000"></textarea></div><div class="actions"><button id="mentalRecordSaveBtn" class="btn" onclick="saveMentalSessionRecord()">Save session record</button></div><p id="mentalRecordMessage" class="msg"></p></div></div>
+  </div>
+</section>
+
 <section id="page-ai" class="page">
   <div id="aiGate" class="card">
     <h2>Sign in required</h2>
@@ -1951,6 +1988,7 @@
       </div>
     </div>
     <div id="pendingPharmacies"></div>
+    <div class="card" style="margin-top:28px"><div class="row between"><div><h2 style="margin:0">Pending mental-health professional verification</h2><p class="muted">Verify category, qualifications and registration evidence before patient discovery is enabled.</p></div><button class="btn secondary" onclick="loadPendingMentalHealthProviders()">Refresh mental health</button></div></div><div id="pendingMentalHealthProviders"></div>
     <div class="card" style="margin-top:28px">
       <div class="row between">
         <div>
@@ -2009,5 +2047,5 @@
 <script src="supabase-config.js"></script>
 <script src="ai-config.js?v=32"></script>
 <script src="medibridge-ai-service.js?v=32"></script>
-<script src="app-v36-1.js?v=361"></script>
+<script src="app-v37.js?v=37"></script>
 </body></html>
