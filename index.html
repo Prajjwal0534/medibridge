@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="application-name" content="MediBridge">
 <meta name="apple-mobile-web-app-title" content="MediBridge">
-<meta name="build-version" content="39.3">
+<meta name="build-version" content="39.4">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3">
-<link rel="stylesheet" href="style-v39-3.css?v=39.3">
+<link rel="stylesheet" href="style-v39-4.css?v=39.4">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MediBridge","url":"https://celebrated-gecko-efd469.netlify.app/","description":"Connected healthcare platform for patients and families in India."}</script></head><body>
 <noscript><div class="noscript-notice"><b>MediBridge needs JavaScript to run.</b> For a life-threatening emergency in India, call <a href="tel:112">112</a> now or go to the nearest emergency department.</div></noscript>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
@@ -36,8 +36,8 @@
   </button>
 
   <div class="header-actions">
-    <button id="headerAiBtn" class="header-action ai-header-action hidden" type="button" onclick="showPage('ai')" aria-label="Open MediBridge AI Assistance">
-      <span aria-hidden="true">✦</span><span class="header-action-label"><span class="header-label-full">AI Assistance</span><span class="header-label-short">AI</span></span>
+    <button id="headerAiBtn" class="header-action ai-header-action hidden" type="button" onclick="showPage('ai')" aria-label="Open MediBridge AI">
+      <span aria-hidden="true">✦</span><span class="header-action-label"><span class="header-label-full">MediBridge AI</span><span class="header-label-short">AI</span></span>
     </button>
 
     <button id="headerEmergencyBtn" class="header-action emergency-header-action" type="button" onclick="showPage('emergency')" aria-label="Find emergency care">
@@ -50,18 +50,18 @@
       <span id="headerNotificationBadge" class="notification-count hidden">0</span>
     </button>
 
-    <span id="sessionLabel" class="session-label muted">Not signed in</span>
+    <span id="sessionLabel" class="session-label muted hidden">Not signed in</span>
     <button id="loginBtn" class="btn secondary header-login-btn" onclick="showPage('auth')">Sign in</button>
     <button id="logoutBtn" class="btn secondary hidden header-logout-btn" onclick="logout()">Logout</button>
 
-    <button id="mobileMenuBtn" class="header-icon-button mobile-menu-trigger" type="button"
+    <button id="mobileMenuBtn" class="header-icon-button mobile-menu-trigger guest-nav-hidden" type="button"
       onclick="toggleMobileMenu()" aria-label="Open menu" aria-controls="mobileMenuDrawer" aria-expanded="false">
       <span aria-hidden="true">☰</span>
     </button>
   </div>
 </header>
 
-<nav id="adaptiveDesktopNav" class="adaptive-nav" aria-label="Primary navigation">
+<nav id="adaptiveDesktopNav" class="adaptive-nav guest-nav-hidden" aria-label="Primary navigation">
   <div id="desktopPrimaryNav" class="adaptive-nav-primary"></div>
   <div class="adaptive-more-wrap">
     <button id="desktopMoreBtn" class="adaptive-more-btn desktop-menu-button" type="button" onclick="toggleDesktopMoreMenu()" aria-expanded="false" aria-label="Open MediBridge menu">
@@ -85,7 +85,7 @@
   <div id="mobileMenuList" class="mobile-menu-list"></div>
 </aside>
 
-<nav id="mobileBottomNav" class="mobile-bottom-nav" aria-label="Mobile navigation"></nav>
+<nav id="mobileBottomNav" class="mobile-bottom-nav guest-nav-hidden" aria-label="Mobile navigation"></nav>
 <div id="patientSubjectBar" class="patient-subject-bar hidden" aria-live="polite">
   <div class="patient-subject-bar-inner">
     <div class="patient-subject-context">
@@ -272,15 +272,15 @@
     <div class="family-layout">
       <div>
         <div class="row between">
-          <div><h2>Your profiles</h2><p class="muted">Tap a person to manage their healthcare.</p></div>
-          <button class="btn secondary" type="button" onclick="loadFamilyProfiles()">Refresh profiles</button>
+          <div><h2>Your profiles</h2><p class="muted">Choose a person to manage their healthcare.</p></div>
+          <div class="row"><button class="btn" type="button" onclick="toggleFamilyCreateForm(true)">Add family member</button><button class="btn secondary ui-refresh-btn" type="button" onclick="loadFamilyProfiles()" aria-label="Refresh family profiles" title="Refresh family profiles">↻</button></div>
         </div>
         <div id="familyProfilesList" class="family-profile-list"></div>
       </div>
 
-      <form id="familyCreateForm" class="card formgrid family-create-card" onsubmit="createFamilyProfile(event)">
+      <form id="familyCreateForm" class="card formgrid family-create-card hidden" onsubmit="createFamilyProfile(event)">
         <div class="span2">
-          <small>ADD FAMILY MEMBER</small>
+          <div class="row between"><small>ADD FAMILY MEMBER</small><button class="btn secondary compact" type="button" onclick="toggleFamilyCreateForm(false)">Close</button></div>
           <h2>Create health profile</h2>
           <p class="muted">No new email, password or OTP is needed.</p><p class="muted small-note">Create profiles only for people whose healthcare you are authorised to manage. Adult consent/guardian verification will be strengthened before production use.</p>
         </div>
@@ -311,8 +311,8 @@
   </div>
 </section>
 
-<section id="page-profile" class="page"><div id="profileGate" class="card"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Login</button></div><div id="profileContent" class="hidden"><h1 id="profileTitle">Profile</h1><form class="card formgrid" onsubmit="saveBase(event)"><div class="span2"><small>ACCOUNT HOLDER</small><p class="muted">Login/contact details for this MediBridge account.</p></div><label>Full name<input id="pFullName" required></label><label>Phone (optional)<input id="pPhone"></label><div class="actions"><button class="btn">Save basic profile</button></div></form>
-<form id="patientForm" class="card formgrid hidden" onsubmit="savePatient(event)"><div class="span2"><small>HEALTHCARE PROFILE</small><h2 id="patientFormTitle">Patient information</h2><p id="patientFormRelationship" class="muted"></p></div><label id="patientSubjectNameLabel">Patient name<input id="patientSubjectName" maxlength="160"></label><label id="patientSubjectPhoneLabel">Phone (optional)<input id="patientSubjectPhone" inputmode="tel" maxlength="40"></label><label>Date of birth<input id="patientDob" type="date"></label><label>Gender<input id="patientGender" maxlength="50"></label><label>Blood group<input id="patientBlood" maxlength="16"></label><label>Emergency contact name<input id="patientEmergencyName" maxlength="160"></label><label>Emergency contact phone<input id="patientEmergencyPhone" inputmode="tel" maxlength="40"></label><div class="actions"><button class="btn">Save patient profile</button></div></form>
+<section id="page-profile" class="page"><div id="profileGate" class="card"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Login</button></div><div id="profileContent" class="hidden"><h1 id="profileTitle">Profile</h1><div id="profileAuthorityWarning" class="card governance-warning hidden" role="status"></div><form class="card formgrid" onsubmit="saveBase(event)"><div class="span2"><small>ACCOUNT CONTACT</small><p class="muted">Name and phone used for this MediBridge login.</p></div><label>Account name<input id="pFullName" required></label><label>Account phone (optional)<input id="pPhone" inputmode="tel"></label><div class="actions"><button class="btn">Save account contact</button></div></form>
+<form id="patientForm" class="card formgrid hidden" onsubmit="savePatient(event)"><div class="span2"><small>HEALTHCARE PROFILE</small><h2 id="patientFormTitle">Patient information</h2><p id="patientFormRelationship" class="muted"></p></div><label id="patientSubjectNameLabel">Patient name<input id="patientSubjectName" maxlength="160"></label><label id="patientSubjectPhoneLabel">Patient phone (optional)<input id="patientSubjectPhone" inputmode="tel" maxlength="40"></label><label>Date of birth<input id="patientDob" type="date"></label><label>Gender<input id="patientGender" maxlength="50"></label><label>Blood group<input id="patientBlood" maxlength="16"></label><label>Emergency contact name<input id="patientEmergencyName" maxlength="160"></label><label>Emergency contact phone<input id="patientEmergencyPhone" inputmode="tel" maxlength="40"></label><div class="actions"><button class="btn">Save health details</button></div></form>
 <form id="doctorForm" class="card formgrid hidden" onsubmit="saveDoctor(event)"><h2>Doctor information</h2><label>Specialty<input id="doctorSpecialty" required></label><label>Qualification<input id="doctorQualification" required></label><label>Medical registration number<input id="doctorRegistration" required></label><label>Hospital / Clinic<input id="doctorHospital"></label><label>Clinic city<input id="doctorClinicCity" placeholder="e.g. Pratapgarh"></label><label>Clinic district<input id="doctorClinicDistrict" placeholder="e.g. Pratapgarh"></label><label>Clinic Google Maps link<input id="doctorMapsLink" placeholder="Paste Google Maps link (optional)"></label><div class="span2 location-box">
   <b>Clinic location</b>
   <p class="muted">Optional. Detect the clinic's GPS coordinates automatically while you are at the clinic.</p>
@@ -427,7 +427,7 @@
           <button id="careDoctorTab" class="active" onclick="setCareMode('doctor')">Doctors</button>
           <button id="careHospitalTab" onclick="setCareMode('hospital')">Hospitals / Clinics</button>
         </div>
-        <button class="btn secondary" type="button" onclick="refreshCareResults()">↻ Refresh results</button>
+        <button class="btn secondary ui-refresh-btn" type="button" onclick="refreshCareResults()" aria-label="Refresh care results" title="Refresh care results">↻</button>
       </div>
 
       <div class="formgrid care-filter-grid">
@@ -449,11 +449,11 @@
 
         <div class="location-action-card">
           <button class="btn secondary" type="button" onclick="useCareLocation()">📍 Use my current location</button>
-          <span id="careLocationStatus" class="muted">Choose current location or enter a place to see nearby care.</span>
+          <span id="careLocationStatus" class="muted">Or search by city / district.</span>
         </div>
 
         <div class="span2 care-help">
-          <small>MediBridge will not list doctors, clinics, hospitals or pharmacies globally. Choose a city/district or use GPS first. Distance/radius is optional and applies only when GPS is used.</small>
+          <small>Choose a location before searching. Radius applies only when GPS is used.</small>
         </div>
       </div>
     </div>
@@ -554,7 +554,7 @@
         <small>APPOINTMENTS</small>
         <h1>My appointments</h1>
       </div>
-      <button class="btn secondary" onclick="loadMyAppointments()">Refresh appointments</button>
+      <button class="btn secondary ui-refresh-btn" onclick="loadMyAppointments()" aria-label="Refresh appointments" title="Refresh appointments">↻</button>
     </div>
 
     <div id="appointmentsList"></div>
@@ -577,7 +577,7 @@
         <h1>Care Plans</h1>
         <p class="page-subtitle">A shared plan for what happens after the consultation: medicines, tests, follow-ups and other care actions.</p>
       </div>
-      <button class="btn secondary" onclick="loadCarePlans()">Refresh care plans</button>
+      <button class="btn secondary ui-refresh-btn" onclick="loadCarePlans()" aria-label="Refresh care plans" title="Refresh care plans">↻</button>
     </div>
 
     <div id="carePlanCreateCard" class="card hidden">
@@ -977,17 +977,17 @@
     </div>
 
     <div class="row emergency-search-actions">
-      <button class="btn" type="button" onclick="runEmergencySearch()">Find hospitals</button>
-      <button class="btn secondary" type="button" onclick="refreshEmergencyResults()">↻ Refresh hospitals</button>
+      <button class="btn" type="button" onclick="runEmergencySearch()">Search hospitals</button>
+      <button class="btn secondary ui-refresh-btn" type="button" onclick="refreshEmergencyResults()" aria-label="Refresh nearby hospitals" title="Refresh nearby hospitals">↻</button>
       <span class="muted">GPS gives real distance and nearest-first results.</span>
     </div>
     <p id="emergencyMessage" class="msg"></p>
   </div>
 
-  <div class="card emergency-results-header">
+  <div class="emergency-results-header results-section-heading">
     <div>
       <h2 style="margin:0">Nearby hospitals</h2>
-      <p class="muted">Results appear automatically below your search. Distance, location and directions are shown whenever hospital coordinates are available.</p>
+      <p class="muted">Distance and directions appear when hospital coordinates are available.</p>
     </div>
   </div>
 
@@ -1000,7 +1000,7 @@
         <h2 style="margin:0">My emergency arrival notices</h2>
         <p class="muted">Advance notices only. They do not guarantee admission, a bed, ambulance dispatch, or treatment priority.</p>
       </div>
-      <button class="btn secondary" onclick="loadMyEmergencyNotices()">Refresh arrival notices</button>
+      <button class="btn secondary ui-refresh-btn" onclick="loadMyEmergencyNotices()" aria-label="Refresh arrival notices" title="Refresh arrival notices">↻</button>
     </div>
     <div id="myEmergencyNotices"></div>
   </div>
@@ -1140,7 +1140,7 @@
         <h1>My Care Timeline</h1>
         <p class="page-subtitle">Your consultations, reports, referrals, diagnostics, pharmacy requests and follow-ups in one chronological view.</p>
       </div>
-      <button class="btn secondary" onclick="loadCareTimeline()">Refresh timeline</button>
+      <button class="btn secondary ui-refresh-btn" onclick="loadCareTimeline()" aria-label="Refresh care timeline" title="Refresh care timeline">↻</button>
     </div>
 
     <div class="card timeline-summary-card">
@@ -1334,7 +1334,7 @@
         <h2>My follow-up timeline</h2>
         <p class="muted">Upcoming follow-ups appear first. Overdue follow-ups remain visible until you act on them.</p>
       </div>
-      <button class="btn secondary" onclick="loadPatientFollowups()">Refresh follow-ups</button>
+      <button class="btn secondary ui-refresh-btn" onclick="loadPatientFollowups()" aria-label="Refresh follow-ups" title="Refresh follow-ups">↻</button>
     </div>
     <div id="patientFollowupList"><p class="muted">Loading follow-ups...</p></div>
   </div>
@@ -1402,7 +1402,7 @@
         <h2 id="reportsListTitle">My reports</h2>
         <p id="reportsListSubtitle" class="muted">Your uploaded reports and investigations.</p>
       </div>
-      <button class="btn secondary" onclick="loadReportsHub()">Refresh reports</button>
+      <button class="btn secondary ui-refresh-btn" onclick="loadReportsHub()" aria-label="Refresh reports" title="Refresh reports">↻</button>
     </div>
 
     <div id="reportsList">
@@ -1507,7 +1507,7 @@
       <div class="card mental-search-card"><div class="row between"><div><small>FIND SUPPORT</small><h2>Professionals</h2></div></div><div class="formgrid"><label>Professional type<select id="mentalProviderTypeFilter"><option value="">Any appropriate professional</option><option value="psychiatrist">Psychiatrist</option><option value="clinical_psychologist">Clinical Psychologist</option><option value="counselling_psychologist">Counselling Psychologist</option><option value="counsellor">Counsellor</option><option value="therapist">Therapist</option></select></label><label>Session type<select id="mentalModeFilter"><option value="">Online or in person</option><option value="online">Online</option><option value="in_person">In person</option></select></label><label>Language<input id="mentalLanguageFilter" placeholder="e.g. Hindi"></label><label>City / district<input id="mentalPlaceFilter" placeholder="e.g. Pratapgarh"></label></div><div class="actions"><button class="btn" type="button" onclick="loadMentalHealthProviders(true)">Find support</button><button class="btn secondary" type="button" onclick="resetMentalFilters()">Reset filters</button></div><p id="mentalProviderMessage" class="msg" aria-live="polite"></p></div>
       <div id="mentalProviderResults" aria-live="polite"></div>
       <div id="mentalBookingCard" class="card hidden"><div class="row between"><div><small>REQUEST SESSION</small><h2 id="mentalBookingProviderName">Professional</h2></div><button class="btn secondary" type="button" onclick="closeMentalBooking()">Close</button></div><form class="formgrid" onsubmit="requestMentalHealthAppointment(event)"><input id="mentalBookingProviderId" type="hidden"><label>Date *<input id="mentalBookingDate" type="date" required></label><label>Time *<input id="mentalBookingTime" type="time" required></label><label>Session type *<select id="mentalBookingMode" required><option value="online">Online</option><option value="in_person">In person</option></select></label><label>Support needed *<select id="mentalBookingConcern" required><option value="talk_to_someone">I want to talk to someone</option><option value="anxiety_stress">Anxiety or stress</option><option value="low_mood">Low mood</option><option value="sleep">Sleep problems</option><option value="relationship_family">Relationship / family</option><option value="addiction">Addiction support</option><option value="child_adolescent">Child / adolescent support</option><option value="medication_review">Medication review</option><option value="other">Other</option></select></label><label class="span2">Anything you want the professional to know?<textarea id="mentalBookingNote" rows="3" maxlength="1200" placeholder="Optional. Keep it brief; you can discuss details privately in the session."></textarea></label><div class="actions span2"><button class="btn">Send session request</button></div></form><p id="mentalBookingMessage" class="msg" aria-live="polite"></p></div>
-      <div class="card"><div class="row between"><div><small>YOUR CARE</small><h2>Sessions</h2></div><button class="btn secondary" type="button" onclick="loadMentalHealthAppointments()">Refresh sessions</button></div><div id="mentalPatientAppointments"></div></div>
+      <div class="card"><div class="row between"><div><small>YOUR CARE</small><h2>Sessions</h2></div><button class="btn secondary ui-refresh-btn" type="button" onclick="loadMentalHealthAppointments()" aria-label="Refresh mental-health sessions" title="Refresh mental-health sessions">↻</button></div><div id="mentalPatientAppointments"></div></div>
       <div id="mentalPrivacySection" class="card mental-privacy-section"><small>MENTAL HEALTH PRIVACY</small><h2>Share previous session summaries only when you choose</h2><p class="muted">General MediBridge consent does not unlock mental-health summaries. Grant a verified mental-health professional separate, time-limited access.</p><div id="mentalConsentEmptyState" class="empty-state hidden"><h3>No verified professional to share with yet</h3><p class="muted">Complete a session request after a professional is verified. This control will become available when at least one verified mental-health professional is in the network.</p></div><div id="mentalConsentControls"><div class="formgrid"><label>Professional<select id="mentalConsentProvider"><option value="">Choose professional</option></select></label><label>Access duration<select id="mentalConsentDuration"><option value="24">24 hours</option><option value="168" selected>7 days</option><option value="720">30 days</option><option value="0">Until revoked</option></select></label></div><div class="actions"><button id="mentalConsentGrantBtn" class="btn" type="button" onclick="grantMentalHealthConsent()">Share session summaries</button></div></div><div id="mentalConsentList" aria-live="polite"></div><p id="mentalConsentMessage" class="msg" aria-live="polite"></p></div>
     </div>
     <div id="mentalProviderView" class="hidden"><div class="row between"><div><span class="eyebrow">MENTAL HEALTH PROFESSIONAL</span><h1>Session workspace</h1><p class="page-subtitle">Requests, patient-visible summaries and private professional notes stay separated.</p></div><span id="mentalProviderVerificationBadge" class="badge">Pending verification</span></div><div id="mentalProviderVerificationNotice" class="card"></div><div class="card"><div class="row between"><div><small>SESSION REQUESTS</small><h2>Your mental-health sessions</h2></div><button class="btn secondary" onclick="loadMentalProviderAppointments()">Refresh sessions</button></div><div id="mentalProviderAppointments"></div></div><div id="mentalProviderRecordEditor" class="card hidden"><div class="row between"><div><small>SESSION RECORD</small><h2 id="mentalProviderRecordTitle">Session</h2></div><button class="btn secondary" onclick="closeMentalRecordEditor()">Close</button></div><input id="mentalRecordAppointmentId" type="hidden"><label>Patient-visible summary<textarea id="mentalPatientSummary" rows="5" maxlength="5000"></textarea></label><label>Care plan / next steps<textarea id="mentalCarePlan" rows="4" maxlength="5000"></textarea></label><label>Follow-up date<input id="mentalFollowupDate" type="date"></label><div id="mentalPrivateNoteBox" class="mental-private-note-box"><label for="mentalPrivateNote"><b>Private professional note</b></label><p id="mentalPrivateNoteHelp" class="muted small-note">Stored separately. Not visible to the patient and not part of general MediBridge records. Do not use this field for information that must be visible to the patient.</p><textarea id="mentalPrivateNote" rows="6" maxlength="10000" aria-describedby="mentalPrivateNoteHelp"></textarea></div><div class="actions"><button id="mentalRecordSaveBtn" class="btn" onclick="saveMentalSessionRecord()">Save session record</button></div><p id="mentalRecordMessage" class="msg"></p></div></div>
@@ -1524,7 +1524,7 @@
     <div class="row between">
       <div>
         <small>MEDIBRIDGE AI SUPPORT</small>
-        <h1 id="aiPageTitle">AI Assistant</h1>
+        <h1 id="aiPageTitle">MediBridge AI</h1>
         <p class="page-subtitle" id="aiPageSubtitle">A support layer for understanding health information and preparing better questions.</p>
       </div>
       
@@ -1542,7 +1542,7 @@
           <b id="aiProviderLabel">MediBridge AI</b>
           <p id="aiProviderStatus" class="muted">Checking MediBridge AI...</p>
         </div>
-        <button class="btn secondary" onclick="newMediBridgeAiChat()">New chat</button>
+        <button class="btn secondary" onclick="newMediBridgeAiChat()">Start new chat</button>
       </div>
     </div>
 
@@ -1600,11 +1600,10 @@
       <div class="row ai-actions">
         <button id="aiAskBtn" class="btn" onclick="askMediBridgeAI()">Send</button>
         <button id="aiStopBtn" class="btn secondary hidden" onclick="stopMediBridgeAiGeneration()">Stop</button>
-        <button class="btn secondary" onclick="newMediBridgeAiChat()">Clear chat</button>
       </div>
 
       <p id="aiMessage" class="msg"></p>
-      <p class="muted ai-disclaimer">AI-generated information may be incomplete or incorrect. It does not replace a qualified healthcare professional. If symptoms may be urgent or life-threatening, seek emergency care instead of relying on AI.</p>
+      <p class="muted ai-disclaimer">For urgent or life-threatening symptoms, use Emergency care or call 112 instead of relying on AI.</p>
     </div>
 
     <div id="aiAnswerCard" class="card hidden">
@@ -1626,11 +1625,11 @@
         <p class="page-subtitle">Control which verified doctors can access specific parts of your MediBridge record.</p>
         <p id="consentSubjectContext" class="family-context-banner"></p>
       </div>
-      <button class="btn secondary" onclick="loadConsentPage()">Refresh access</button>
+      <button class="btn secondary ui-refresh-btn" onclick="loadConsentPage()" aria-label="Refresh record access" title="Refresh record access">↻</button>
     </div>
 
     <div class="card patient-access-requests-card consent-section-card">
-      <div class="row between"><div><small>DOCTOR REQUESTS</small><h2>Pending access requests</h2><p class="muted">A doctor can ask, but only you can approve what is shared and for how long.</p></div><button class="btn secondary" onclick="loadPendingAccessRequests()">Refresh requests</button></div>
+      <div class="row between"><div><small>DOCTOR REQUESTS</small><h2>Pending access requests</h2><p class="muted">A doctor can ask, but only you can approve what is shared and for how long.</p></div><button class="btn secondary ui-refresh-btn" onclick="loadPendingAccessRequests()" aria-label="Refresh access requests" title="Refresh access requests">↻</button></div>
       <div id="pendingAccessRequests"></div>
     </div>
 
@@ -1656,8 +1655,8 @@
         <div class="span2">
           <h3>What can this doctor access?</h3>
           <div class="consent-grid">
-            <label class="consent-item"><input type="checkbox" class="consent-scope" value="consultations" checked> Consultations</label>
-            <label class="consent-item"><input type="checkbox" class="consent-scope" value="prescriptions" checked> Prescriptions</label>
+            <label class="consent-item"><input type="checkbox" class="consent-scope" value="consultations"> Consultations</label>
+            <label class="consent-item"><input type="checkbox" class="consent-scope" value="prescriptions"> Prescriptions</label>
             <label class="consent-item"><input type="checkbox" class="consent-scope" value="appointment_files"> Uploaded reports/files</label>
             <label class="consent-item"><input type="checkbox" class="consent-scope" value="referrals"> Referrals</label>
             <label class="consent-item"><input type="checkbox" class="consent-scope" value="emergency_summary"> Emergency summary</label><label class="consent-item"><input type="checkbox" class="consent-scope" value="health_profile"> Structured health profile</label><label class="consent-item"><input type="checkbox" class="consent-scope" value="vitals"> Vitals</label>
@@ -1724,7 +1723,7 @@
         <button id="notificationFilterAll" class="btn secondary notification-filter active" onclick="setNotificationFilter('all')">All</button>
         <button id="notificationFilterUnread" class="btn secondary notification-filter" onclick="setNotificationFilter('unread')">Unread</button>
         <button class="btn secondary" onclick="markAllNotificationsRead()">Mark all read</button>
-        <button class="btn secondary" onclick="loadNotificationsPage()">Refresh notifications</button>
+        <button class="btn secondary ui-refresh-btn" onclick="loadNotificationsPage()" aria-label="Refresh notifications" title="Refresh notifications">↻</button>
       </div>
     </div>
 
@@ -1743,7 +1742,7 @@
         <small>CARE COORDINATION</small>
         <h1>Referrals</h1>
       </div>
-      <button class="btn secondary" onclick="loadReferrals()">Refresh referrals</button>
+      <button class="btn secondary ui-refresh-btn" onclick="loadReferrals()" aria-label="Refresh referrals" title="Refresh referrals">↻</button>
     </div>
     <div id="referralsList"></div>
     <p id="referralsMessage" class="msg"></p>
@@ -1875,9 +1874,9 @@
       <div class="row between">
         <div>
           <h2>Find a diagnostic centre</h2>
-          <p class="muted">Choose a city/district or use GPS first. MediBridge will not show the entire lab network globally.</p>
+          <p class="muted">Search by city / district or use your current location.</p>
         </div>
-        <button class="btn secondary" onclick="loadPatientDiagnosticsPage()">Refresh diagnostics</button>
+        <button class="btn secondary ui-refresh-btn" onclick="loadPatientDiagnosticsPage()" aria-label="Refresh diagnostics" title="Refresh diagnostics">↻</button>
       </div>
 
       <div class="formgrid diagnostics-search-grid">
@@ -1895,7 +1894,7 @@
         </label>
         <div class="span2 row">
           <button class="btn secondary" type="button" onclick="useDiagnosticLocation()">📍 Use my current location</button>
-          <span id="diagnosticLocationStatus" class="muted">You can also search by city/district.</span>
+          <span id="diagnosticLocationStatus" class="muted">Or search by city / district.</span>
         </div>
       </div>
 
@@ -1972,9 +1971,9 @@
       <div class="row between">
         <div>
           <h2>Find a pharmacy</h2>
-          <p class="muted">Find verified participating pharmacies by your current location or by city/district.</p>
+          <p class="muted">Search verified participating pharmacies near a chosen location.</p>
         </div>
-        <button class="btn secondary" onclick="loadPatientPharmacyPage()">Refresh pharmacies</button>
+        <button class="btn secondary ui-refresh-btn" onclick="loadPatientPharmacyPage()" aria-label="Refresh pharmacies" title="Refresh pharmacies">↻</button>
       </div>
 
       <div class="formgrid pharmacy-discovery-grid">
@@ -1992,7 +1991,7 @@
         </label>
         <div class="span2 row">
           <button class="btn secondary" type="button" onclick="usePatientPharmacyLocation()">📍 Use my current location</button>
-          <span id="patientPharmacyLocationStatus" class="muted">You can also search by city/district.</span>
+          <span id="patientPharmacyLocationStatus" class="muted">Or search by city / district.</span>
         </div>
       </div>
 
@@ -2005,7 +2004,7 @@
           <h2>My prescriptions</h2>
           <p class="muted">Choose a completed consultation and send its prescription to a verified participating pharmacy.</p>
         </div>
-        <button class="btn secondary" onclick="loadPatientPharmacyPage()">Refresh medicine requests</button>
+        <button class="btn secondary ui-refresh-btn" onclick="loadPatientPharmacyPage()" aria-label="Refresh prescriptions and pharmacy requests" title="Refresh prescriptions and pharmacy requests">↻</button>
       </div>
       <div id="patientPrescriptionFulfilmentList"></div>
     </div>
@@ -2103,7 +2102,7 @@
 <footer class="site-footer" aria-label="MediBridge information">
   <div><b>MediBridge</b><p>Connected healthcare prototype for India. AI supports care; it does not replace clinicians.</p></div>
   <nav aria-label="Legal and safety"><button type="button" onclick="showPage('privacy')">Privacy & data rights</button><button type="button" onclick="showPage('terms')">Terms</button><button type="button" onclick="showPage('emergency')">Emergency care</button><a href="tel:112">Call 112</a></nav>
-  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 39.3">Version 39.3</span></small>
+  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 39.4">Version 39.4</span></small>
 </footer>
 <div id="toast" class="toast hidden"></div>
 
@@ -2150,6 +2149,6 @@
 <script defer src="medibridge-ai-service.js?v=32"></script>
 <script defer src="video-provider-config.js?v=39"></script>
 <script defer src="medibridge-observability-v39-1.js?v=39.1"></script>
-<script defer src="governance-v39-1.js?v=39.1"></script>
-<script defer src="app-v39-3.js?v=39.3"></script>
+<script defer src="governance-v39-4.js?v=39.4"></script>
+<script defer src="app-v39-4.js?v=39.4"></script>
 </body></html>
