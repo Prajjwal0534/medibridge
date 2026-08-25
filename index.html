@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="application-name" content="MediBridge">
 <meta name="apple-mobile-web-app-title" content="MediBridge">
-<meta name="build-version" content="39.1">
+<meta name="build-version" content="39.2">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3">
-<link rel="stylesheet" href="style-v39.css?v=39">
+<link rel="stylesheet" href="style-v39-2.css?v=39.2">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MediBridge","url":"https://celebrated-gecko-efd469.netlify.app/","description":"Connected healthcare platform for patients and families in India."}</script></head><body>
 <noscript><div class="noscript-notice"><b>MediBridge needs JavaScript to run.</b> For a life-threatening emergency in India, call <a href="tel:112">112</a> now or go to the nearest emergency department.</div></noscript>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
@@ -246,7 +246,7 @@
       <h2 style="margin:0">Consented patient records</h2>
       <p class="muted">Patients who currently allow you to access parts of their MediBridge record.</p>
     </div>
-    <button class="btn secondary" onclick="loadDoctorConsentedPatients()">Refresh</button>
+    <button class="btn secondary" onclick="loadDoctorConsentedPatients()">Refresh shared patients</button>
   </div>
   <div id="doctorConsentedPatients"></div>
 </div>
@@ -273,7 +273,7 @@
       <div>
         <div class="row between">
           <div><h2>Your profiles</h2><p class="muted">Tap a person to manage their healthcare.</p></div>
-          <button class="btn secondary" type="button" onclick="loadFamilyProfiles()">Refresh</button>
+          <button class="btn secondary" type="button" onclick="loadFamilyProfiles()">Refresh profiles</button>
         </div>
         <div id="familyProfilesList" class="family-profile-list"></div>
       </div>
@@ -427,7 +427,7 @@
           <button id="careDoctorTab" class="active" onclick="setCareMode('doctor')">Doctors</button>
           <button id="careHospitalTab" onclick="setCareMode('hospital')">Hospitals / Clinics</button>
         </div>
-        <button class="btn secondary" type="button" onclick="refreshCareResults()">↻ Refresh</button>
+        <button class="btn secondary" type="button" onclick="refreshCareResults()">↻ Refresh results</button>
       </div>
 
       <div class="formgrid care-filter-grid">
@@ -554,7 +554,7 @@
         <small>APPOINTMENTS</small>
         <h1>My appointments</h1>
       </div>
-      <button class="btn secondary" onclick="loadMyAppointments()">Refresh</button>
+      <button class="btn secondary" onclick="loadMyAppointments()">Refresh appointments</button>
     </div>
 
     <div id="appointmentsList"></div>
@@ -577,7 +577,7 @@
         <h1>Care Plans</h1>
         <p class="page-subtitle">A shared plan for what happens after the consultation: medicines, tests, follow-ups and other care actions.</p>
       </div>
-      <button class="btn secondary" onclick="loadCarePlans()">Refresh</button>
+      <button class="btn secondary" onclick="loadCarePlans()">Refresh care plans</button>
     </div>
 
     <div id="carePlanCreateCard" class="card hidden">
@@ -713,7 +713,7 @@
         <small>RECENT CARE</small>
         <h2>Clinical history</h2>
       </div>
-      <button class="btn secondary" onclick="reloadDoctorPatientOverview()">Refresh</button>
+      <button class="btn secondary" onclick="reloadDoctorPatientOverview()">Refresh patient overview</button>
     </div>
     <div id="doctorRecentCare"></div>
   </div>
@@ -775,7 +775,7 @@
         <h2>Linked reports & investigations</h2>
         <p class="muted">Reports linked by the patient to this appointment. The assigned doctor can review them directly here.</p>
       </div>
-      <button class="btn secondary" onclick="loadAppointmentLinkedReports()">Refresh</button>
+      <button class="btn secondary" onclick="loadAppointmentLinkedReports()">Refresh linked reports</button>
     </div>
     <div id="appointmentLinkedReports">
       <p class="muted">Loading linked reports...</p>
@@ -978,7 +978,7 @@
 
     <div class="row emergency-search-actions">
       <button class="btn" type="button" onclick="runEmergencySearch()">Find hospitals</button>
-      <button class="btn secondary" type="button" onclick="refreshEmergencyResults()">↻ Refresh</button>
+      <button class="btn secondary" type="button" onclick="refreshEmergencyResults()">↻ Refresh hospitals</button>
       <span class="muted">GPS gives real distance and nearest-first results.</span>
     </div>
     <p id="emergencyMessage" class="msg"></p>
@@ -1000,7 +1000,7 @@
         <h2 style="margin:0">My emergency arrival notices</h2>
         <p class="muted">Advance notices only. They do not guarantee admission, a bed, ambulance dispatch, or treatment priority.</p>
       </div>
-      <button class="btn secondary" onclick="loadMyEmergencyNotices()">Refresh</button>
+      <button class="btn secondary" onclick="loadMyEmergencyNotices()">Refresh arrival notices</button>
     </div>
     <div id="myEmergencyNotices"></div>
   </div>
@@ -1140,7 +1140,7 @@
         <h1>My Care Timeline</h1>
         <p class="page-subtitle">Your consultations, reports, referrals, diagnostics, pharmacy requests and follow-ups in one chronological view.</p>
       </div>
-      <button class="btn secondary" onclick="loadCareTimeline()">Refresh</button>
+      <button class="btn secondary" onclick="loadCareTimeline()">Refresh timeline</button>
     </div>
 
     <div class="card timeline-summary-card">
@@ -1281,7 +1281,7 @@
           <h2>Medical book library</h2>
           <p class="muted">Your uploaded PDFs and their indexing status.</p>
         </div>
-        <button class="btn secondary" onclick="loadMedicalBookLibrary()">Refresh</button>
+        <button class="btn secondary" onclick="loadMedicalBookLibrary()">Refresh library</button>
       </div>
       <div id="medicalBookLibraryList"></div>
     </div>
@@ -1334,7 +1334,7 @@
         <h2>My follow-up timeline</h2>
         <p class="muted">Upcoming follow-ups appear first. Overdue follow-ups remain visible until you act on them.</p>
       </div>
-      <button class="btn secondary" onclick="loadPatientFollowups()">Refresh</button>
+      <button class="btn secondary" onclick="loadPatientFollowups()">Refresh follow-ups</button>
     </div>
     <div id="patientFollowupList"><p class="muted">Loading follow-ups...</p></div>
   </div>
@@ -1347,7 +1347,7 @@
       <h1>Reports hub</h1>
       <p class="page-subtitle">Upload and organize laboratory reports, imaging reports and other investigation documents in one place.</p>
     </div>
-    
+    <button id="reportsAddButton" class="btn hidden" type="button" onclick="toggleReportUpload()" aria-expanded="false" aria-controls="reportsPatientUploadCard">Add report</button>
   </div>
 
   <div id="reportsPatientUploadCard" class="card hidden">
@@ -1402,7 +1402,7 @@
         <h2 id="reportsListTitle">My reports</h2>
         <p id="reportsListSubtitle" class="muted">Your uploaded reports and investigations.</p>
       </div>
-      <button class="btn secondary" onclick="loadReportsHub()">Refresh</button>
+      <button class="btn secondary" onclick="loadReportsHub()">Refresh reports</button>
     </div>
 
     <div id="reportsList">
@@ -1504,13 +1504,13 @@
       <div class="mental-hero"><div><span class="eyebrow">MENTAL HEALTH</span><h1>Support that feels private, simple and human.</h1><p class="home-lead">Find the right professional without needing to know every clinical title first. Mental-health records stay separate from your general medical record.</p></div><div class="mental-privacy-card"><b>Private by default</b><p>Mental-health summaries are not automatically shared through normal medical-record consent.</p><button class="btn secondary" type="button" onclick="scrollMentalPrivacy()">Manage privacy</button></div></div>
       <div class="mental-crisis-card"><div><b>Need urgent help right now?</b><p>If you may harm yourself or someone else, feel unable to stay safe, or have a severe emergency, do not wait for an online session.</p></div><button class="btn danger-action" type="button" onclick="showPage('emergency')">Open emergency care</button></div>
       <div class="card"><small>START WITH WHAT YOU FEEL</small><h2>How can we help today?</h2><div class="mental-concern-grid"><button type="button" onclick="setMentalConcern('talk_to_someone')">I want to talk to someone</button><button type="button" onclick="setMentalConcern('anxiety_stress')">Anxiety or stress</button><button type="button" onclick="setMentalConcern('low_mood')">Low mood</button><button type="button" onclick="setMentalConcern('sleep')">Sleep problems</button><button type="button" onclick="setMentalConcern('relationship_family')">Relationship or family</button><button type="button" onclick="setMentalConcern('addiction')">Addiction support</button><button type="button" onclick="setMentalConcern('child_adolescent')">Child / adolescent support</button><button type="button" onclick="setMentalConcern('medication_review')">Medication review</button></div></div>
-      <div class="card mental-search-card"><div class="row between"><div><small>FIND SUPPORT</small><h2>Professionals</h2></div><button class="btn secondary" type="button" onclick="loadMentalHealthProviders(true)">Refresh</button></div><div class="formgrid"><label>Professional type<select id="mentalProviderTypeFilter"><option value="">Any appropriate professional</option><option value="psychiatrist">Psychiatrist</option><option value="clinical_psychologist">Clinical Psychologist</option><option value="counselling_psychologist">Counselling Psychologist</option><option value="counsellor">Counsellor</option><option value="therapist">Therapist</option></select></label><label>Session type<select id="mentalModeFilter"><option value="">Online or in person</option><option value="online">Online</option><option value="in_person">In person</option></select></label><label>Language<input id="mentalLanguageFilter" placeholder="e.g. Hindi"></label><label>City / district<input id="mentalPlaceFilter" placeholder="e.g. Pratapgarh"></label></div><div class="actions"><button class="btn" type="button" onclick="loadMentalHealthProviders(true)">Find support</button><button class="btn secondary" type="button" onclick="resetMentalFilters()">Reset</button></div><p id="mentalProviderMessage" class="msg" aria-live="polite"></p></div>
+      <div class="card mental-search-card"><div class="row between"><div><small>FIND SUPPORT</small><h2>Professionals</h2></div></div><div class="formgrid"><label>Professional type<select id="mentalProviderTypeFilter"><option value="">Any appropriate professional</option><option value="psychiatrist">Psychiatrist</option><option value="clinical_psychologist">Clinical Psychologist</option><option value="counselling_psychologist">Counselling Psychologist</option><option value="counsellor">Counsellor</option><option value="therapist">Therapist</option></select></label><label>Session type<select id="mentalModeFilter"><option value="">Online or in person</option><option value="online">Online</option><option value="in_person">In person</option></select></label><label>Language<input id="mentalLanguageFilter" placeholder="e.g. Hindi"></label><label>City / district<input id="mentalPlaceFilter" placeholder="e.g. Pratapgarh"></label></div><div class="actions"><button class="btn" type="button" onclick="loadMentalHealthProviders(true)">Find support</button><button class="btn secondary" type="button" onclick="resetMentalFilters()">Reset filters</button></div><p id="mentalProviderMessage" class="msg" aria-live="polite"></p></div>
       <div id="mentalProviderResults" aria-live="polite"></div>
       <div id="mentalBookingCard" class="card hidden"><div class="row between"><div><small>REQUEST SESSION</small><h2 id="mentalBookingProviderName">Professional</h2></div><button class="btn secondary" type="button" onclick="closeMentalBooking()">Close</button></div><form class="formgrid" onsubmit="requestMentalHealthAppointment(event)"><input id="mentalBookingProviderId" type="hidden"><label>Date *<input id="mentalBookingDate" type="date" required></label><label>Time *<input id="mentalBookingTime" type="time" required></label><label>Session type *<select id="mentalBookingMode" required><option value="online">Online</option><option value="in_person">In person</option></select></label><label>Support needed *<select id="mentalBookingConcern" required><option value="talk_to_someone">I want to talk to someone</option><option value="anxiety_stress">Anxiety or stress</option><option value="low_mood">Low mood</option><option value="sleep">Sleep problems</option><option value="relationship_family">Relationship / family</option><option value="addiction">Addiction support</option><option value="child_adolescent">Child / adolescent support</option><option value="medication_review">Medication review</option><option value="other">Other</option></select></label><label class="span2">Anything you want the professional to know?<textarea id="mentalBookingNote" rows="3" maxlength="1200" placeholder="Optional. Keep it brief; you can discuss details privately in the session."></textarea></label><div class="actions span2"><button class="btn">Send session request</button></div></form><p id="mentalBookingMessage" class="msg" aria-live="polite"></p></div>
-      <div class="card"><div class="row between"><div><small>YOUR CARE</small><h2>Sessions</h2></div><button class="btn secondary" type="button" onclick="loadMentalHealthAppointments()">Refresh</button></div><div id="mentalPatientAppointments"></div></div>
+      <div class="card"><div class="row between"><div><small>YOUR CARE</small><h2>Sessions</h2></div><button class="btn secondary" type="button" onclick="loadMentalHealthAppointments()">Refresh sessions</button></div><div id="mentalPatientAppointments"></div></div>
       <div id="mentalPrivacySection" class="card mental-privacy-section"><small>MENTAL HEALTH PRIVACY</small><h2>Share previous session summaries only when you choose</h2><p class="muted">General MediBridge consent does not unlock mental-health summaries. Grant a verified mental-health professional separate, time-limited access.</p><div id="mentalConsentEmptyState" class="empty-state hidden"><h3>No verified professional to share with yet</h3><p class="muted">Complete a session request after a professional is verified. This control will become available when at least one verified mental-health professional is in the network.</p></div><div id="mentalConsentControls"><div class="formgrid"><label>Professional<select id="mentalConsentProvider"><option value="">Choose professional</option></select></label><label>Access duration<select id="mentalConsentDuration"><option value="24">24 hours</option><option value="168" selected>7 days</option><option value="720">30 days</option><option value="0">Until revoked</option></select></label></div><div class="actions"><button id="mentalConsentGrantBtn" class="btn" type="button" onclick="grantMentalHealthConsent()">Share session summaries</button></div></div><div id="mentalConsentList" aria-live="polite"></div><p id="mentalConsentMessage" class="msg" aria-live="polite"></p></div>
     </div>
-    <div id="mentalProviderView" class="hidden"><div class="row between"><div><span class="eyebrow">MENTAL HEALTH PROFESSIONAL</span><h1>Session workspace</h1><p class="page-subtitle">Requests, patient-visible summaries and private professional notes stay separated.</p></div><span id="mentalProviderVerificationBadge" class="badge">pending</span></div><div id="mentalProviderVerificationNotice" class="card"></div><div class="card"><div class="row between"><div><small>SESSION REQUESTS</small><h2>Your mental-health sessions</h2></div><button class="btn secondary" onclick="loadMentalProviderAppointments()">Refresh</button></div><div id="mentalProviderAppointments"></div></div><div id="mentalProviderRecordEditor" class="card hidden"><div class="row between"><div><small>SESSION RECORD</small><h2 id="mentalProviderRecordTitle">Session</h2></div><button class="btn secondary" onclick="closeMentalRecordEditor()">Close</button></div><input id="mentalRecordAppointmentId" type="hidden"><label>Patient-visible summary<textarea id="mentalPatientSummary" rows="5" maxlength="5000"></textarea></label><label>Care plan / next steps<textarea id="mentalCarePlan" rows="4" maxlength="5000"></textarea></label><label>Follow-up date<input id="mentalFollowupDate" type="date"></label><div id="mentalPrivateNoteBox" class="mental-private-note-box"><label for="mentalPrivateNote"><b>Private professional note</b></label><p id="mentalPrivateNoteHelp" class="muted small-note">Stored separately. Not visible to the patient and not part of general MediBridge records. Do not use this field for information that must be visible to the patient.</p><textarea id="mentalPrivateNote" rows="6" maxlength="10000" aria-describedby="mentalPrivateNoteHelp"></textarea></div><div class="actions"><button id="mentalRecordSaveBtn" class="btn" onclick="saveMentalSessionRecord()">Save session record</button></div><p id="mentalRecordMessage" class="msg"></p></div></div>
+    <div id="mentalProviderView" class="hidden"><div class="row between"><div><span class="eyebrow">MENTAL HEALTH PROFESSIONAL</span><h1>Session workspace</h1><p class="page-subtitle">Requests, patient-visible summaries and private professional notes stay separated.</p></div><span id="mentalProviderVerificationBadge" class="badge">Pending verification</span></div><div id="mentalProviderVerificationNotice" class="card"></div><div class="card"><div class="row between"><div><small>SESSION REQUESTS</small><h2>Your mental-health sessions</h2></div><button class="btn secondary" onclick="loadMentalProviderAppointments()">Refresh sessions</button></div><div id="mentalProviderAppointments"></div></div><div id="mentalProviderRecordEditor" class="card hidden"><div class="row between"><div><small>SESSION RECORD</small><h2 id="mentalProviderRecordTitle">Session</h2></div><button class="btn secondary" onclick="closeMentalRecordEditor()">Close</button></div><input id="mentalRecordAppointmentId" type="hidden"><label>Patient-visible summary<textarea id="mentalPatientSummary" rows="5" maxlength="5000"></textarea></label><label>Care plan / next steps<textarea id="mentalCarePlan" rows="4" maxlength="5000"></textarea></label><label>Follow-up date<input id="mentalFollowupDate" type="date"></label><div id="mentalPrivateNoteBox" class="mental-private-note-box"><label for="mentalPrivateNote"><b>Private professional note</b></label><p id="mentalPrivateNoteHelp" class="muted small-note">Stored separately. Not visible to the patient and not part of general MediBridge records. Do not use this field for information that must be visible to the patient.</p><textarea id="mentalPrivateNote" rows="6" maxlength="10000" aria-describedby="mentalPrivateNoteHelp"></textarea></div><div class="actions"><button id="mentalRecordSaveBtn" class="btn" onclick="saveMentalSessionRecord()">Save session record</button></div><p id="mentalRecordMessage" class="msg"></p></div></div>
   </div>
 </section>
 
@@ -1548,13 +1548,13 @@
 
     <div class="card">
       <div id="patientAiControls" class="hidden">
-        <h2>Patient AI</h2>
+        <h2>How can AI help?</h2>
         <div class="tabs ai-mode-tabs">
           <button class="active" data-ai-mode="patient_explain" onclick="setAiMode('patient_explain',this)">Explain simply</button>
           <button data-ai-mode="patient_questions" onclick="setAiMode('patient_questions',this)">Prepare questions</button>
           <button data-ai-mode="patient_summary" onclick="setAiMode('patient_summary',this)">Summarize my record</button>
         </div>
-        <p class="muted">General chat uses MediBridge's secure AI backend. Record-based summary stays on the existing consent-aware MediBridge backend.</p>
+        <p class="muted">General questions do not use your health record. A record summary uses only the selected family profile and permitted information.</p>
       </div>
 
       <div id="doctorAiControls" class="hidden">
@@ -1589,7 +1589,7 @@
       <div id="aiChatThread" class="ai-chat-thread" aria-live="polite">
         <div class="ai-chat-empty">
           <b>MediBridge AI</b>
-          <p>Ask a health-information or clinical-reference question. Your chat stays in this browser session and is not saved to Supabase.</p>
+          <p>Ask a health-information or clinical-reference question. This chat is temporary and is not added to your health record.</p>
         </div>
       </div>
 
@@ -1626,11 +1626,11 @@
         <p class="page-subtitle">Control which verified doctors can access specific parts of your MediBridge record.</p>
         <p id="consentSubjectContext" class="family-context-banner"></p>
       </div>
-      <button class="btn secondary" onclick="loadConsentPage()">Refresh</button>
+      <button class="btn secondary" onclick="loadConsentPage()">Refresh access</button>
     </div>
 
     <div class="card patient-access-requests-card">
-      <div class="row between"><div><small>DOCTOR REQUESTS</small><h2>Pending access requests</h2><p class="muted">A doctor can ask, but only you can approve what is shared and for how long.</p></div><button class="btn secondary" onclick="loadPendingAccessRequests()">Refresh</button></div>
+      <div class="row between"><div><small>DOCTOR REQUESTS</small><h2>Pending access requests</h2><p class="muted">A doctor can ask, but only you can approve what is shared and for how long.</p></div><button class="btn secondary" onclick="loadPendingAccessRequests()">Refresh requests</button></div>
       <div id="pendingAccessRequests"></div>
     </div>
 
@@ -1719,7 +1719,7 @@
         <button id="notificationFilterAll" class="btn secondary notification-filter active" onclick="setNotificationFilter('all')">All</button>
         <button id="notificationFilterUnread" class="btn secondary notification-filter" onclick="setNotificationFilter('unread')">Unread</button>
         <button class="btn secondary" onclick="markAllNotificationsRead()">Mark all read</button>
-        <button class="btn secondary" onclick="loadNotificationsPage()">Refresh</button>
+        <button class="btn secondary" onclick="loadNotificationsPage()">Refresh notifications</button>
       </div>
     </div>
 
@@ -1738,7 +1738,7 @@
         <small>CARE COORDINATION</small>
         <h1>Referrals</h1>
       </div>
-      <button class="btn secondary" onclick="loadReferrals()">Refresh</button>
+      <button class="btn secondary" onclick="loadReferrals()">Refresh referrals</button>
     </div>
     <div id="referralsList"></div>
     <p id="referralsMessage" class="msg"></p>
@@ -1844,7 +1844,7 @@
           <h2 style="margin:0">Your saved schedule</h2>
           <p class="muted">Patients will later book from these working hours.</p>
         </div>
-        <button class="btn secondary" onclick="loadAvailability()">Refresh</button>
+        <button class="btn secondary" onclick="loadAvailability()">Refresh availability</button>
       </div>
     </div>
 
@@ -1872,7 +1872,7 @@
           <h2>Find a diagnostic centre</h2>
           <p class="muted">Choose a city/district or use GPS first. MediBridge will not show the entire lab network globally.</p>
         </div>
-        <button class="btn secondary" onclick="loadPatientDiagnosticsPage()">Refresh</button>
+        <button class="btn secondary" onclick="loadPatientDiagnosticsPage()">Refresh diagnostics</button>
       </div>
 
       <div class="formgrid diagnostics-search-grid">
@@ -1911,7 +1911,7 @@
           <h2>Test catalogue</h2>
           <p class="muted">Add the tests/services this diagnostic centre offers.</p>
         </div>
-        <button class="btn secondary" onclick="loadLabCatalogue()">Refresh</button>
+        <button class="btn secondary" onclick="loadLabCatalogue()">Refresh catalogue</button>
       </div>
 
       <form class="formgrid" onsubmit="addLabTest(event)">
@@ -1940,7 +1940,7 @@
           <h2>Diagnostic requests</h2>
           <p class="muted">Patient requests sent to this centre.</p>
         </div>
-        <button class="btn secondary" onclick="loadLabDiagnosticInbox()">Refresh</button>
+        <button class="btn secondary" onclick="loadLabDiagnosticInbox()">Refresh requests</button>
       </div>
       <div id="labDiagnosticInbox"></div>
     </div>
@@ -1969,7 +1969,7 @@
           <h2>Find a pharmacy</h2>
           <p class="muted">Find verified participating pharmacies by your current location or by city/district.</p>
         </div>
-        <button class="btn secondary" onclick="loadPatientPharmacyPage()">Refresh</button>
+        <button class="btn secondary" onclick="loadPatientPharmacyPage()">Refresh pharmacies</button>
       </div>
 
       <div class="formgrid pharmacy-discovery-grid">
@@ -2000,7 +2000,7 @@
           <h2>My prescriptions</h2>
           <p class="muted">Choose a completed consultation and send its prescription to a verified participating pharmacy.</p>
         </div>
-        <button class="btn secondary" onclick="loadPatientPharmacyPage()">Refresh</button>
+        <button class="btn secondary" onclick="loadPatientPharmacyPage()">Refresh medicine requests</button>
       </div>
       <div id="patientPrescriptionFulfilmentList"></div>
     </div>
@@ -2018,7 +2018,7 @@
           <h2>Prescription requests</h2>
           <p class="muted">Requests sent by patients to this pharmacy.</p>
         </div>
-        <button class="btn secondary" onclick="loadPharmacyInbox()">Refresh</button>
+        <button class="btn secondary" onclick="loadPharmacyInbox()">Refresh requests</button>
       </div>
       <div id="pharmacyRequestInbox"></div>
     </div>
@@ -2042,7 +2042,7 @@
         <small>MEDIBRIDGE ADMIN</small>
         <h1>Doctor verification</h1>
       </div>
-      <button class="btn secondary" onclick="loadPendingDoctors()">Refresh</button>
+      <button class="btn secondary" onclick="loadPendingDoctors()">Refresh applications</button>
     </div>
 
     <div class="card">
@@ -2146,5 +2146,5 @@
 <script defer src="video-provider-config.js?v=39"></script>
 <script defer src="medibridge-observability-v39-1.js?v=39.1"></script>
 <script defer src="governance-v39-1.js?v=39.1"></script>
-<script defer src="app-v39-1.js?v=39.1"></script>
+<script defer src="app-v39-2.js?v=39.2"></script>
 </body></html>
