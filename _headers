@@ -1,32 +1,7 @@
 /*
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  X-Frame-Options: DENY
-  X-Permitted-Cross-Domain-Policies: none
-  Permissions-Policy: geolocation=(self), camera=(self "https://meet.jit.si"), microphone=(self "https://meet.jit.si"), payment=(), usb=(), serial=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://meet.jit.si; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.supabase.in wss://*.supabase.in https://meet.jit.si https://*.jit.si wss://meet.jit.si wss://*.jit.si; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob:; worker-src 'self' blob:; frame-src https://meet.jit.si https://*.jit.si; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  X-MediBridge-Build: 39
+  Content-Security-Policy-Report-Only: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'self'; report-uri /.netlify/functions/csp-report
 
-/index.html
-  Cache-Control: public, max-age=0, must-revalidate
-
-/
-  Cache-Control: public, max-age=0, must-revalidate
-
-/app-v38.js
-  Cache-Control: public, max-age=31536000, immutable
-
-/style-v38.css
-  Cache-Control: public, max-age=31536000, immutable
-
-/supabase-config.js
-  Cache-Control: public, max-age=0, must-revalidate
-
-/ai-config.js
-  Cache-Control: public, max-age=3600
-
-/medibridge-ai-service.js
-  Cache-Control: public, max-age=3600
-
-/.netlify/functions/*
-  Cache-Control: no-store
+/site.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=86400
