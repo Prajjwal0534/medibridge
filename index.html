@@ -2,11 +2,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="MediBridge connects patients and families with verified healthcare providers, appointments, records, diagnostics, pharmacies, mental-health services and emergency-care navigation in India.">
 <meta name="robots" content="index,follow,max-image-preview:large">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light">
 <meta name="application-name" content="MediBridge">
 <meta name="apple-mobile-web-app-title" content="MediBridge">
-<meta name="build-version" content="39.4">
+<meta name="build-version" content="39.5">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3">
-<link rel="stylesheet" href="style-v39-4.css?v=39.4">
+<link rel="stylesheet" href="style-v39-5.css?v=39.5">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MediBridge","url":"https://celebrated-gecko-efd469.netlify.app/","description":"Connected healthcare platform for patients and families in India."}</script></head><body>
 <noscript><div class="noscript-notice"><b>MediBridge needs JavaScript to run.</b> For a life-threatening emergency in India, call <a href="tel:112">112</a> now or go to the nearest emergency department.</div></noscript>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
@@ -37,15 +37,15 @@
 
   <div class="header-actions">
     <button id="headerAiBtn" class="header-action ai-header-action hidden" type="button" onclick="showPage('ai')" aria-label="Open MediBridge AI">
-      <span aria-hidden="true">✦</span><span class="header-action-label"><span class="header-label-full">MediBridge AI</span><span class="header-label-short">AI</span></span>
+      <svg class="mb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4L12 3ZM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/></svg><span class="header-action-label"><span class="header-label-full">MediBridge AI</span><span class="header-label-short">AI</span></span>
     </button>
 
     <button id="headerEmergencyBtn" class="header-action emergency-header-action" type="button" onclick="showPage('emergency')" aria-label="Find emergency care">
-      <span aria-hidden="true">＋</span><span class="header-action-label"><span class="header-label-full">Emergency</span><span class="header-label-short">Emergency</span></span>
+      <svg class="mb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="header-action-label"><span class="header-label-full">Emergency</span><span class="header-label-short">Emergency</span></span>
     </button>
 
     <button id="headerNotificationsBtn" class="header-action notification-header-action hidden" type="button" onclick="showPage('notifications')" aria-label="Open notifications">
-      <span aria-hidden="true">◌</span>
+      <svg class="mb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></svg>
       <span class="header-action-label">Notifications</span>
       <span id="headerNotificationBadge" class="notification-count hidden">0</span>
     </button>
@@ -103,8 +103,8 @@
   <div class="home-hero">
     <div class="home-hero-copy mobile-priority-copy">
       <span class="eyebrow">CONNECTED HEALTHCARE FOR INDIA</span>
-      <h1>Your family's healthcare, connected in one place.</h1>
-      <p class="home-lead">Find the right care, book appointments, keep reports and prescriptions together, and manage family health without juggling different apps.</p>
+      <h1>Your family's care, all in one place.</h1>
+      <p class="home-lead">Find trusted care, manage appointments and keep every family member's health journey connected.</p>
 
       <div class="home-primary-actions">
         <button id="homePrimaryCta" class="btn btn-large" type="button" onclick="handleHomePrimaryAction()">Get started</button>
@@ -140,10 +140,10 @@
   </div>
 
   <div class="home-service-grid" aria-label="MediBridge services">
-    <button class="service-tile" type="button" onclick="showPage('diagnostics')"><span aria-hidden="true">⌁</span><b>Diagnostics</b><small>Tests, centres and reports</small></button>
-    <button class="service-tile" type="button" onclick="showPage('pharmacy')"><span aria-hidden="true">＋</span><b>Pharmacy</b><small>Prescription fulfilment</small></button>
-    <button class="service-tile mental-service-tile" type="button" onclick="showPage('mental')"><span aria-hidden="true">♡</span><b>Mental Health</b><small>Private support and sessions</small></button><button class="service-tile" type="button" onclick="showPage('ai')"><span aria-hidden="true">✦</span><b>MediBridge AI</b><small>Understand and prepare</small></button>
-    <button class="service-tile" type="button" onclick="showPage('consent')"><span aria-hidden="true">✓</span><b>Privacy & consent</b><small>You control record access</small></button>
+    <button class="service-tile" type="button" onclick="showPage('diagnostics')"><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 8.5A2.3 2.3 0 0 0 7 21h10a2.3 2.3 0 0 0 2-3.5L14 9V3M8 15h8"/></svg></span><b>Diagnostics</b><small>Tests, centres and reports</small></button>
+    <button class="service-tile" type="button" onclick="showPage('pharmacy')"><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5h6M12 2v6M6.5 8h11a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2ZM9 14h6M12 11v6"/></svg></span><b>Pharmacy</b><small>Prescription fulfilment</small></button>
+    <button class="service-tile mental-service-tile" type="button" onclick="showPage('mental')"><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></span><b>Mental Health</b><small>Private support and sessions</small></button><button class="service-tile" type="button" onclick="showPage('ai')"><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4L12 3ZM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/></svg></span><b>MediBridge AI</b><small>Understand and prepare</small></button>
+    <button class="service-tile" type="button" onclick="showPage('consent')"><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.9 8.1 7 10 4.1-1.9 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><b>Privacy & consent</b><small>You control record access</small></button>
   </div>
 
   <div class="home-care-principle">
@@ -152,7 +152,7 @@
   </div>
 </section>
 
-<section id="page-auth" class="page"><div class="auth"><div class="card"><div class="tabs"><button id="tabLogin" class="active" onclick="setAuthMode('login')">Login</button><button id="tabSignup" onclick="setAuthMode('signup')">Create account</button></div><form onsubmit="submitAuth(event)"><div id="signupFields" class="hidden"><label>Full name<input id="fullName" autocomplete="name"></label><label>Join as<select id="signupRole"><option value="patient">Patient / Citizen</option><option value="doctor">Doctor</option><option value="hospital">Hospital / Clinic</option><option value="pharmacy">Pharmacy / Medical Store</option><option value="lab">Diagnostic Centre / Lab</option><option value="mental_health">Mental Health Professional</option></select></label><label>Authority to create this account<select id="signupAuthority"><option value="">Choose one</option><option value="adult_self">I am an adult creating my own account</option><option value="parent_guardian">I am a parent or legal guardian managing a minor's care</option><option value="organisation_representative">I am authorised to represent this healthcare organisation</option></select></label><div class="legal-consent-box"><label class="consent-item" for="signupLegalConsent"><input id="signupLegalConsent" type="checkbox"> <span>I have read and agree to the <button class="inline-link-button" type="button" onclick="showPage('terms')">Terms</button> and acknowledge the <button class="inline-link-button" type="button" onclick="showPage('privacy')">Privacy Notice</button> (version 2026-08-25-v1).</span></label><p class="muted small-note">A minor must not create an account alone. A parent or lawful guardian must manage the account and family profile.</p></div></div><label>Email<input id="email" type="email" autocomplete="email" required></label><label>Password<input id="password" type="password" minlength="8" autocomplete="current-password" required></label><button id="authSubmit" class="btn auth-submit-btn">Login</button></form><div class="auth-secondary-action"><button id="forgotPasswordBtn" type="button" class="link-button" onclick="requestPasswordReset()">Forgot password?</button></div><p id="authMessage" class="msg" aria-live="polite"></p></div><div class="card auth-trust-card"><h3>Your healthcare account</h3><p>✓ Role-based access</p><p>✓ Private provider verification documents</p><p>✓ Patient-controlled record sharing</p><p class="muted small-note">Use only information you are authorised to manage. MediBridge is not a replacement for emergency services.</p></div></div></section>
+<section id="page-auth" class="page"><div class="auth"><div class="card auth-main-card"><div class="auth-heading"><span class="eyebrow">WELCOME TO MEDIBRIDGE</span><h1>Healthcare, kept together.</h1><p class="muted">Sign in to manage appointments, records and family health.</p></div><div class="tabs"><button id="tabLogin" class="active" onclick="setAuthMode('login')">Sign in</button><button id="tabSignup" onclick="setAuthMode('signup')">Create account</button></div><form onsubmit="submitAuth(event)"><div id="signupFields" class="hidden"><label>Full name<input id="fullName" autocomplete="name"></label><label>Join as<select id="signupRole"><option value="patient">Patient / Citizen</option><option value="doctor">Doctor</option><option value="hospital">Hospital / Clinic</option><option value="pharmacy">Pharmacy / Medical Store</option><option value="lab">Diagnostic Centre / Lab</option><option value="mental_health">Mental Health Professional</option></select></label><label>Authority to create this account<select id="signupAuthority"><option value="">Choose one</option><option value="adult_self">I am an adult creating my own account</option><option value="parent_guardian">I am a parent or legal guardian managing a minor's care</option><option value="organisation_representative">I am authorised to represent this healthcare organisation</option></select></label><p class="muted small-note auth-policy-note">By creating an account, you agree to the <button class="inline-link-button" type="button" onclick="showPage('terms')">Terms</button> and can read the <button class="inline-link-button" type="button" onclick="showPage('privacy')">Privacy Notice</button>. A parent or lawful guardian must manage a minor's profile.</p></div><label>Email<input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input id="password" type="password" minlength="8" autocomplete="current-password" required placeholder="At least 8 characters"></label><button id="authSubmit" class="btn auth-submit-btn">Sign in</button></form><div class="auth-secondary-action"><button id="forgotPasswordBtn" type="button" class="link-button" onclick="requestPasswordReset()">Forgot password?</button></div><p id="authMessage" class="msg" aria-live="polite"></p></div><div class="card auth-trust-card"><span class="eyebrow">BUILT FOR TRUST</span><h2>One secure place for your care journey.</h2><div class="auth-benefit"><span>✓</span><div><b>Your records stay connected</b><small>Appointments, reports and prescriptions in one place.</small></div></div><div class="auth-benefit"><span>✓</span><div><b>You control access</b><small>Choose which verified providers can view specific records.</small></div></div><div class="auth-benefit"><span>✓</span><div><b>Every family member stays separate</b><small>One login, distinct healthcare profiles.</small></div></div></div></div></section>
 
 <section id="page-password-reset" class="page">
   <div class="auth">
@@ -188,17 +188,6 @@
     <article class="card"><h2>Family and minors</h2><p>The signed-in patient is the account owner; the selected Family Profile represents the person receiving care. The account owner must have lawful authority to manage that person's data. A parent or legal guardian must manage a minor's profile.</p></article>
     <article class="card"><h2>Retention and deletion</h2><p>Production retention periods are not yet legally approved. During the controlled beta, only synthetic/demo data is permitted. Data-rights requests are logged below; deletion may preserve limited audit or legal records where lawfully required, and the final schedule must be published before real-data launch.</p></article>
   </div>
-  <div id="policyAcceptanceCard" class="card">
-    <small>VERSIONED ACKNOWLEDGEMENT</small><h2>Current notice status</h2>
-    <div id="policyAcceptanceStatus" class="muted" aria-live="polite">Sign in to check your acknowledgement.</div>
-    <p class="muted small-note">Until the current version is acknowledged, signed-in accounts can read this notice, the Terms and Emergency care, but protected healthcare workflows remain locked.</p>
-    <form id="policyAcceptanceForm" class="formgrid hidden" onsubmit="recordCurrentPolicyAcceptance(event)">
-      <label>Authority for this account<select id="privacyAccountAuthority" required><option value="">Choose authority</option><option value="adult_self">Adult managing my own account</option><option value="parent_guardian">Parent or legal guardian</option><option value="organisation_representative">Authorised healthcare organisation representative</option></select></label>
-      <label class="consent-item span2"><input id="privacyPolicyConfirm" type="checkbox" required> I acknowledge the Privacy Notice and agree to the Terms, version 2026-08-25-v1.</label>
-      <div class="actions span2"><button class="btn">Record acknowledgement</button></div>
-      <p id="policyAcceptanceMessage" class="msg span2" aria-live="polite"></p>
-    </form>
-  </div>
   <div id="privacyRequestCard" class="card">
     <small>YOUR DATA RIGHTS</small><h2>Request a copy, correction, restriction or deletion</h2>
     <p class="muted">Requests are tied to the signed-in account and should never include medical details in the free-text box.</p>
@@ -227,7 +216,7 @@
   </div>
 </section>
 
-<section id="page-dashboard" class="page"><div id="dashGate" class="card"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Login</button></div><div id="dashContent" class="hidden"><div class="dashboard-heading row between"><div><small>YOUR MEDIBRIDGE</small><h1 id="dashTitle">Dashboard</h1><p class="page-subtitle">Your most useful next actions, without the clutter.</p></div><span id="verifyBadge" class="badge">pending</span></div><div id="dashCards" class="dashboard-action-grid"></div>
+<section id="page-dashboard" class="page"><div id="dashGate" class="card"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Sign in</button></div><div id="dashContent" class="hidden"><div class="dashboard-heading row between"><div><small>YOUR MEDIBRIDGE</small><h1 id="dashTitle">Dashboard</h1><p class="page-subtitle">Everything important, at a glance.</p></div><span id="verifyBadge" class="badge">pending</span></div><div id="dashCards" class="dashboard-action-grid"></div>
 <div id="patientFollowupDashboardCard" class="card hidden">
   <div class="row between">
     <div>
@@ -2102,7 +2091,7 @@
 <footer class="site-footer" aria-label="MediBridge information">
   <div><b>MediBridge</b><p>Connected healthcare prototype for India. AI supports care; it does not replace clinicians.</p></div>
   <nav aria-label="Legal and safety"><button type="button" onclick="showPage('privacy')">Privacy & data rights</button><button type="button" onclick="showPage('terms')">Terms</button><button type="button" onclick="showPage('emergency')">Emergency care</button><a href="tel:112">Call 112</a></nav>
-  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 39.4">Version 39.4</span></small>
+  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 39.5">Version 39.5</span></small>
 </footer>
 <div id="toast" class="toast hidden"></div>
 
@@ -2149,6 +2138,6 @@
 <script defer src="medibridge-ai-service.js?v=32"></script>
 <script defer src="video-provider-config.js?v=39"></script>
 <script defer src="medibridge-observability-v39-1.js?v=39.1"></script>
-<script defer src="governance-v39-4.js?v=39.4"></script>
-<script defer src="app-v39-4.js?v=39.4"></script>
+<script defer src="governance-v39-5.js?v=39.5"></script>
+<script defer src="app-v39-5.js?v=39.5"></script>
 </body></html>
