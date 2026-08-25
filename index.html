@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="application-name" content="MediBridge">
 <meta name="apple-mobile-web-app-title" content="MediBridge">
-<meta name="build-version" content="39">
+<meta name="build-version" content="39.1">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
@@ -185,12 +185,13 @@
     <article class="card"><h2>Why it is used</h2><p>To operate connected-care workflows, verify providers, show suitable nearby care, keep each family member's record separate, deliver consent-controlled access, secure the service and provide user-requested AI explanation.</p></article>
     <article class="card"><h2>Who can receive it</h2><p>Only the account holder and authorised people or verified providers according to role, purpose, consent and database security rules. General medical consent does not unlock mental-health summaries. Private mental-health professional notes are provider-only.</p></article>
     <article class="card"><h2>AI and location</h2><p>AI supports explanation and preparation; it does not replace a clinician or make silent diagnoses. General AI requests use an authenticated server route. GPS is used to calculate nearby care and is not intentionally persisted in browser storage.</p></article>
-    <article class="card"><h2>Family and minors</h2><p>The signed-in patient is the account owner; the selected <code>subject_id</code> is the person receiving care. The account owner must have lawful authority to manage that person's data. A parent or legal guardian must manage a minor's profile.</p></article>
+    <article class="card"><h2>Family and minors</h2><p>The signed-in patient is the account owner; the selected Family Profile represents the person receiving care. The account owner must have lawful authority to manage that person's data. A parent or legal guardian must manage a minor's profile.</p></article>
     <article class="card"><h2>Retention and deletion</h2><p>Production retention periods are not yet legally approved. During the controlled beta, only synthetic/demo data is permitted. Data-rights requests are logged below; deletion may preserve limited audit or legal records where lawfully required, and the final schedule must be published before real-data launch.</p></article>
   </div>
   <div id="policyAcceptanceCard" class="card">
     <small>VERSIONED ACKNOWLEDGEMENT</small><h2>Current notice status</h2>
     <div id="policyAcceptanceStatus" class="muted" aria-live="polite">Sign in to check your acknowledgement.</div>
+    <p class="muted small-note">Until the current version is acknowledged, signed-in accounts can read this notice, the Terms and Emergency care, but protected healthcare workflows remain locked.</p>
     <form id="policyAcceptanceForm" class="formgrid hidden" onsubmit="recordCurrentPolicyAcceptance(event)">
       <label>Authority for this account<select id="privacyAccountAuthority" required><option value="">Choose authority</option><option value="adult_self">Adult managing my own account</option><option value="parent_guardian">Parent or legal guardian</option><option value="organisation_representative">Authorised healthcare organisation representative</option></select></label>
       <label class="consent-item span2"><input id="privacyPolicyConfirm" type="checkbox" required> I acknowledge the Privacy Notice and agree to the Terms, version 2026-08-25-v1.</label>
@@ -851,39 +852,39 @@
 
     <form id="consultationForm" class="formgrid" onsubmit="saveConsultation(event)" style="margin-top:14px">
       <label class="span2">Clinical notes
-        <textarea id="clinicalNotes" rows="4" placeholder="History, examination, important findings..."></textarea>
+        <textarea id="clinicalNotes" rows="4" placeholder="History, examination, important findings..." disabled></textarea>
       </label>
 
       <label class="span2">Assessment / impression
-        <textarea id="assessment" rows="3" placeholder="Clinical assessment..."></textarea>
+        <textarea id="assessment" rows="3" placeholder="Clinical assessment..." disabled></textarea>
       </label>
 
       <label>Diagnosis
-        <input id="diagnosis" placeholder="Working/final diagnosis">
+        <input id="diagnosis" placeholder="Working/final diagnosis" disabled>
       </label>
 
       <label>Follow-up date
-        <input id="followUpDate" type="date">
+        <input id="followUpDate" type="date" disabled>
       </label>
 
       <label class="span2">Investigations / tests advised
-        <textarea id="investigations" rows="3" placeholder="CBC, X-ray, etc."></textarea>
+        <textarea id="investigations" rows="3" placeholder="CBC, X-ray, etc." disabled></textarea>
       </label>
 
       <label class="span2">Advice / instructions
-        <textarea id="advice" rows="3" placeholder="General advice, precautions, follow-up instructions..."></textarea>
+        <textarea id="advice" rows="3" placeholder="General advice, precautions, follow-up instructions..." disabled></textarea>
       </label>
 
       <div class="span2">
         <div class="row between">
           <h3>Prescription</h3>
-          <button id="addMedicineBtn" class="btn secondary" type="button" onclick="addMedicineRow()">+ Add medicine</button>
+          <button id="addMedicineBtn" class="btn secondary" type="button" onclick="addMedicineRow()" disabled>+ Add medicine</button>
         </div>
         <div id="medicineRows"></div>
       </div>
 
 
-      <div id="doctorPrecompletionReview" class="span2 doctor-ai-review-panel">
+      <div id="doctorPrecompletionReview" class="span2 doctor-ai-review-panel hidden">
         <div class="row between">
           <div>
             <small>DOCTOR AI · BEFORE COMPLETION</small>
@@ -909,9 +910,9 @@
         </div>
       </div>
 
-      <div id="consultationActions" class="actions">
-        <button class="btn" type="submit">Save consultation</button>
-        <button class="btn secondary" type="button" onclick="saveAndCompleteConsultation()">Save & complete appointment</button>
+      <div id="consultationActions" class="actions hidden">
+        <button class="btn" type="submit" disabled>Save consultation</button>
+        <button class="btn secondary" type="button" onclick="saveAndCompleteConsultation()" disabled>Save & complete appointment</button>
       </div>
     </form>
 
@@ -2143,7 +2144,7 @@
 <script defer src="ai-config.js?v=32"></script>
 <script defer src="medibridge-ai-service.js?v=32"></script>
 <script defer src="video-provider-config.js?v=39"></script>
-<script defer src="medibridge-observability.js?v=39"></script>
-<script defer src="governance-v39.js?v=39"></script>
-<script defer src="app-v39.js?v=39"></script>
+<script defer src="medibridge-observability-v39-1.js?v=39.1"></script>
+<script defer src="governance-v39-1.js?v=39.1"></script>
+<script defer src="app-v39-1.js?v=39.1"></script>
 </body></html>
