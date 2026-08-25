@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="application-name" content="MediBridge">
 <meta name="apple-mobile-web-app-title" content="MediBridge">
-<meta name="build-version" content="39.2">
+<meta name="build-version" content="39.3">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3">
-<link rel="stylesheet" href="style-v39-2.css?v=39.2">
+<link rel="stylesheet" href="style-v39-3.css?v=39.3">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MediBridge","url":"https://celebrated-gecko-efd469.netlify.app/","description":"Connected healthcare platform for patients and families in India."}</script></head><body>
 <noscript><div class="noscript-notice"><b>MediBridge needs JavaScript to run.</b> For a life-threatening emergency in India, call <a href="tel:112">112</a> now or go to the nearest emergency department.</div></noscript>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
@@ -1629,13 +1629,15 @@
       <button class="btn secondary" onclick="loadConsentPage()">Refresh access</button>
     </div>
 
-    <div class="card patient-access-requests-card">
+    <div class="card patient-access-requests-card consent-section-card">
       <div class="row between"><div><small>DOCTOR REQUESTS</small><h2>Pending access requests</h2><p class="muted">A doctor can ask, but only you can approve what is shared and for how long.</p></div><button class="btn secondary" onclick="loadPendingAccessRequests()">Refresh requests</button></div>
       <div id="pendingAccessRequests"></div>
     </div>
 
-    <div class="card">
+    <div class="card consent-section-card">
+      <small>NEW ACCESS</small>
       <h2>Grant access to a verified doctor</h2>
+      <p class="muted">This is optional. Choose only the record types the doctor needs. Mental-health summaries require separate Mental Health consent.</p>
       <div class="formgrid">
         <label>Doctor
           <select id="consentDoctorSelect"></select>
@@ -1663,20 +1665,23 @@
         </div>
 
         <div class="actions">
-          <button class="btn" type="button" onclick="grantDoctorConsent()">Grant access</button>
+          <button id="grantDoctorConsentBtn" class="btn" type="button" onclick="grantDoctorConsent()">Grant selected access</button>
         </div>
       </div>
       <p id="consentMessage" class="msg"></p>
     </div>
 
-    <div class="card">
+    <div class="card consent-section-card">
+      <small>CURRENT ACCESS</small>
       <h2>Active doctor access</h2>
+      <p class="muted">These permissions allow record access until they expire or you revoke them.</p>
       <div id="activeConsents"></div>
     </div>
 
-    <div class="card">
-      <h2>Access history</h2>
-      <p class="muted">Shows recorded MediBridge record-access events.</p>
+    <div class="card consent-section-card">
+      <small>RECORDED VIEWS</small>
+      <h2>Who viewed what</h2>
+      <p class="muted">A consent grant and an actual record view are different events. This section lists recorded views of the selected family profile.</p>
       <div id="recordAccessHistory"></div>
     </div>
   </div>
@@ -2098,7 +2103,7 @@
 <footer class="site-footer" aria-label="MediBridge information">
   <div><b>MediBridge</b><p>Connected healthcare prototype for India. AI supports care; it does not replace clinicians.</p></div>
   <nav aria-label="Legal and safety"><button type="button" onclick="showPage('privacy')">Privacy & data rights</button><button type="button" onclick="showPage('terms')">Terms</button><button type="button" onclick="showPage('emergency')">Emergency care</button><a href="tel:112">Call 112</a></nav>
-  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 39.2">Version 39.2</span></small>
+  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 39.3">Version 39.3</span></small>
 </footer>
 <div id="toast" class="toast hidden"></div>
 
@@ -2146,5 +2151,5 @@
 <script defer src="video-provider-config.js?v=39"></script>
 <script defer src="medibridge-observability-v39-1.js?v=39.1"></script>
 <script defer src="governance-v39-1.js?v=39.1"></script>
-<script defer src="app-v39-2.js?v=39.2"></script>
+<script defer src="app-v39-3.js?v=39.3"></script>
 </body></html>
