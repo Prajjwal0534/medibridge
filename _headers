@@ -1,10 +1,12 @@
 /*
-  X-MediBridge-Build: 39.5
+  X-MediBridge-Build: 40
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(self), camera=(self), microphone=(self), payment=(), usb=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  X-Permitted-Cross-Domain-Policies: none
   Content-Security-Policy-Report-Only: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'self'; report-uri /.netlify/functions/csp-report
 
 /site.webmanifest
@@ -55,6 +57,21 @@
 
 /governance-v39-5.js
   Cache-Control: public, max-age=31536000, immutable
+
+/app-v40.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/medibridge-ai-service-v40.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/medibridge-observability-v40.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/
+  Cache-Control: no-cache, no-store, must-revalidate
 
 /medibridge-observability.js
   Cache-Control: public, max-age=31536000, immutable

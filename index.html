@@ -6,7 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="application-name" content="MediBridge">
 <meta name="apple-mobile-web-app-title" content="MediBridge">
-<meta name="build-version" content="39.5">
+<meta name="build-version" content="40">
+<meta name="medibridge-build" content="40">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
@@ -2091,17 +2092,17 @@
 <footer class="site-footer" aria-label="MediBridge information">
   <div><b>MediBridge</b><p>Connected healthcare prototype for India. AI supports care; it does not replace clinicians.</p></div>
   <nav aria-label="Legal and safety"><button type="button" onclick="showPage('privacy')">Privacy & data rights</button><button type="button" onclick="showPage('terms')">Terms</button><button type="button" onclick="showPage('emergency')">Emergency care</button><a href="tel:112">Call 112</a></nav>
-  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 39.5">Version 39.5</span></small>
+  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 40">Version 40</span></small>
 </footer>
 <div id="toast" class="toast hidden"></div>
 
-<div id="reportAppointmentModal" class="modal hidden">
+<div id="reportAppointmentModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="reportAppointmentModalTitle">
   <div class="modal-backdrop" onclick="closeReportAppointmentModal()"></div>
   <div class="modal-card report-link-modal-card">
     <div class="row between">
       <div>
         <small>LINK REPORT</small>
-        <h2 style="margin:4px 0 6px">Choose an appointment</h2>
+        <h2 id="reportAppointmentModalTitle" style="margin:4px 0 6px">Choose an appointment</h2>
         <p class="muted">Tap one appointment below. No typing numbers into a popup.</p>
       </div>
       <button class="btn secondary" onclick="closeReportAppointmentModal()">Close</button>
@@ -2118,7 +2119,7 @@
 </div>
 
 
-<div id="incomingVideoCallModal" class="incoming-call-modal hidden">
+<div id="incomingVideoCallModal" class="incoming-call-modal hidden" role="dialog" aria-modal="true" aria-labelledby="incomingVideoDoctorName">
   <div class="incoming-call-backdrop"></div>
   <div class="incoming-call-card">
     <div class="incoming-call-icon">📹</div>
@@ -2135,9 +2136,9 @@
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3"></script>
 <script defer src="supabase-config.js"></script>
 <script defer src="ai-config.js?v=32"></script>
-<script defer src="medibridge-ai-service.js?v=32"></script>
+<script defer src="medibridge-ai-service-v40.js?v=40"></script>
 <script defer src="video-provider-config.js?v=39"></script>
-<script defer src="medibridge-observability-v39-1.js?v=39.1"></script>
+<script defer src="medibridge-observability-v40.js?v=40"></script>
 <script defer src="governance-v39-5.js?v=39.5"></script>
-<script defer src="app-v39-5.js?v=39.5"></script>
+<script defer src="app-v40.js?v=40"></script>
 </body></html>
