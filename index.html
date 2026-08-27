@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="application-name" content="MediBridge">
 <meta name="apple-mobile-web-app-title" content="MediBridge">
-<meta name="build-version" content="40.2">
-<meta name="medibridge-build" content="40.2">
+<meta name="build-version" content="40.5">
+<meta name="medibridge-build" content="40.5">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
@@ -25,20 +25,17 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3">
+<link rel="preload" as="script" href="/app-v40-5.js?v=40.5">
+<script src="/medibridge-session-hint-v40-4.js?v=40.4"></script>
 <link rel="stylesheet" href="style-v39-5.css?v=39.5">
 <link rel="stylesheet" href="style-v40-1.css?v=40.1">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MediBridge","url":"https://celebrated-gecko-efd469.netlify.app/","description":"Connected healthcare platform for patients and families in India."}</script></head><body class="auth-resolving">
-<noscript><style>.session-restore-overlay{display:none!important}body.auth-resolving{overflow:auto}</style><div class="noscript-notice"><b>MediBridge needs JavaScript to run.</b> For a life-threatening emergency in India, call <a href="tel:112">112</a> now or go to the nearest emergency department.</div></noscript>
+<link rel="stylesheet" href="style-v40-4.css?v=40.4">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MediBridge","url":"https://celebrated-gecko-efd469.netlify.app/","description":"Connected healthcare platform for patients and families in India."}</script></head><body>
+<noscript><div class="noscript-notice"><b>MediBridge needs JavaScript to run.</b> For a life-threatening emergency in India, call <a href="tel:112">112</a> now or go to the nearest emergency department.</div></noscript>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
-<div id="sessionRestoreOverlay" class="session-restore-overlay" role="status" aria-live="polite" aria-atomic="true" aria-hidden="false">
-  <div class="session-restore-card">
-    <span class="session-restore-mark" aria-hidden="true">✚</span>
-    <div class="session-restore-spinner" aria-hidden="true"></div>
-    <h1 id="sessionRestoreTitle">Restoring your secure session…</h1>
-    <p id="sessionRestoreDetail">Checking this device for an existing MediBridge sign-in.</p>
-    <button id="sessionRestoreRetryBtn" class="btn secondary hidden" type="button" onclick="retrySessionRestore()">Retry securely</button>
-    <a href="tel:112" class="session-restore-emergency">Emergency? Call 112</a>
-  </div>
+<div id="sessionConnectionNotice" class="session-connection-notice hidden" role="alert">
+  <span id="sessionConnectionMessage">MediBridge could not connect to your account.</span>
+  <button class="btn secondary compact" type="button" onclick="retrySessionRestore()">Retry</button>
 </div>
 <header class="top app-header">
   <button class="brand brand-button" type="button" onclick="showPage('home')" aria-label="Go to MediBridge home">
@@ -228,7 +225,7 @@
   </div>
 </section>
 
-<section id="page-dashboard" class="page"><div id="dashGate" class="card dashboard-session-gate"><div id="dashGateLoading" class="dashboard-restore-state hidden" role="status" aria-live="polite"><div class="dashboard-skeleton-icon" aria-hidden="true"></div><div><h2>Opening your MediBridge</h2><p id="dashRestoreMessage" class="muted">Loading your profile and family healthcare…</p><button id="dashRestoreRetryBtn" class="btn secondary hidden" type="button" onclick="retrySessionRestore()">Retry securely</button></div></div><div id="dashGateSignedOut"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Sign in</button></div></div><div id="dashContent" class="hidden"><div class="dashboard-heading row between"><div><small>YOUR MEDIBRIDGE</small><h1 id="dashTitle">Dashboard</h1><p class="page-subtitle">Everything important, at a glance.</p></div><span id="verifyBadge" class="badge">pending</span></div><div id="dashCards" class="dashboard-action-grid"></div>
+<section id="page-dashboard" class="page"><div id="dashGate" class="card dashboard-session-gate"><div id="dashGateSignedOut"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Sign in</button></div></div><div id="dashContent" class="hidden"><div class="dashboard-heading row between"><div><small>YOUR MEDIBRIDGE</small><h1 id="dashTitle">Dashboard</h1><p class="page-subtitle">Everything important, at a glance.</p></div><span id="verifyBadge" class="badge">pending</span></div><div id="dashCards" class="dashboard-action-grid"></div>
 <div id="patientFollowupDashboardCard" class="card hidden">
   <div class="row between">
     <div>
@@ -240,7 +237,7 @@
   </div>
   <div id="patientFollowupSummary"><p class="muted">Loading follow-ups...</p></div>
 </div>
-<div class="card"><h2>Next step</h2><p id="nextStep"></p><button class="btn" onclick="showPage('profile')">Complete profile</button></div>
+<div id="dashboardNextStepCard" class="card"><h2>Next step</h2><p id="nextStep"></p><button class="btn" onclick="showPage('profile')">Complete profile</button></div>
 <div id="doctorConsentRecordsCard" class="card hidden">
   <div class="row between">
     <div>
@@ -1522,94 +1519,74 @@
   </div>
 
   <div id="aiContent" class="hidden">
-    <div class="row between">
-      <div>
-        <small>MEDIBRIDGE AI SUPPORT</small>
-        <h1 id="aiPageTitle">MediBridge AI</h1>
-        <p class="page-subtitle" id="aiPageSubtitle">A support layer for understanding health information and preparing better questions.</p>
-      </div>
-      
+    <div class="ai-page-heading">
+      <small>MEDIBRIDGE AI</small>
+      <h1 id="aiPageTitle">MediBridge AI</h1>
+      <p class="page-subtitle" id="aiPageSubtitle">Clear health information and better questions for your clinician.</p>
     </div>
 
-    <div class="card ai-safety-card">
-      <b id="aiSafetyTitle">Support, not autonomous medical care</b>
-      <p id="aiSafetyText" class="muted">AI can explain and summarize information, but it should not replace professional clinical judgment or emergency care.</p>
-    </div>
-
-    <div class="card ai-provider-status-card">
-      <div class="row between">
-        <div>
-          <small>AI STATUS</small>
-          <b id="aiProviderLabel">MediBridge AI</b>
-          <p id="aiProviderStatus" class="muted">Checking MediBridge AI...</p>
+    <section class="ai-chat-workspace" aria-labelledby="aiPageTitle">
+      <header class="ai-chat-toolbar">
+        <div class="ai-status-inline">
+          <span class="ai-status-dot" aria-hidden="true"></span>
+          <div><b id="aiProviderLabel">MediBridge AI</b><p id="aiProviderStatus" class="muted">Checking availability...</p></div>
         </div>
-        <button class="btn secondary" onclick="newMediBridgeAiChat()">Start new chat</button>
-      </div>
-    </div>
+        <button class="btn secondary compact" type="button" onclick="newMediBridgeAiChat()">New chat</button>
+      </header>
 
-    <div class="card">
-      <div id="patientAiControls" class="hidden">
-        <h2>How can AI help?</h2>
-        <div class="tabs ai-mode-tabs">
-          <button class="active" data-ai-mode="patient_explain" onclick="setAiMode('patient_explain',this)">Explain simply</button>
-          <button data-ai-mode="patient_questions" onclick="setAiMode('patient_questions',this)">Prepare questions</button>
-          <button data-ai-mode="patient_summary" onclick="setAiMode('patient_summary',this)">Summarize my record</button>
-        </div>
-        <p class="muted">General questions do not use your health record. A record summary uses only the selected family profile and permitted information.</p>
-      </div>
-
-      <div id="doctorAiControls" class="hidden">
-        <h2>Doctor AI</h2>
-        <div class="tabs ai-mode-tabs">
-          <button class="active" data-ai-mode="doctor_reference" onclick="setAiMode('doctor_reference',this)">Clinical reference</button>
-          <button data-ai-mode="doctor_patient_review" onclick="setAiMode('doctor_patient_review',this)">Review consented patient</button>
-        </div>
-
-        <label id="doctorAiPatientLabel" class="hidden" style="margin-top:12px">Consented patient
-          <select id="doctorAiPatientSelect"></select>
-        </label>
-        <p class="muted">General clinical reference uses MediBridge's secure AI backend. Patient-specific review remains on the existing consent-aware backend.</p>
-
-        <div class="grounding-panel">
-          <div class="row between">
-            <div>
-              <h3 style="margin:0">Clinical grounding</h3>
-              <p class="muted">For patient-specific review, use approved MediBridge medical sources through the existing backend.</p>
-            </div>
-            <span class="badge">RAG</span>
+      <div class="ai-chat-settings">
+        <div id="patientAiControls" class="hidden">
+          <div class="tabs ai-mode-tabs" aria-label="Choose AI help">
+            <button class="active" data-ai-mode="patient_explain" onclick="setAiMode('patient_explain',this)">Explain simply</button>
+            <button data-ai-mode="patient_questions" onclick="setAiMode('patient_questions',this)">Prepare questions</button>
+            <button data-ai-mode="patient_summary" onclick="setAiMode('patient_summary',this)">Summarize my record</button>
           </div>
+          <p class="ai-mode-help muted">Record summaries use only the selected family profile and permitted information.</p>
+        </div>
 
-          <label class="consent-item">
-            <input id="useClinicalKnowledge" type="checkbox" checked>
-            Use approved MediBridge medical sources for secure record review
+        <div id="doctorAiControls" class="hidden">
+          <div class="tabs ai-mode-tabs" aria-label="Choose doctor AI mode">
+            <button class="active" data-ai-mode="doctor_reference" onclick="setAiMode('doctor_reference',this)">Clinical reference</button>
+            <button data-ai-mode="doctor_patient_review" onclick="setAiMode('doctor_patient_review',this)">Review consented patient</button>
+          </div>
+          <label id="doctorAiPatientLabel" class="hidden ai-patient-selector">Consented patient
+            <select id="doctorAiPatientSelect"></select>
           </label>
+          <details class="ai-clinical-options">
+            <summary>Clinical grounding options</summary>
+            <p class="muted">Patient-specific review remains on the consent-aware backend.</p>
+            <label class="consent-item"><input id="useClinicalKnowledge" type="checkbox" checked> Use approved MediBridge medical sources for secure record review</label>
+          </details>
         </div>
       </div>
 
+      <div class="ai-safety-inline" role="note">
+        <b id="aiSafetyTitle">Information support only.</b>
+        <span id="aiSafetyText">MediBridge AI does not replace a clinician or emergency care.</span>
+      </div>
 
-      <div id="aiChatThread" class="ai-chat-thread" aria-live="polite">
+      <div id="aiChatThread" class="ai-chat-thread" aria-live="polite" aria-label="Conversation">
         <div class="ai-chat-empty">
           <b>MediBridge AI</b>
-          <p>Ask a health-information or clinical-reference question. This chat is temporary and is not added to your health record.</p>
+          <p>Ask a health-information question. This temporary chat is not added to your health record.</p>
         </div>
       </div>
 
-      <label style="margin-top:14px">Your message
-        <textarea id="aiPrompt" rows="4" placeholder="Ask MediBridge AI..."></textarea>
-      </label>
-
-      <div class="row ai-actions">
-        <button id="aiAskBtn" class="btn" onclick="askMediBridgeAI()">Send</button>
-        <button id="aiStopBtn" class="btn secondary hidden" onclick="stopMediBridgeAiGeneration()">Stop</button>
+      <div id="aiAnswerCard" class="ai-chat-sources hidden">
+        <div id="aiSources" class="ai-sources hidden"></div>
       </div>
 
-      <p id="aiMessage" class="msg"></p>
-      <p class="muted ai-disclaimer">For urgent or life-threatening symptoms, use Emergency care or call 112 instead of relying on AI.</p>
-    </div>
-
-    <div id="aiAnswerCard" class="card hidden">
-      <div id="aiSources" class="ai-sources hidden"></div>
-    </div>
+      <div class="ai-chat-composer">
+        <label class="sr-only" for="aiPrompt">Your message</label>
+        <div class="ai-composer-row">
+          <textarea id="aiPrompt" rows="1" placeholder="Message MediBridge AI..."></textarea>
+          <button id="aiAskBtn" class="btn ai-send-button" type="button" onclick="askMediBridgeAI()" aria-label="Send message">Send</button>
+          <button id="aiStopBtn" class="btn secondary hidden" type="button" onclick="stopMediBridgeAiGeneration()">Stop</button>
+        </div>
+        <p id="aiMessage" class="msg" aria-live="polite"></p>
+        <p class="muted ai-disclaimer">Urgent or life-threatening symptoms: use Emergency care or call 112.</p>
+      </div>
+    </section>
   </div>
 </section>
 
@@ -2103,7 +2080,7 @@
 <footer class="site-footer" aria-label="MediBridge information">
   <div><b>MediBridge</b><p>Connected healthcare prototype for India. AI supports care; it does not replace clinicians.</p></div>
   <nav aria-label="Legal and safety"><button type="button" onclick="showPage('privacy')">Privacy & data rights</button><button type="button" onclick="showPage('terms')">Terms</button><button type="button" onclick="showPage('emergency')">Emergency care</button><a href="tel:112">Call 112</a></nav>
-  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 40.2">Version 40.2</span></small>
+  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 40.5">Version 40.5</span></small>
 </footer>
 <div id="toast" class="toast hidden"></div>
 
@@ -2151,5 +2128,5 @@
 <script defer src="video-provider-config.js?v=39"></script>
 <script defer src="medibridge-observability-v40.js?v=40"></script>
 <script defer src="governance-v39-5.js?v=39.5"></script>
-<script defer src="app-v40-2.js?v=40.2"></script>
+<script defer src="app-v40-5.js?v=40.5"></script>
 </body></html>

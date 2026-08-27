@@ -1,5 +1,5 @@
 /*
-  X-MediBridge-Build: 40.2
+  X-MediBridge-Build: 40.5
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
@@ -65,6 +65,21 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /app-v40-2.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/app-v40-3.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/app-v40-4.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/app-v40-5.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/style-v40-4.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/medibridge-session-hint-v40-4.js
   Cache-Control: public, max-age=31536000, immutable
 
 /style-v40-1.css

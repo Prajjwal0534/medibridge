@@ -1,0 +1,141 @@
+/* MediBridge v40.4 — non-blocking session start and focused AI workspace. */
+
+/* Session verification stays secure in the background; no restoration stage is rendered. */
+.session-restore-overlay,
+body.auth-resolving .session-restore-overlay{display:none!important}
+body.auth-resolving{overflow:auto!important}
+
+.session-connection-notice{
+  position:fixed;
+  z-index:1001;
+  top:82px;
+  left:50%;
+  translate:-50% 0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:min(calc(100% - 32px),660px);
+  padding:10px 12px 10px 16px;
+  border:1px solid #f4c7c3;
+  border-radius:14px;
+  background:#fff8f7;
+  color:#8f2018;
+  box-shadow:0 14px 40px rgba(16,36,61,.12);
+}
+.session-connection-notice span{flex:1}
+
+/* A stored-session hint only paints a disabled dashboard shell. It grants no access. */
+html.mb-session-hint #page-home.active{display:none}
+html.mb-session-hint #page-dashboard{display:block}
+html.mb-session-hint #dashGate{display:none}
+html.mb-session-hint #dashContent{display:block!important}
+.session-shell-card{cursor:default!important;opacity:.72}
+.session-shell-card .dashboard-action-arrow{display:none}
+
+/* One calm MediBridge AI workspace: controls, conversation, then composer. */
+.ai-page-heading{margin-bottom:14px}
+.ai-page-heading h1{margin:3px 0 5px}
+.ai-page-heading .page-subtitle{margin:0}
+.ai-chat-workspace{
+  min-height:clamp(580px,70vh,780px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border:1px solid var(--mb-border,#d7e2ee);
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 14px 44px rgba(16,36,61,.08);
+}
+.ai-chat-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 18px;
+  border-bottom:1px solid var(--mb-border,#d7e2ee);
+}
+.ai-status-inline{display:flex;align-items:center;gap:10px;min-width:0}
+.ai-status-inline div{min-width:0}
+.ai-status-inline p{margin:1px 0 0;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-status-dot{width:9px;height:9px;flex:0 0 auto;border-radius:50%;background:#22a06b;box-shadow:0 0 0 4px #e5f7ef}
+.ai-chat-settings{padding:12px 18px 5px;background:#fbfdff}
+.ai-chat-settings .tabs{margin:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.ai-chat-settings .tabs::-webkit-scrollbar{display:none}
+.ai-mode-tabs button{min-height:38px;border:1px solid transparent}
+.ai-mode-tabs button.active{border-color:#cfe0f4;background:#eaf3ff}
+.ai-mode-help{margin:7px 2px 4px;font-size:13px}
+.ai-patient-selector{margin:10px 0 6px}
+.ai-clinical-options{margin:8px 0 4px;padding:9px 11px;border:1px solid var(--mb-border,#d7e2ee);border-radius:11px;background:#fff}
+.ai-clinical-options summary{cursor:pointer;font-weight:750}
+.ai-clinical-options p{margin:7px 0}
+.ai-safety-inline{
+  display:flex;
+  gap:6px;
+  align-items:baseline;
+  padding:8px 18px 10px;
+  border-bottom:1px solid var(--mb-border,#d7e2ee);
+  background:#fbfdff;
+  color:#60738a;
+  font-size:12px;
+}
+.ai-safety-inline b{color:#334a63}
+.ai-chat-workspace .ai-chat-thread{
+  flex:1 1 auto;
+  min-height:300px;
+  max-height:none;
+  margin:0;
+  padding:22px 20px;
+  border:0;
+  border-radius:0;
+  background:#f8fafc;
+  overscroll-behavior:contain;
+}
+.ai-chat-workspace .ai-chat-empty{max-width:430px}
+.ai-chat-workspace .ai-chat-empty b{font-size:18px;color:#243b55}
+.ai-chat-workspace .ai-chat-empty p{margin:7px 0 0}
+.ai-chat-workspace .ai-chat-message{box-shadow:none}
+.ai-chat-sources{margin:0;padding:10px 18px;border-top:1px solid var(--mb-border,#d7e2ee);background:#fbfdff}
+.ai-chat-composer{
+  position:sticky;
+  bottom:0;
+  padding:12px 16px 10px;
+  border-top:1px solid var(--mb-border,#d7e2ee);
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);
+}
+.ai-composer-row{display:flex;align-items:flex-end;gap:9px}
+.ai-composer-row textarea{
+  min-height:48px;
+  max-height:128px;
+  margin:0;
+  padding:12px 14px;
+  resize:none;
+  border-radius:15px;
+  background:#f8fafc;
+}
+.ai-composer-row textarea:focus{background:#fff;outline:3px solid rgba(37,99,235,.13);border-color:#77a6eb}
+.ai-composer-row .btn{min-width:72px;min-height:48px;border-radius:14px}
+.ai-chat-composer .msg:empty{display:none}
+.ai-chat-composer .msg{margin:7px 2px 0;font-size:13px}
+.ai-chat-composer .ai-disclaimer{margin:7px 2px 0;font-size:12px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+@media(max-width:760px){
+  .session-connection-notice{top:70px}
+  .ai-page-heading{margin-bottom:10px}
+  .ai-page-heading .page-subtitle{font-size:14px}
+  .ai-chat-workspace{min-height:calc(100dvh - 250px);border-radius:17px}
+  .ai-chat-toolbar{padding:11px 12px}
+  .ai-chat-settings{padding:10px 12px 4px}
+  .ai-mode-tabs button{padding:8px 10px}
+  .ai-mode-help{font-size:12px}
+  .ai-safety-inline{padding:7px 12px 8px;display:block}
+  .ai-chat-workspace .ai-chat-thread{min-height:260px;padding:16px 12px}
+  .ai-chat-composer{padding:10px 10px 8px}
+  .ai-composer-row{gap:7px}
+  .ai-composer-row textarea{font-size:16px}
+  .ai-composer-row .btn{min-width:62px;padding-inline:11px}
+  .ai-chat-composer .ai-disclaimer{font-size:11px}
+}
+
+@media(prefers-reduced-motion:reduce){.session-connection-notice{scroll-behavior:auto}}
