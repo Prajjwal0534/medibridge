@@ -4,6 +4,7 @@ const rateWindows=new Map();
 const MAX_BODY_BYTES=4096;
 const WINDOW_MS=10*60*1000;
 const LIMIT=30;
+const MAX_RATE_KEYS=2000;
 
 function response(status,body){
   return {statusCode:status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'},body:JSON.stringify(body)};
@@ -22,6 +23,12 @@ function sameOrigin(event){
 function rateLimited(event){
   const ip=String(event.headers?.['x-nf-client-connection-ip']||event.headers?.['x-forwarded-for']||'unknown').split(',')[0].trim();
   const now=Date.now();
+  for(const [key,value] of rateWindows){
+    if(now-value.startedAt>WINDOW_MS)rateWindows.delete(key);
+  }
+  if(!rateWindows.has(ip) && rateWindows.size>=MAX_RATE_KEYS){
+    rateWindows.delete(rateWindows.keys().next().value);
+  }
   const entry=rateWindows.get(ip);
   if(!entry||now-entry.startedAt>WINDOW_MS){rateWindows.set(ip,{startedAt:now,count:1});return false}
   entry.count+=1;
