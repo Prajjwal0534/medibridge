@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="application-name" content="MediBridge">
 <meta name="apple-mobile-web-app-title" content="MediBridge">
-<meta name="build-version" content="40">
-<meta name="medibridge-build" content="40">
+<meta name="build-version" content="40.1">
+<meta name="medibridge-build" content="40.1">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
@@ -26,9 +26,20 @@
 <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3">
 <link rel="stylesheet" href="style-v39-5.css?v=39.5">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MediBridge","url":"https://celebrated-gecko-efd469.netlify.app/","description":"Connected healthcare platform for patients and families in India."}</script></head><body>
-<noscript><div class="noscript-notice"><b>MediBridge needs JavaScript to run.</b> For a life-threatening emergency in India, call <a href="tel:112">112</a> now or go to the nearest emergency department.</div></noscript>
+<link rel="stylesheet" href="style-v40-1.css?v=40.1">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MediBridge","url":"https://celebrated-gecko-efd469.netlify.app/","description":"Connected healthcare platform for patients and families in India."}</script></head><body class="auth-resolving">
+<noscript><style>.session-restore-overlay{display:none!important}body.auth-resolving{overflow:auto}</style><div class="noscript-notice"><b>MediBridge needs JavaScript to run.</b> For a life-threatening emergency in India, call <a href="tel:112">112</a> now or go to the nearest emergency department.</div></noscript>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
+<div id="sessionRestoreOverlay" class="session-restore-overlay" role="status" aria-live="polite" aria-atomic="true" aria-hidden="false">
+  <div class="session-restore-card">
+    <span class="session-restore-mark" aria-hidden="true">✚</span>
+    <div class="session-restore-spinner" aria-hidden="true"></div>
+    <h1 id="sessionRestoreTitle">Restoring your secure session…</h1>
+    <p id="sessionRestoreDetail">Checking this device for an existing MediBridge sign-in.</p>
+    <button id="sessionRestoreRetryBtn" class="btn secondary hidden" type="button" onclick="retrySessionRestore()">Retry securely</button>
+    <a href="tel:112" class="session-restore-emergency">Emergency? Call 112</a>
+  </div>
+</div>
 <header class="top app-header">
   <button class="brand brand-button" type="button" onclick="showPage('home')" aria-label="Go to MediBridge home">
     <span class="brand-mark" aria-hidden="true">✚</span>
@@ -52,7 +63,7 @@
     </button>
 
     <span id="sessionLabel" class="session-label muted hidden">Not signed in</span>
-    <button id="loginBtn" class="btn secondary header-login-btn" onclick="showPage('auth')">Sign in</button>
+    <button id="loginBtn" class="btn secondary hidden header-login-btn" onclick="showPage('auth')">Sign in</button>
     <button id="logoutBtn" class="btn secondary hidden header-logout-btn" onclick="logout()">Logout</button>
 
     <button id="mobileMenuBtn" class="header-icon-button mobile-menu-trigger guest-nav-hidden" type="button"
@@ -217,7 +228,7 @@
   </div>
 </section>
 
-<section id="page-dashboard" class="page"><div id="dashGate" class="card"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Sign in</button></div><div id="dashContent" class="hidden"><div class="dashboard-heading row between"><div><small>YOUR MEDIBRIDGE</small><h1 id="dashTitle">Dashboard</h1><p class="page-subtitle">Everything important, at a glance.</p></div><span id="verifyBadge" class="badge">pending</span></div><div id="dashCards" class="dashboard-action-grid"></div>
+<section id="page-dashboard" class="page"><div id="dashGate" class="card dashboard-session-gate"><div id="dashGateLoading" class="dashboard-restore-state hidden" role="status" aria-live="polite"><div class="dashboard-skeleton-icon" aria-hidden="true"></div><div><h2>Opening your MediBridge</h2><p id="dashRestoreMessage" class="muted">Loading your profile and family healthcare…</p><button id="dashRestoreRetryBtn" class="btn secondary hidden" type="button" onclick="retrySessionRestore()">Retry securely</button></div></div><div id="dashGateSignedOut"><h2>Please sign in</h2><button class="btn" onclick="showPage('auth')">Sign in</button></div></div><div id="dashContent" class="hidden"><div class="dashboard-heading row between"><div><small>YOUR MEDIBRIDGE</small><h1 id="dashTitle">Dashboard</h1><p class="page-subtitle">Everything important, at a glance.</p></div><span id="verifyBadge" class="badge">pending</span></div><div id="dashCards" class="dashboard-action-grid"></div>
 <div id="patientFollowupDashboardCard" class="card hidden">
   <div class="row between">
     <div>
@@ -2092,7 +2103,7 @@
 <footer class="site-footer" aria-label="MediBridge information">
   <div><b>MediBridge</b><p>Connected healthcare prototype for India. AI supports care; it does not replace clinicians.</p></div>
   <nav aria-label="Legal and safety"><button type="button" onclick="showPage('privacy')">Privacy & data rights</button><button type="button" onclick="showPage('terms')">Terms</button><button type="button" onclick="showPage('emergency')">Emergency care</button><a href="tel:112">Call 112</a></nav>
-  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 40">Version 40</span></small>
+  <small>Limited beta · synthetic/demo data only until production gates are closed. <span class="site-build-version" aria-label="MediBridge version 40.1">Version 40.1</span></small>
 </footer>
 <div id="toast" class="toast hidden"></div>
 
@@ -2140,5 +2151,5 @@
 <script defer src="video-provider-config.js?v=39"></script>
 <script defer src="medibridge-observability-v40.js?v=40"></script>
 <script defer src="governance-v39-5.js?v=39.5"></script>
-<script defer src="app-v40.js?v=40"></script>
+<script defer src="app-v40-1.js?v=40.1"></script>
 </body></html>

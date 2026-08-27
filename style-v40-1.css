@@ -1,0 +1,107 @@
+/* MediBridge v40.1 — authoritative session restoration states. */
+.session-restore-overlay{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:none;
+  place-items:center;
+  padding:24px;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(37,99,235,.10),transparent 28rem),
+    rgba(247,249,252,.98);
+  color:#14213d;
+}
+
+body.auth-resolving{overflow:hidden}
+body.auth-resolving .session-restore-overlay{display:grid}
+
+.session-restore-card{
+  width:min(100%,440px);
+  padding:34px 30px 28px;
+  text-align:center;
+  border:1px solid #e1e8f2;
+  border-radius:24px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 24px 70px rgba(20,33,61,.12);
+}
+
+.session-restore-mark{
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  margin:0 auto 18px;
+  border-radius:14px;
+  color:#fff;
+  background:linear-gradient(145deg,#2f73f2,#1552c7);
+  box-shadow:0 9px 24px rgba(37,99,235,.25);
+  font-size:22px;
+  font-weight:800;
+}
+
+.session-restore-spinner{
+  width:28px;
+  height:28px;
+  margin:0 auto 18px;
+  border:3px solid #dbe7fa;
+  border-top-color:#2563eb;
+  border-radius:50%;
+  animation:mb-session-spin .8s linear infinite;
+}
+
+.session-restore-card h1{
+  margin:0;
+  font-size:clamp(24px,4vw,30px);
+  line-height:1.2;
+  letter-spacing:-.03em;
+}
+
+.session-restore-card p{
+  margin:10px auto 20px;
+  max-width:350px;
+  color:#637189;
+}
+
+.session-restore-emergency{
+  display:block;
+  width:max-content;
+  margin:18px auto 0;
+  color:#b42318;
+  font-weight:750;
+  text-decoration:none;
+}
+
+.session-restore-emergency:hover{text-decoration:underline}
+
+.dashboard-session-gate{min-height:180px}
+.dashboard-restore-state{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.dashboard-restore-state h2{margin:0 0 5px}
+.dashboard-restore-state p{margin:0 0 14px}
+.dashboard-skeleton-icon{
+  flex:0 0 auto;
+  width:52px;
+  height:52px;
+  border-radius:17px;
+  background:linear-gradient(110deg,#edf3fc 8%,#f8fbff 26%,#edf3fc 44%);
+  background-size:200% 100%;
+  animation:mb-session-shimmer 1.25s linear infinite;
+}
+
+@keyframes mb-session-spin{to{transform:rotate(360deg)}}
+@keyframes mb-session-shimmer{to{background-position:-200% 0}}
+
+@media(max-width:600px){
+  .session-restore-overlay{padding:16px}
+  .session-restore-card{padding:28px 20px 24px;border-radius:20px}
+  .dashboard-restore-state{align-items:flex-start}
+  .dashboard-skeleton-icon{width:44px;height:44px;border-radius:14px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .session-restore-spinner{animation-duration:1.8s}
+  .dashboard-skeleton-icon{animation:none}
+}
