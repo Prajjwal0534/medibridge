@@ -1,5 +1,5 @@
 /*
-  X-MediBridge-Build: 40.5
+  X-MediBridge-Build: 40.6
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
@@ -128,4 +128,10 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /icon-maskable-512.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/app-v40-6.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/medibridge-ai-service-v40-6.js
   Cache-Control: public, max-age=31536000, immutable
