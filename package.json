@@ -1,6 +1,6 @@
 {
   "name": "medibridge-ai",
-  "version": "32.0.0",
+  "version": "40.6.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,6 +8,6 @@
   },
   "displayName": "MediBridge AI",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.18"
   }
 }
